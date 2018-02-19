@@ -1,0 +1,43 @@
+<style type="text/css">
+html,body{
+
+}
+
+#container{
+  width:980px;
+  border:solid red 1px;
+  margin:0 auto;
+  padding:10px;
+}
+
+#header{
+  width:980px;
+  border:solid black 1px;
+  margin:0 auto;
+}
+
+#content{
+  width:800px;
+  border:solid gray 1px;
+  margin:0 auto;
+}
+
+#left-profile{
+  width:300px;
+  border:solid blue 1px;
+  float:left;
+}
+
+#right-menu{
+  width:496px;
+  height:600px;
+  border:solid purple 1px;
+  float:right;
+}
+
+.clear{
+  clear: both;
+}
+
+
+</style>

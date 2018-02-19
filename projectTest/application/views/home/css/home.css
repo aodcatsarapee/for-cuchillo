@@ -1,0 +1,26 @@
+<style type="text/css">
+#container{
+  width:1000px;
+  border:solid red 1px;
+}
+
+#header{
+  width:1000px;
+  border:solid black 1px;
+}
+
+#left-profile{
+  width:300px;
+  border:solid blue 1px;
+  float:left;
+}
+
+#right-menu{
+  width:696px;
+  height:600px;
+  border:solid purple 1px;
+  float:right;
+}
+
+
+</style>

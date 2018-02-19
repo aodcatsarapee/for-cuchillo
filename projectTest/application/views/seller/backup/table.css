@@ -1,0 +1,25 @@
+<style type="text/css">
+#modified{
+  border:solid 1px black;
+}
+
+#modified th{
+  color:red;
+  padding:10px;
+}
+
+#modified td{
+  padding:5px;
+}
+
+#headtext{
+  margin-top:30px;
+  margin-right:50px;
+}
+
+#headtitle{
+  text-align:center;
+}
+
+
+</style>

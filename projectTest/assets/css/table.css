@@ -1,0 +1,71 @@
+<style type="text/css">
+#headtext{
+  margin-top:30px;
+  margin-right:50px;
+}
+
+#headtitle{
+  text-align:center;
+}
+
+.pagination{
+  float:left;
+  width:700px;
+  margin:20 0 20 0px;
+  text-align:center;
+}
+
+.pagination strong{
+  padding:5px 10px;
+  border:1px solid #ccc;
+  background:#fff;
+  color:red;
+}
+
+.pagination a{
+  padding:5px 10px;
+  border:1px solid #ccc;
+  background:#eee;
+  color:black;
+  text-decoration:none;
+
+}
+.pagination a:hover{
+  padding:5px 10px;
+  border:1px solid #ccc;
+  background:#f2f2f2;
+  color:red;
+}
+
+.pagination a:active{
+  padding:5px 10px;
+  border:1px solid #ccc;
+  background:#fff;
+  color:red;
+}
+
+.table{
+font:14px Trebuchet MS, Tahoma;
+margin: 45px;
+width: 480px;
+border-collapse: collapse;
+text-align: left;
+}
+.table th{
+font:normal 16px Trebuchet MS, Tahoma;
+color: #222;
+background:#cbeffd;
+padding: 10px 8px;
+border-bottom: 2px solid #ccc;
+}
+.table td{
+border-bottom: 1px solid #ccc;
+color: #666;
+background: #fff;
+padding: 5px;
+}
+.table tbody tr:hover td{
+color: #222;
+background: #eee;
+}
+</style>
