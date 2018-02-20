@@ -1,107 +1,195 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: AODCAT
+ * Date: 2/20/2018
+ * Time: 09:03
+ */
+?>
 
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>DASHBOARD</h2>
+        </div>
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <div class="row clearfix">
+                            <div class="col-xs-12 col-sm-12">
+                                <h2>สั่งซื้อสินค้า
+                                    <a href="<?php echo base_url() ?>/order" class=" btn btn-success" style=" float: right;">
+                                        กลับ </a>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body" style="min-height: 600px;">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <form action="<?php echo base_url('order/add'); ?>" method="POST" role="form">
+                                        <p class="error" style="text-align: center;"></p>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+                                        <table class="table table-responsive table-bordered  ">
+                                            <thead class="bg-success">
+                                            <tr>
+                                                <th>รหัสสินค้า</th>
+                                                <th>ชื่อสินค้า</th>
+                                                <th>ยีห้อ</th>
+                                                <th>ราคา</th>
+                                                <th style="text-align: center;">จำนวน</th>
+                                                <th style="text-align: center;">ราคารวม</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <?php
 
-    <title>Hello, world!</title>
-  </head>
-  <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            
-            <h1 class="text-center" style="margin-top:100px;">ใบสั้งชื่อสินค้า</h1>
-        <form action="<?php echo base_url('order/add');?>" method="POST" role="form" >
-             <p class="error" style="text-align: center;"> </p>  
-             
-            <table class="table table-bordered  ">
-            <thead class="bg-success">
-              <tr>
-                <th>รหัสสินค้า</th>
-                <th>ชื่อสินค้า</th>
-                <th>ยีห้อ</th>
-                <th style="text-align: center;">จำนวน</th>
-              </tr>
-            </thead>
-              <tbody>
-               <?php 
-               
-               
-               $i=0;  foreach ($rs as $product) {?>   
-                <tr>
-                  <td width="20%">                                                          
-                             <input type="text" class="form-control" id="product_id" name="product_id[]"  class="form-control" value="P<?php   echo $product['product_id'] ?>" disabled  >
-                              <input type="hidden" class="form-control" id="product_id" name="product_id[]"  class="form-control" value="<?php   echo $product['product_id'] ?>"   >
-                   </td>
-        
-                   <td width="40%">
-                            <input type="text" class="form-control" id="product_name" name="product_name[]" placeholder="Input field" value="<?php  echo $product['product_name']; ?>" disabled  >
-                            <input type="hidden" class="form-control" id="product_name" name="product_name[]" placeholder="Input field" value="<?php  echo $product['product_name']; ?>"   >
 
-                  </td>
-                  <td>
-                   <input type="text" class="form-control"  class="form-control" value="<?php   echo $product['band_name'] ?>" disabled  >
-                   <input type="hidden" class="form-control" id="product_type" name="product_type[]" placeholder="Input field" value="<?php  echo $product['band_name']; ?>"   >
-                   </td>
-                  <td width="20%">
-                      <div class="row">
-                      <div class="col-md-5" >
-                            <input type="number" class="form-control " name="product_amount[]" id="product_amount<?php echo $i; ?>" placeholder="จำนวน" min="0" value="0" style="text-align: right; width:200px;" onchange="check_amount()">
-                      </div>
-                      <div class="col-md-5" >
-                          
-                      </div>
-                      </div>
-                  </td>
-                 
-                </tr>
-                 
-                 <input type="hidden" name="number"  id='number' class="form-control" value="<?php echo count($rs); ?>">
-                <?php $i++;} ?>
-              </tbody>
-              
-            </table>
-             <button type="submit" id="submit_dis" class="btn btn-success" style="float: right;font-size: 15px;" disabled > บันทึก</button>
+                                            $i = 0;
+                                            foreach ($rs as $product) { ?>
+                                                <tr>
+                                                    <td width="10%">
+                                                        <input type="text" class="form-control" id="product_id"
+                                                               name="product_id[]" class="form-control"
+                                                               value="P<?php echo $product['product_id'] ?>" disabled>
+                                                        <input type="hidden" class="form-control" id="product_id"
+                                                               name="product_id[]" class="form-control"
+                                                               value="<?php echo $product['product_id'] ?>">
+                                                    </td>
 
-           
-         </form>
+                                                    <td width="30%">
+                                                        <input type="text" class="form-control" id="product_name"
+                                                               name="product_name[]" placeholder="Input field"
+                                                               value="<?php echo $product['product_name']; ?>" disabled>
+                                                        <input type="hidden" class="form-control" id="product_name"
+                                                               name="product_name[]" placeholder="Input field"
+                                                               value="<?php echo $product['product_name']; ?>">
 
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control" class="form-control"
+                                                               value="<?php echo $product['band_name'] ?>" disabled>
+                                                        <input type="hidden" class="form-control" id="product_type"
+                                                               name="product_type[]" placeholder="Input field"
+                                                               value="<?php echo $product['band_name']; ?>">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <input type="text" class="form-control" class="form-control"
+                                                               value="<?php echo $product['product_price'] ?>" disabled>
+                                                        <input type="hidden" class="form-control" id="product_price<?php echo $i ;?>"
+                                                               name="product_price[]" placeholder="Input field"
+                                                               value="<?php echo $product['product_price']; ?>">
+                                                    </td>
+                                                    <td width="10%">
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <input type="number" class="form-control "
+                                                                       name="product_amount[]"
+                                                                       id="product_amount<?php echo $i; ?>"
+                                                                       placeholder="จำนวน" min="0" value="0"
+                                                                       style="text-align: right; width:60px;"
+                                                                       onchange="check_amount();total(<?php echo $i; ?>)">
+                                                            </div>
+                                                            <div class="col-md-5">
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center" id="price_total<?php echo $i; ?>"></td>
+
+                                                </tr>
+
+                                                <input type="hidden" name="number" id='number' class="form-control"
+                                                       value="<?php echo count($rs); ?>">
+                                                <?php $i++;
+                                            } ?>
+                                            <tr>
+                                                <td colspan="5" class="text-center">รวม</td>
+                                                <td class="text-center"> <div id="add"></div></td>
+                                            </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                        <button type="submit" id="submit_dis" class="btn btn-success"
+                                                style="float: right;font-size: 15px;" disabled> บันทึก
+                                        </button>
+
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="number_check" id='number_check' class="form-control"
+                           value="<?php echo count($rs); ?>">
+
+
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</div><input type="hidden" name="number_check"  id='number_check' class="form-control" value="<?php echo count($rs); ?>">
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+    <!-- #END# CPU Usage -->
+    </div>
+</section>
+
+
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/index.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
+<!--<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.time.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.resize.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.pie.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.categories.js"></script>-->
+<!-- <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/morris.js"></script> -->
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/Chart.bundle.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.countTo.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap-select.js"></script>
+
+</body>
+
 </html>
 
+
 <script>
-function check_amount() {
+    function check_amount() {
 
-  var test = [];
-	var amount_count = $("#number_check").val();
-	var check_con = 0;
-	for (var i = 0; i < amount_count; i++) {
-		if ($("#product_amount" + i).val() != 0) {
-      $('#submit_dis').removeAttr("disabled");
-      check_con++;
+        var test = [];
+        var amount_count = $("#number_check").val();
+        var check_con = 0;
+        for (var i = 0; i < amount_count; i++) {
+            if ($("#product_amount" + i).val() != 0) {
+                $('#submit_dis').removeAttr("disabled");
+                check_con++;
+            }
+        }
+        if (check_con == 0) {
+            $('#submit_dis').prop("disabled", true);
+        }
     }
-  }
-  if( check_con == 0 ){
-    $('#submit_dis').prop("disabled", true);
-  }
+    function total (list)
+    {
+        var total = 0 ;
+        var amount_count = $("#number_check").val();
+        for (var i = 0; i < amount_count; i++) {
+            total +=  (Number($('#product_amount'+i).val())* Number($('#product_price'+i).val()));
+        }
+        $("#add").text(total);
 
+        $("#price_total"+list).text((Number($('#product_amount'+list).val())* Number($('#product_price'+list).val())));
 
-}
-
-
+    }
 
 </script>
+

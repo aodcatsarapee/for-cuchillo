@@ -11,32 +11,65 @@ class Order extends CI_Controller{
 
   public function index(){
 
-  echo "index";
+      $cus=$this->db->get('customer');
+      $product_cate=$this->db->get('categories');
+      $product=$this->db->get('product');
+
+      $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
+      $data['customer']=$cus->result_array();
+      $data['categories']=$product_cate->result_array();
+      $data['product']=$product->result_array();
+
+      $data['stock']=$this->db->get('stock_detail')->result();
+
+      $this->load->view("home/header",$data);
+      $this->load->view("order/index" ,$data);
 
   }
 
   public function view (){
     $this->db->join('band', 'band.band_id = product.product_band' ,'left');
     $data['rs']=$this->db->get('product')->result_array();
+
+      $cus=$this->db->get('customer');
+      $product_cate=$this->db->get('categories');
+      $product=$this->db->get('product');
+
+      $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
+      $data['customer']=$cus->result_array();
+      $data['categories']=$product_cate->result_array();
+      $data['product']=$product->result_array();
+
+      $this->load->view("home/header",$data);
     $this->load->view("order/order_view", $data);
   }
 
   public function add(){
                 $stock_detail = array(
-                "stock_detail_status" => "กำลังดำเนินการ",
+                "stock_detail_status" => "รอรับสินค้าเข้าคลัง",
                 "stock_detail_date" => date("Y-m-d H:i:s"),
             );
             $stock_detail_id = $this->Produce_models->insert_sotck_new($stock_detail);
 
+            $total_all = 0;
             foreach ($_POST['product_name'] as $key => $product_name) {
 
                 foreach ($_POST['product_amount'] as $key1 => $product_amount) {
 
-                    foreach ($_POST['product_type'] as $key2 => $product_type) {
+                    foreach ($_POST['product_price'] as $key2 => $product_price) {
 
                         foreach ($_POST['product_id'] as $key3 => $product_id) {
 
                             if ($key == $key1 && $key1 == $key2 && $key2 == $key3) {
+
+
+                                if($product_amount == 0){
+                                    $product_price = 0;
+                                }
+
+                               $total_price = $product_amount * $product_price;
+
+                                $total_all += $total_price;
 
                                 $stock = array(
 
@@ -48,9 +81,9 @@ class Order extends CI_Controller{
 
                                     "stock_amount" => $product_amount,
 
-                                    "stock_product_type" => $product_type,
+                                    "stock_product_type" => $product_price,
 
-                                    "employee_id" => $_SESSION['employee_id'],
+                                    "stock_price_total"  =>  $total_price,
                                 );
                                 
                                 $this->db->insert("stock",$stock);
@@ -60,9 +93,99 @@ class Order extends CI_Controller{
                 }
             }
 
+      $stock_detail = array(
+          "stock_detail_total" => $total_all,
+          "stock_detail_date" => date("Y-m-d H:i:s"),
+      );
+            $this->db->where('stock_detail_id',$stock_detail_id);
+            $this->db->update('stock_detail',$stock_detail);
+
+            $account = array(
+                'account_detail' => 'รายจ่ายจากการสั่งซื้อสินค้า',
+                'account_expenses' => $total_all,
+                'account_type' => 'รายจ่าย',
+                'account_datasave' => date("Y-m-d H:i:s"),
+            );
+          $this->db->insert('account',$account);
+
+
+
             // echo print_r($stock);
 
              redirect('Order');
   }
+    public function insert_amount($stock_detail_id)
+    {
+
+        $stock_id = $stock_detail_id;
+
+        $datasave = date("Y-m-d H:i:s");
+
+        $product=$this->Produce_models->select_product_amount();
+
+        $stock=$this->Produce_models->select_stock_detail($stock_id);
+
+        foreach ($product as  $value) {
+
+            foreach ($stock as  $value1) {
+
+                if($value['product_id']==$value1['product_id']){
+
+                    if($value1['order_id']==null){
+
+                        $amount = array(
+
+                            "product_quantity" => $value['product_quantity'] += $value1['stock_amount'],
+                            "date"           => $datasave,
+
+                        );
+                        $this->db->where("product_id",$value['product_id']);
+                        $this->db->update("product", $amount);
+
+                    }else{
+
+                        $amount = array(
+
+                            "product_amount_order" => $value['product_amount_order'] += $value1['stock_amount'],
+                            "date"           => $datasave,
+
+                        );
+                        $this->db->where("product_id",$value['product_id']);
+                        $this->db->update("product", $amount);
+
+
+                        $order  = array(
+
+                            'order_detail_status'	 => 'พร้อมขายสินค้า'  ,
+                            'order_detail_date' =>  $datasave,
+
+                        );
+
+                        $this->db->where("order_detail_id",$value1['order_id']);
+                        $this->db->update("order_detail", $order);
+
+
+                    }
+
+                }
+
+                # code...
+
+
+            }
+            # code...
+        }
+
+        $ar=array(
+
+            "stock_detail_status"  =>"รับสินค้าเข้าคลังเเล้ว",
+            "stock_detail_date" =>$datasave,
+
+        );
+
+        $this->Produce_models->insert_amount($stock_id,$ar);
+
+        redirect('Order');
+    }
 }
 ?>
