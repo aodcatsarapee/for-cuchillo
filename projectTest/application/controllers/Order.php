@@ -40,14 +40,17 @@ class Order extends CI_Controller{
       $data['categories']=$product_cate->result_array();
       $data['product']=$product->result_array();
 
+      $data['partners']=$this->db->get('partners')->result();
+
       $this->load->view("home/header",$data);
     $this->load->view("order/order_view", $data);
   }
 
   public function add(){
                 $stock_detail = array(
-                "stock_detail_status" => "รอรับสินค้าเข้าคลัง",
-                "stock_detail_date" => date("Y-m-d H:i:s"),
+                    "stock_detail_status" => "รอรับสินค้าเข้าคลัง",
+                    "partners_id" => $this->input->post('partners'),
+                    "stock_detail_date" => date("Y-m-d H:i:s"),
             );
             $stock_detail_id = $this->Produce_models->insert_sotck_new($stock_detail);
 
@@ -100,14 +103,25 @@ class Order extends CI_Controller{
             $this->db->where('stock_detail_id',$stock_detail_id);
             $this->db->update('stock_detail',$stock_detail);
 
-            $account = array(
-                'account_detail' => 'รายจ่ายจากการสั่งซื้อสินค้า',
-                'account_expenses' => $total_all,
-                'account_type' => 'รายจ่าย',
-                'account_datasave' => date("Y-m-d H:i:s"),
-            );
-          $this->db->insert('account',$account);
+      if($this->input->post('order_sell')== '1') {
+          $account = array(
+              'account_detail' => 'รายจ่ายจากการสั่งซื้อสินค้า',
+              'account_expenses' => $total_all,
+              'account_type' => 'รายจ่าย',
+              'account_datasave' => date("Y-m-d H:i:s"),
+          );
+          $this->db->insert('account', $account);
+      }else{
+          $creditor= array(
+              'creditor_id' => 'รายจ่ายจากการสั่งซื้อสินค้า',
+              'partners_id' => $this->input->post('partners'),
+              'total' => $total_all,
+              'creditor_status' =>'ยังไม่ได้ชำระเงิน',
+              'date' => date("Y-m-d H:i:s"),
+          );
+          $this->db->insert('creditor', $creditor);
 
+      }
 
 
             // echo print_r($stock);

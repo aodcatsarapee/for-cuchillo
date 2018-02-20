@@ -75,13 +75,13 @@
                         </div>
                     </div>
                     <div class="body" style="min-height: 600px;">
-                        <table class="table table-responsive table-bordered">
+                        <table class="table table-responsive table-bordered table-hover">
                             <thead class="bg-success">
                             <tr>
-                                <th>ลำดับ</th>
+                                <th width="10%" class="text-center">ลำดับ</th>
                                 <th>รหัสการสั้งซื้อ</th>
                                 <th>ราคารวม</th>
-                                <th>สถานะ</th>
+                                <th class="text-center">สถานะ</th>
                                 <th class="text-center">จัดการ</th>
                             </tr>
                             </thead>
@@ -92,13 +92,13 @@
                                 if($list->stock_detail_status != 'รับสินค้าเข้าคลังเเล้ว'){
                                 ?>
                             <tr>
-                                <td><?php echo $i; ?></td>
+                                <td class="text-center"><?php echo $i; ?></td>
                                 <td><?php echo $list->stock_detail_id; ?></td>
                                 <td><?php echo $list->stock_detail_total; ?></td>
-                                <td><?php echo $list->stock_detail_status; ?></td>
-                                <td width="25%">
+                                <td class="text-center"> <span class="label label-primary"><?php echo $list->stock_detail_status; ?> </span></td>
+                                <td width="25%" class="text-center">
                                     <a href="<?php echo base_url()."order/insert_amount/".$list->stock_detail_id; ?>" class="btn btn-success "> รับสินค้าเข้าคลัง</a>
-                                    <a href="<?php echo base_url()?>" class="btn btn-danger "> พิพม์ใบสั่งซื้อ</a>
+                                    <a target="_blank" href="<?php echo base_url()."order/print"?>" class="btn btn-danger "> พิพม์ใบสั่งซื้อ</a>
                                 </td>
                             </tr>
                             <?php $i++; } }?>
