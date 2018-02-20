@@ -27,6 +27,22 @@ class Order extends CI_Controller{
 
   }
 
+  public function history_order(){
+
+      $cus=$this->db->get('customer');
+      $product_cate=$this->db->get('categories');
+      $product=$this->db->get('product');
+
+      $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
+      $data['customer']=$cus->result_array();
+      $data['categories']=$product_cate->result_array();
+      $data['product']=$product->result_array();
+
+      $data['stock']=$this->db->get('stock_detail')->result();
+
+      $this->load->view("home/header",$data);
+      $this->load->view("order/history_order" ,$data);
+  }
   public function view (){
     $this->db->join('band', 'band.band_id = product.product_band' ,'left');
     $data['rs']=$this->db->get('product')->result_array();
@@ -111,7 +127,20 @@ class Order extends CI_Controller{
               'account_datasave' => date("Y-m-d H:i:s"),
           );
           $this->db->insert('account', $account);
+
+          $stock_detail = array(
+              "stock_detail_status_buy" => 'สั่งซื้อสินค้าเป็นเงินสด',
+              "stock_detail_date" => date("Y-m-d H:i:s"),
+          );
+          $this->db->where('stock_detail_id',$stock_detail_id);
+          $this->db->update('stock_detail',$stock_detail);
       }else{
+          $stock_detail = array(
+              "stock_detail_status_buy" => 'สั่งซื้อสินค้าเป็นเงินเชื่อ',
+              "stock_detail_date" => date("Y-m-d H:i:s"),
+          );
+          $this->db->where('stock_detail_id',$stock_detail_id);
+          $this->db->update('stock_detail',$stock_detail);
           $creditor= array(
               'creditor_id' => 'รายจ่ายจากการสั่งซื้อสินค้า',
               'partners_id' => $this->input->post('partners'),
@@ -201,5 +230,38 @@ class Order extends CI_Controller{
 
         redirect('Order');
     }
+
+    public function print_order($stock_detail_id)
+    {
+        $this->load->library('pdf2');
+//        $this->load->model('report/Printlist_sport_model');
+
+        $this->db->join('partners' ,'partners.partners_id = stock_detail.partners_id');
+        $this->db->where('stock_detail.stock_detail_id',$stock_detail_id);
+        $data1['stock_detail']=$this->db->get('stock_detail')->row();
+
+
+        $this->db->where('stock_detail_id',$stock_detail_id);
+        $this->db->where('stock_amount !=',0);
+        $data1['stock']=$this->db->get('stock')->result();
+
+
+
+        $pdf = $this->pdf2->loadthaiA4();
+
+        $pdf->AddPage('', '', '', '', '', 15, 15, 20, 15, 0, 0);
+
+        $pdf->SetHTMLHeader($this->PageHead());
+        $pdf->WriteHTML($this->load->view('order/print_order', $data1, true));
+        $pdf->Output('ใบรายชื่อนักกีฬา.pdf', 'I');
+        exit;
+    }
+
+    public function PageHead() {
+        $text = '<div align="right" style="padding-top: 40px; font-size: 16pt;">หน้า {PAGENO} / {nb}</div>';
+        return $text;
+    }
+
+
 }
 ?>

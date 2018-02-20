@@ -81,7 +81,8 @@
                                 <th width="10%" class="text-center">ลำดับ</th>
                                 <th>รหัสการสั้งซื้อ</th>
                                 <th>ราคารวม</th>
-                                <th class="text-center">สถานะ</th>
+                                <th class="text-center">สถานะการดำเนินการ</th>
+                                <th class="text-center">สถานะการสั่งซื้อ</th>
                                 <th class="text-center">จัดการ</th>
                             </tr>
                             </thead>
@@ -95,10 +96,11 @@
                                 <td class="text-center"><?php echo $i; ?></td>
                                 <td><?php echo $list->stock_detail_id; ?></td>
                                 <td><?php echo $list->stock_detail_total; ?></td>
-                                <td class="text-center"> <span class="label label-primary"><?php echo $list->stock_detail_status; ?> </span></td>
+                                <td class="text-center"> <?php echo $list->stock_detail_status; ?> </td>
+                                <td class="text-center"> <?php echo $list->stock_detail_status_buy; ?> </td>
                                 <td width="25%" class="text-center">
                                     <a href="<?php echo base_url()."order/insert_amount/".$list->stock_detail_id; ?>" class="btn btn-success "> รับสินค้าเข้าคลัง</a>
-                                    <a target="_blank" href="<?php echo base_url()."order/print"?>" class="btn btn-danger "> พิพม์ใบสั่งซื้อ</a>
+                                    <a target="_blank" href="<?php echo base_url()."order/print_order/".$list->stock_detail_id; ?>" class="btn btn-danger "> พิพม์ใบสั่งซื้อ</a>
                                 </td>
                             </tr>
                             <?php $i++; } }?>
