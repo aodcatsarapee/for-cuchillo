@@ -30,6 +30,7 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-12 col-sm-12">
+
                                     <form action="<?php echo base_url('order/add'); ?>" method="POST" role="form">
                                         <p class="error" style="text-align: center;"></p>
 
@@ -117,26 +118,29 @@
 
                                         </table>
 
-                                        <div class="col-md-11 ">
-
-                                            <select name="order_sell" id="" class="form-control"
-                                                    style="width: 200px; float: right; margin-right: 10px;" required>
-                                                <option value="">รูปเเบบการสั่งซื้อสินค้า</option>
-                                                <option value="1">สั่งซื้อสินค้าเป็นเงินสด</option>
-                                                <option value="2">สั่งซื้อสินค้าเป็นเงินเชื่อ</option>
-                                            </select>
+                                        <div class="col-md-2 ">
                                             <select name="partners" id="" class="form-control"
-                                                    style="width: 150px; float: right; margin-right: 10px;">
+                                                    style="width: 150px; margin-right: 10px;">
                                                 <option value="">เลือกร้าน</option>
                                                 <?php foreach ($partners as $par) { ?>
 
                                                     <option value="<?php echo $par->partners_id; ?>"><?php echo $par->partners_name; ?></option>
                                                     <?php
-
                                                 }
                                                 ?>
                                             </select>
                                         </div>
+                                        <div class="col-md-2 ">
+                                            <select name="order_sell" id="order_sell" class="form-control" onchange="sell_detor()"
+                                                    style="width: 200px;  margin-right: 10px;" required>
+                                                <option value="">รูปเเบบการสั่งซื้อสินค้า</option>
+                                                <option value="1">สั่งซื้อสินค้าเป็นเงินสด</option>
+                                                <option value="2">สั่งซื้อสินค้าเป็นเงินเชื่อ</option>
+                                            </select>
+                                        </div>
+                                          <div class="col-md-3" id="payment"></div>
+                                            <div class="col-md-4" id="tax"></div>
+
                                         <div class="col-md-1 ">
                                             <button type="submit" id="submit_dis" class="btn  btn-success "
                                                     style="float: right;font-size: 15px;" disabled> สั่งซื้อสินค้า
@@ -147,6 +151,7 @@
 
 
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -166,7 +171,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/index.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url(); ?><!--Frontend/js/index.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
@@ -176,7 +181,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.categories.js"></script>-->
 <!-- <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/morris.js"></script> -->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/Chart.bundle.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url(); ?><!--Frontend/js/jquery.flot.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.countTo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
@@ -216,5 +221,14 @@
 
     }
 
+    function sell_detor() {
+      if($('#order_sell').val() == 2) {
+          $('#payment').html('<input type="number" name="payment" class="form-control" style="margin-left: 50px; width: 200px; text-align: right;" min="0" placeholder="จำนวนงวด " required />');
+          $('#tax').html('<input type="number" name="tax" class="form-control" style="margin-left: 50px; width: 200px; text-align: right;" min="0" max="100" placeholder="ดอกเบี้ยจ่าย %" required />');
+      }else{
+          $('#payment').html('');
+          $('#tax').html('');
+      }
+    }
 </script>
 

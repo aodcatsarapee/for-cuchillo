@@ -8,15 +8,6 @@
 ?>
 
 
-<?php
-/**
- * Created by PhpStorm.
- * User: AODCAT
- * Date: 2/20/2018
- * Time: 09:03
- */
-?>
-
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
@@ -78,7 +69,7 @@
                     <div class="header">
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
-                                <h2>สั่งซื้อสินค้า
+                                <h2>ประวัติสการั่งซื้อสินค้า
                                     <a href="<?php echo base_url() ?>order/view" class=" btn btn-success" style=" float: right;"> สั่งซื้อสินค้า </a>
                                 </h2>
                             </div>
@@ -137,7 +128,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/index.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url(); ?><!--Frontend/js/index.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
@@ -147,7 +138,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.categories.js"></script>-->
 <!-- <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/morris.js"></script> -->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/Chart.bundle.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url(); ?><!--Frontend/js/jquery.flot.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.countTo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>

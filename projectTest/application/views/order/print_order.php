@@ -33,7 +33,7 @@
     <tbody>
     <?php foreach ($stock as $s){?>
     <tr>
-        <td><?php echo $s->product_id ?></td>
+        <td style="text-align: center;"><?php echo $s->product_id ?></td>
         <td><?php echo $s->stock_product_name ?></td>
         <td style="text-align: center;"><?php echo $s->stock_product_type ?></td>
         <td style="text-align: center;"><?php echo $s->stock_amount ?></td>
