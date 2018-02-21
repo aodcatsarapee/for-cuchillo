@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0da6b56d-9925-44e5-9c37-fd118a60a1a9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projectTest/application/controllers/Order.php" afterPath="$PROJECT_DIR$/projectTest/application/controllers/Order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projectTest/application/views/order/history_order.php" afterPath="$PROJECT_DIR$/projectTest/application/views/order/history_order.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projectTest/application/views/order/order_view.php" afterPath="$PROJECT_DIR$/projectTest/application/views/order/order_view.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/projectTest/application/views/order/print_order.php" afterPath="$PROJECT_DIR$/projectTest/application/views/order/print_order.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -50,14 +47,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Order.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Order.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projectTest/application/controllers/Order.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="178" column="0" lean-forward="true" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
+            <state relative-caret-position="228">
+              <caret line="264" column="91" lean-forward="false" selection-start-line="264" selection-start-column="91" selection-end-line="264" selection-end-column="91" />
               <folding>
-                <marker date="1519220215407" expanded="true" signature="9268:9303" ph="..." />
+                <marker date="1519221609188" expanded="true" signature="9275:9310" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="print_order.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/projectTest/application/views/order/print_order.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="551">
+              <caret line="47" column="101" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="63" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -65,7 +72,7 @@
       <file leaf-file-name="Produce_models.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/projectTest/application/models/Produce_models.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
+            <state relative-caret-position="114">
               <caret line="9" column="41" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="41" />
               <folding />
             </state>
@@ -84,9 +91,9 @@
         <option value="$PROJECT_DIR$/projectTest/application/models/Produce_models.php" />
         <option value="$PROJECT_DIR$/projectTest/application/views/order/index.php" />
         <option value="$PROJECT_DIR$/projectTest/application/views/order/history_order.php" />
-        <option value="$PROJECT_DIR$/projectTest/application/views/order/print_order.php" />
         <option value="$PROJECT_DIR$/projectTest/application/views/order/order_view.php" />
         <option value="$PROJECT_DIR$/projectTest/application/controllers/Order.php" />
+        <option value="$PROJECT_DIR$/projectTest/application/views/order/print_order.php" />
       </list>
     </option>
   </component>
@@ -221,12 +228,12 @@
       <updated>1519091460854</updated>
       <workItem from="1519091463182" duration="8787000" />
       <workItem from="1519132554311" duration="10299000" />
-      <workItem from="1519210656090" duration="8288000" />
+      <workItem from="1519210656090" duration="9026000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27374000" />
+    <option name="totallyTimeSpent" value="28112000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="7" />
@@ -276,7 +283,7 @@
         <state relative-caret-position="551">
           <caret line="29" column="31" lean-forward="false" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="31" />
           <folding>
-            <marker date="1519220215407" expanded="true" signature="9268:9303" ph="..." />
+            <marker date="1519221609188" expanded="true" signature="9275:9310" ph="..." />
           </folding>
         </state>
       </provider>
@@ -340,7 +347,7 @@
         <state relative-caret-position="3553">
           <caret line="187" column="26" lean-forward="false" selection-start-line="187" selection-start-column="26" selection-end-line="187" selection-end-column="26" />
           <folding>
-            <marker date="1519220215407" expanded="true" signature="9268:9303" ph="..." />
+            <marker date="1519221609188" expanded="true" signature="9275:9310" ph="..." />
           </folding>
         </state>
       </provider>
@@ -403,22 +410,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projectTest/application/views/order/print_order.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
-          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-          <folding>
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#td#2;n#tr#0;n#tbody#0;n#table#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/projectTest/application/views/order/index.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
           <caret line="76" column="25" lean-forward="false" selection-start-line="76" selection-start-column="25" selection-end-line="76" selection-end-column="25" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projectTest/application/models/Produce_models.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="9" column="41" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/projectTest/application/controllers/Order.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="264" column="91" lean-forward="false" selection-start-line="264" selection-start-column="91" selection-end-line="264" selection-end-column="91" />
+          <folding>
+            <marker date="1519221609188" expanded="true" signature="9275:9310" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -437,21 +451,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/projectTest/application/models/Produce_models.php">
+    <entry file="file://$PROJECT_DIR$/projectTest/application/views/order/print_order.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="41" lean-forward="true" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="41" />
+        <state relative-caret-position="551">
+          <caret line="47" column="101" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="63" selection-end-column="8" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/projectTest/application/controllers/Order.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="178" column="0" lean-forward="true" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
-          <folding>
-            <marker date="1519220215407" expanded="true" signature="9268:9303" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>

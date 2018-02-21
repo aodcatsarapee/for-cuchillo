@@ -262,7 +262,7 @@ class Order extends CI_Controller
         $this->load->library('pdf2');
 //        $this->load->model('report/Printlist_sport_model');
 
-        $this->db->join('partners', 'partners.partners_id = stock_detail.partners_id');
+        $this->db->join('partners', 'partners.partners_id = stock_detail.partners_id','left');
         $this->db->where('stock_detail.stock_detail_id', $stock_detail_id);
         $data1['stock_detail'] = $this->db->get('stock_detail')->row();
 

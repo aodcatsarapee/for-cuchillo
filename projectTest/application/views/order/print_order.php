@@ -12,14 +12,16 @@
     <span style="font-size: 20px; font-weight: bold;">ประจำวันที่
         <?php
 
-        $date=date_create($stock_detail->stock_detail_date);
-        echo date_format($date,"d/m/Y ");  ?>
+        $date = date_create($stock_detail->stock_detail_date);
+        echo date_format($date, "d/m/Y "); ?>
 
     </span>
 </div>
 
-<span style="font-size: 20px; font-weight: bold;">สั่งซื้อสินค้าจาก : </span> <span style="font-size: 20px;"><?php echo $stock_detail->partners_name; ?> </span>
-<span style="font-size: 20px; font-weight: bold;">สถานะการสั่งซื้อ :</span> <span style="font-size: 20px;"><?php echo $stock_detail->stock_detail_status_buy; ?>  </span>
+<span style="font-size: 20px; font-weight: bold;">สั่งซื้อสินค้าจาก : </span> <span
+        style="font-size: 20px;"><?php echo $stock_detail->partners_name; ?> </span>
+<span style="font-size: 20px; font-weight: bold;">สถานะการสั่งซื้อ :</span> <span
+        style="font-size: 20px;"><?php echo $stock_detail->stock_detail_status_buy; ?>  </span>
 
 <table width="100%">
     <thead>
@@ -31,19 +33,19 @@
         <th>ราคารวม</th>
     </tr>
     <tbody>
-    <?php foreach ($stock as $s){?>
-    <tr>
-        <td style="text-align: center;"><?php echo $s->product_id ?></td>
-        <td><?php echo $s->stock_product_name ?></td>
-        <td style="text-align: center;"><?php echo $s->stock_product_type ?></td>
-        <td style="text-align: center;"><?php echo $s->stock_amount ?></td>
-        <td style="text-align: center;"><?php echo $s->stock_price_total ?></td>
+    <?php foreach ($stock as $s) { ?>
+        <tr>
+            <td style="text-align: center;"><?php echo $s->product_id ?></td>
+            <td><?php echo $s->stock_product_name ?></td>
+            <td style="text-align: center;"><?php echo number_format($s->stock_product_type, 2) ?></td>
+            <td style="text-align: center;"><?php echo $s->stock_amount ?></td>
+            <td style="text-align: center;"><?php echo number_format($s->stock_price_total, 2) ?></td>
 
-    </tr>
-    <?php }?>
+        </tr>
+    <?php } ?>
     <tr>
         <td colspan="4" style="text-align: center">รวม</td>
-        <td style="text-align: center;"><?php echo $stock_detail->stock_detail_total; ?></td>
+        <td style="text-align: center;"><?php echo number_format($stock_detail->stock_detail_total, 2); ?></td>
     </tr>
     </tbody>
     </thead>
