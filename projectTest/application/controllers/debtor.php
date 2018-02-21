@@ -41,6 +41,7 @@ class debtor extends CI_Controller{
       $result['detail']=$this->db->where('product_sell_detail.sell_order_id',$id)->join('product_sell','product_sell_detail.sell_order_id = product_sell.sell_order_id')->get('product_sell_detail')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
       $result['total']=$this->db->where('sell_order_id',$id)->get('product_sell')->row_array();
+      $result['payment']=$this->db->where('product_payment_no',$id)->get('product_payment')->result_array();
 
       $this->load->view("home/header",$data);
       $this->load->view("debtor/detail",$result);
@@ -83,6 +84,7 @@ class debtor extends CI_Controller{
 
       $payment_detail=array(
         "product_payment_no"=>$this->input->post('payment_no'),
+        "product_payment_month"=>$month,
         "product_payment_price"=>$payment_total,
         "product_payment_pay"=>$price,
         "product_payment_balance"=>$payment_balance,

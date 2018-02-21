@@ -6,10 +6,8 @@ class sell extends CI_Controller{
     }
 
     public function index(){
-      $result=$this->db->get('customer');
-
       $data['product']=$this->sale_model->get_product();
-      $data['customer']=$result->result_array();
+      $data['customer']=$this->db->get('customer')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
       $data['sell']=$this->db->order_by("sell_id","desc")->get('product_sell')->row_array();
 
@@ -105,6 +103,31 @@ class sell extends CI_Controller{
       exit();
     }
 
+    public function add_cusDebtor(){
+      $ID=$this->input->post("cus_name");
+      $data=$this->sale_model->get_customer($ID);
+
+      $session=array(
+          "cusname"=>$data['cus_name']
+      );
+      $this->session->set_userdata($session);
+
+      //echo $ID;
+      //print_r($data);
+
+      redirect("sell/debtor","refresh");
+      exit();
+    }
+
+    public function del_cusDebtor(){
+      if(!empty($this->session->userdata['cusname'])){
+        $this->session->unset_userdata('cusname');
+      }
+
+      redirect("sell/debtor","refresh");
+      exit();
+    }
+
     public function update(){
       $newqty=$this->input->post("addtotal");
       $rowid=$this->input->post("rowid");
@@ -148,10 +171,8 @@ class sell extends CI_Controller{
 
 
     public function debtor(){
-      $result=$this->db->get('customer');
-
       $data['product']=$this->sale_model->get_product();
-      $data['customer']=$result->result_array();
+      $data['customer']=$this->db->where('cus_type','ลูกค้าสมาชิก')->get('customer')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
       $data['sell']=$this->db->order_by("sell_id","desc")->get('product_sell')->row_array();
 

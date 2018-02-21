@@ -51,7 +51,8 @@
     var newtotal = total-dis;
     var paytomonth = (newtotal*0.10);
     var sumPay = newtotal + paytomonth;
-    $("#paytomonth").val(sumPay/6);
+    var TotalPay = (sumPay/6);
+    $("#paytomonth").val(Math.ceil(TotalPay).toFixed(2));
     $("#totalsellbeforecomma").val(newtotal.toFixed(2));
     $("#totalsell").val(addCommas(newtotal.toFixed(2)));
 
@@ -196,20 +197,48 @@
                       echo "</div>"; // Close col-8 col-sm-8 col-md-8
 
                       echo "<div class='col-4 col-sm-4 col-md-4'>";
-                          echo form_open('sell/sell_product_debtor');
 
+                        echo form_open('sell/add_cusDebtor');
                           echo "<div class='row clearfix'>";
-                            echo "<div class='col-sm-5'>";
-                              echo "<div class='form-line'>";
-                                echo "<label>ชื่อลูกค้า : <select name='cus_name' id='cus_name' class='form-control' style='height:34px; width:150px;'>";
-                                  foreach($customer as $cus){
-                                    echo "<option value=",$cus['cus_id'],">",$cus['cus_name'],"</option>";
-                                  }
-                                echo "</select>";
+                            echo "<div class='col-sm-12'>";
+                              echo "<input list='frameworks' class='form-control' name='cus_name' id='cus_name' style=' font-size:18px; font-weight:20px;text-align:center;' placeholder='กรุณาเพิ่มชื่อลูกค้า'>";
+                              echo "<div class='barcode' style='text-align:center;'>";
+                                echo "<datalist id='frameworks'>";
+                                    foreach($customer as $cus){ ?>
+                                      <option value="<?php echo $cus['cus_name']; ?>"><label><?php echo $cus['cus_name']; ?></label><option>
+                                    <?php
+                                    }
+                                echo "</datalist>";
                               echo "</div>";
                             echo "</div>";
                           echo "</div>";
+                        echo form_close();
 
+                          if(empty($this->session->userdata['cusname'])){
+                            $cusName = "";
+                          }else{
+                            $cusName = $this->session->userdata['cusname'];
+                          }
+                          echo "<div class='col-sm-12'>";
+                            echo "<label>ชื่อลูกค้า </label>";
+                            echo "<table class='table table-hover'>";
+                              echo "<tr>";
+                                  echo "<td align='center'>",$cusName,"</td>";
+                                  if(empty($cusName)){
+                                    echo "<td>กรุณาเลือกลูกค้า</td>";
+                                  }else{
+                                    echo "<td><a href=",base_url(),"sell/del_cusDebtor class='btn btn-primary btn-xs waves-effect waves-light'>DELETE </a></td>";
+                                  }
+                              echo "</tr>";
+                            echo "</table>";
+                            /*echo "<div class='row clearfix'>";
+                              echo "<label>ชื่อลูกค้า </label><input type='text' id='cus_name' name='cus_name' size='5' class='form-control' disabled value=",$cusName,">";
+                            echo "</div>";*/
+                          echo "</div>";
+
+
+
+                          echo form_open('sell/sell_product_debtor');
                             //echo "<p style='text-align:center;'>".anchor("customer/insert_customer",$addnewcus)."</p><hr>";
                             $totalprice=$this->cart->total();
                             echo "<input type='hidden' name='total' id='total' value=",$this->cart->total(),">";
@@ -238,7 +267,11 @@
                               if($item['qty'] > $item['quantity']){
                                 echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect' disabled>";
                               }else{
-                                echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect'>";
+                                if(!empty($cusName)){
+                                  echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect'>";
+                                }else{
+                                  echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect' disabled>";
+                                }
                               }
                             }
                           echo form_close();

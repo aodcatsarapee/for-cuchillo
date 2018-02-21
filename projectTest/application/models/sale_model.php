@@ -14,6 +14,12 @@ class sale_model extends CI_Model{
       return $result;
   }
 
+  public function get_customer($data){
+      $result=$this->db->where('cus_name',$data)->get('customer')->row_array();
+
+      return $result;
+  }
+
   public function getLastIDrepair(){
       $rs=$this->db->order_by('repair_id','DESC')->get('repair')->row_array();
       return $rs;

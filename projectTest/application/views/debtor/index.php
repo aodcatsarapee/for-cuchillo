@@ -65,9 +65,10 @@
                             </thead>
                             <tbody>
                               <?php
+                              $num=1;
                               foreach($result as $data){
                                   echo "<tr>";
-                                    echo "<td>".$data['cus_id']."</td>";
+                                    echo "<td>".$num."</td>";
                                     echo "<td>".$data['sell_id']."</td>";
                                     echo "<td>".$data['cus_cardid']."</td>";
                                     echo "<td>".$data['cus_name']."</td>";
@@ -77,6 +78,7 @@
                                     echo "<td>".$data['sell_date']."</td>";
                                     echo "<td align='center'>",$data['pay_status'],"</td>";
                                   echo "</tr>";
+                                  $num++;
                               }
                               ?>
                             </tbody>
@@ -116,7 +118,10 @@
 </body>
 </html>
 <script>
-$('#example').DataTable();
+$('#example').DataTable( {
+        "order": [[0, "desc" ]]
+    } );
+
 $(document).ready(function(){
   $('#show_debtor').on('click',function(){
     var sellorder_id =  $("#sell_order_id").val();
