@@ -69,7 +69,7 @@
                     <div class="header">
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
-                                <h2>ประวัติสการั่งซื้อสินค้า
+                                <h2>ประวัติสกาสั่งซื้อสินค้า
                                     <a href="<?php echo base_url() ?>order/view" class=" btn btn-success" style=" float: right;"> สั่งซื้อสินค้า </a>
                                 </h2>
                             </div>
@@ -97,7 +97,7 @@
                                     <tr>
                                         <td class="text-center"><?php echo $i; ?></td>
                                         <td><?php echo $list->stock_detail_id; ?></td>
-                                        <td><?php echo $list->stock_detail_total; ?></td>
+                                        <td><?php echo number_format($list->stock_detail_total,2); ?></td>
                                         <td class="text-center"> <?php echo $list->stock_detail_status; ?> </td>
                                         <td class="text-center"> <?php echo $list->stock_detail_status_buy; ?> </td>
                                         <td class="text-center">

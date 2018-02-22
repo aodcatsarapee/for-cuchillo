@@ -95,7 +95,7 @@
                             <tr>
                                 <td class="text-center"><?php echo $i; ?></td>
                                 <td><?php echo $list->stock_detail_id; ?></td>
-                                <td><?php echo $list->stock_detail_total; ?></td>
+                                <td><?php echo number_format($list->stock_detail_total,2); ?></td>
                                 <td class="text-center"> <?php echo $list->stock_detail_status; ?> </td>
                                 <td class="text-center"> <?php echo $list->stock_detail_status_buy; ?> </td>
                                 <td width="25%" class="text-center">

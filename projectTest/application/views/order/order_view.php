@@ -29,7 +29,7 @@
                     <div class="body" style="min-height: 600px;">
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-12 col-sm-12">
+                                <div class="col-md-10">
 
                                     <form action="<?php echo base_url('order/add'); ?>" method="POST" role="form">
                                         <p class="error" style="text-align: center;"></p>

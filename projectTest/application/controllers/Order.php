@@ -152,6 +152,7 @@ class Order extends CI_Controller
             $creditor = array(
                 'creditor_id' => 'รายจ่ายจากการสั่งซื้อสินค้า',
                 'partners_id' => $this->input->post('partners'),
+                'num_pay' => $this->input->post('payment'),
                 'tax' => $tax,
                 'price' => $total_all,
                 'total_all' => $total_creditor,
