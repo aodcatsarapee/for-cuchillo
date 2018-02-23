@@ -19,7 +19,7 @@
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
                                 <h2>สั่งซื้อสินค้า
-                                    <a href="<?php echo base_url() ?>/order" class=" btn btn-success"
+                                    <a href="<?php echo base_url() ?>order" class=" btn btn-success"
                                        style=" float: right;">
                                         กลับ </a>
                                 </h2>
@@ -35,7 +35,7 @@
                                         <p class="error" style="text-align: center;"></p>
 
                                         <table class="table table-responsive table-bordered  ">
-                                            <thead class="bg-success">
+                                            <thead class="bg-primary">
                                             <tr>
                                                 <th>รหัสสินค้า</th>
                                                 <th>ชื่อสินค้า</th>

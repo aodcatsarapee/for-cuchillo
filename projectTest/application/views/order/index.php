@@ -7,6 +7,7 @@
  */
 ?>
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <section class="content">
     <div class="container-fluid">
         <div class="block-header">
@@ -75,8 +76,8 @@
                         </div>
                     </div>
                     <div class="body" style="min-height: 600px;">
-                        <table class="table table-responsive table-bordered table-hover">
-                            <thead class="bg-success">
+                        <table class="table table-responsive table-bordered table-hover" id="data-table">
+                            <thead class="bg-primary">
                             <tr>
                                 <th width="10%" class="text-center">ลำดับ</th>
                                 <th>รหัสการสั้งซื้อ</th>
@@ -119,7 +120,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/index.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url(); ?><!--Frontend/js/index.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
@@ -134,6 +135,14 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap-select.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(function () {
+        $('#data-table').DataTable({});
+    })
+</script>
 
 </body>
 
