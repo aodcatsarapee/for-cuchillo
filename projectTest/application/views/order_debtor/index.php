@@ -38,7 +38,7 @@
                             </tr>
                             </thead>
                             <tbody>
-<!--                            --><?php
+<?php
                             $i=1;
                             foreach ($creditor as $list){
                                 $this->db->where('creditor_detail_date_pay ',NULL);
