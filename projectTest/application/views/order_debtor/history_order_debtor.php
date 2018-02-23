@@ -18,10 +18,7 @@
                     <div class="header">
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
-                                <h2>ชำระหนี้จากการสั่งซื้อสินค้า
-                                    <a href="<?php echo base_url() ?>/order_debtor" class=" btn btn-success"
-                                       style=" float: right;">
-                                        กลับ </a>
+                                <h2>ประวัติการชำระหนี้จากการสั่งซื้อสินค้า
 
                                 </h2>
                             </div>
@@ -32,55 +29,35 @@
                             <thead class="bg-primary">
                             <tr>
                                 <th width="10%" class="text-center">ลำดับ</th>
-                                <th class="text-center">งวดที่</th>
+                                <th>เจ้าหนี้</th>
+                                <th>ดอกเบี้ยจ่าย</th>
+                                <th class="text-center">ยอดสั้งซื้อ <br>( ไม่รวมดอกเบี้ยจ่าย )</th>
+                                <th class="text-center">ยอดสั้งซื้อทั้งหมด <br> (คงเหลือ)</th>
                                 <th class="text-center">สถานะการชำระ</th>
-                                <th class="text-center">จำนวนเงิน</th>
-                                <th class="text-center">วันที่ชำระ</th>
-
                                 <th class="text-center">จัดการ</th>
                             </tr>
                             </thead>
                             <tbody>
-                           <?php
+                            <!--                            --><?php
                             $i=1;
-                            $total_pay = 0 ;
-                            $total_all_pay = 0;
-                            foreach ($creditor_detail as $list){
-                                if($list->creditor_detail_status == 'ยังไม่ได้ชำระเงิน') {
-                                    $total_pay += $list->creditor_detail_total;
-                                }
-                                $total_all_pay +=$list->creditor_detail_total;
-
+                            foreach ($creditor as $list){
+                                $this->db->where('creditor_detail_date_pay ',NULL);
+                                $this->db->where('creditor_id',$list->creditor_id);
+                                $check_num = $this->db->get('creditor_detail')->num_rows();
+                                if($check_num == 0){
                                     ?>
                                     <tr>
                                         <td class="text-center"><?php echo $i; ?></td>
-                                        <td class="text-center"><?php echo $list->creditor_detail_num; ?></td>
-                                        <td class="text-center"> <?php echo $list->creditor_detail_status; ?> </td>
-                                        <td class="text-center"><?php echo number_format($list->creditor_detail_total,2); ?></td>
-                                        <td class="text-center"><?php if($list->creditor_detail_date_pay != '' ){  $date=date_create($list->creditor_detail_date_pay); echo date_format($date,"d/m/Y ") ; }else{ echo "-"; } ?></td>
+                                        <td><?php if($list->partners_name != '' ){echo $list->partners_name; }else{ echo "-"; } ?></td>
+                                        <td><?php echo number_format($list->tax,2); ?></td>
+                                        <td class="text-center"> <?php echo number_format($list->price,2); ?> </td>
+                                        <td class="text-center"> <?php echo number_format($list->total_all,2); ?> </td>
+                                        <td class="text-center"> <?php echo $list->creditor_status; ?> </td>
                                         <td width="25%" class="text-center">
-                                            <?php
-                                            if($list->creditor_detail_date_pay == NULL){
-                                                $dis="";
-                                            }else{
-                                                $dis="disabled";
-                                            }
-                                            ?>
-                                            <a href="<?php echo base_url()."order_debtor/pay_order_debtor_list/".$list->creditor_id.'/'.$list->creditor_detail_id.'/'.$list->creditor_detail_num.'/'.$list->creditor_detail_total; ?>" class="btn btn-success <?php echo  $dis; ?>"> ชำระเงิน</a>
+                                            <a target="_blank" href="<?php echo base_url()."order_debtor/print_order_debtor/".$list->creditor_id; ?>" class="btn btn-danger "> พิพม์ใบชำระหนี้</a>
                                         </td>
                                     </tr>
-                                    <?php $i++;  }?>
-
-                            <tr>
-                                <td colspan="3" class="text-center"> <b>ยอดค้างชำระ</b> </td>
-                                <td class="text-center"> <?php echo  number_format($total_pay,2); ?> </td>
-                                <td  class="text-center"><b>ชำระเเล้ว</b> </td>
-                                <td class="text-center">
-                                    <?php
-
-                                    echo  number_format(($total_all_pay - $total_pay),2); ?>
-                                </td>
-                            </tr>
+                                    <?php $i++; } }?>
                             </tbody>
                         </table>
                     </div>

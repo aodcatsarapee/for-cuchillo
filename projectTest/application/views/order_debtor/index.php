@@ -32,7 +32,7 @@
                                 <th>เจ้าหนี้</th>
                                 <th>ดอกเบี้ยจ่าย</th>
                                 <th class="text-center">ยอดสั้งซื้อ <br>( ไม่รวมดอกเบี้ยจ่าย )</th>
-                                <th>ยอดสั้งซื้อทั้งหมด</th>
+                                <th class="text-center">ยอดสั้งซื้อทั้งหมด <br> (คงเหลือ)</th>
                                 <th class="text-center">สถานะการชำระ</th>
                                 <th class="text-center">จัดการ</th>
                             </tr>
@@ -41,7 +41,10 @@
 <!--                            --><?php
                             $i=1;
                             foreach ($creditor as $list){
-                                if($list->creditor_status != 'ชำระเงินทั้งหมดเเล้ว'){
+                                $this->db->where('creditor_detail_date_pay ',NULL);
+                                $this->db->where('creditor_id',$list->creditor_id);
+                                $check_num = $this->db->get('creditor_detail')->num_rows();
+                                if($check_num != 0){
                                     ?>
                                     <tr>
                                         <td class="text-center"><?php echo $i; ?></td>
@@ -52,7 +55,7 @@
                                         <td class="text-center"> <?php echo $list->creditor_status; ?> </td>
                                         <td width="25%" class="text-center">
                                             <a href="<?php echo base_url()."order_debtor/pay_order_debtor/".$list->creditor_id; ?>" class="btn btn-success  "> ชำระเงิน</a>
-                                            <a target="_blank" href="<?php echo base_url()."order/print_order/".$list->creditor_id; ?>" class="btn btn-danger "> พิพม์ใบชำระหนี้</a>
+                                            <a target="_blank" href="<?php echo base_url()."order_debtor/print_order_debtor/".$list->creditor_id; ?>" class="btn btn-danger "> พิพม์ใบชำระหนี้</a>
                                         </td>
                                     </tr>
                                     <?php $i++; } }?>
