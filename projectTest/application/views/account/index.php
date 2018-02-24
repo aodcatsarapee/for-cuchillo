@@ -49,6 +49,7 @@
                                 <th class="text-center">รายรับ</th>
                                 <th class="text-center">รายจ่าย</th>
                                 <th class="text-center">สถานะ</th>
+                                <th class="text-center">ว/ด/ป</th>
                                 <th class="text-center">จัดการ</th>
                             </tr>
                             </thead>
@@ -66,6 +67,17 @@
                                     <td class="text-center"> <?php echo number_format($list->account_income, 2); ?> </td>
                                     <td class="text-center"> <?php echo number_format($list->account_expenses, 2); ?> </td>
                                     <td class="text-center"> <?php echo $list->account_type; ?> </td>
+                                    <td class="text-center">
+
+                                        <?php if ($list->account_datasave != '') {
+                                            $date = date_create($list->account_datasave);
+                                            echo date_format($date, "d/m/Y ");
+                                        } else {
+                                            echo "-";
+                                        } ?>
+
+
+                                    </td>
                                     <td width="25%" class="text-center">
                                         <a href="javascript:void(0)" class="btn btn-warning  "
                                            onclick="update(<?php echo $list->account_id; ?>)"> เเก้ไข </a>
@@ -255,6 +267,7 @@
             }
         });
     })
+
     function update(id) {
         $.ajax({
             url: "account/update_account/" + id,
@@ -277,6 +290,7 @@
         });
 
     }
+
     function del(id) {
         $('#check_del').click(function () {
             $.ajax({
