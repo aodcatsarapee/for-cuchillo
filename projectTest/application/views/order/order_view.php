@@ -120,7 +120,7 @@
 
                                         <div class="col-md-2 ">
                                             <select name="partners" id="" class="form-control"
-                                                    style="width: 150px; margin-right: 10px;">
+                                                    style="width: 150px; margin-right: 10px;" required>
                                                 <option value="">เลือกร้าน</option>
                                                 <?php foreach ($partners as $par) { ?>
 
