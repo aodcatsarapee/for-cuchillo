@@ -31,6 +31,7 @@
     <tr>
         <th width="10%" class="text-center">ลำดับ</th>
         <th class="text-center">งวดที่</th>
+        <th class="text-center">วันที่ต้องชำระ</th>
         <th class="text-center">สถานะการชำระ</th>
         <th class="text-center">จำนวนเงิน</th>
         <th class="text-center">วันที่ชำระ</th>
@@ -55,6 +56,7 @@
         <tr>
             <td style="text-align: center;"><?php echo $i; ?></td>
             <td style="text-align: center;"><?php echo $list->creditor_detail_num; ?></td>
+            <td class="text-center" style="text-align: center"><?php if($list->creditor_detail_date_at_pay != '' ){  $date=date_create($list->creditor_detail_date_at_pay); echo date_format($date,"d/m/Y ") ; }else{ echo "-"; } ?></td>
             <td style="text-align: center" > <?php echo $list->creditor_detail_status; ?> </td>
             <td style="text-align: center" class="text-center"><?php echo number_format($list->creditor_detail_total,2); ?></td>
             <td style="text-align: center" class="text-center"><?php if($list->creditor_detail_date_pay != '' ){  $date=date_create($list->creditor_detail_date_pay); echo date_format($date,"d/m/Y ") ; }else{ echo "-"; } ?></td>

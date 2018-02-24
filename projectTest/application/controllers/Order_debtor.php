@@ -99,4 +99,26 @@ class Order_debtor extends CI_Controller
         return $text;
     }
 
+    public function update_debtor($creditor_id,$creditor_detail_id)
+    {
+        $this->db->where('creditor_id', $creditor_id);
+        $this->db->where('creditor_detail_id', $creditor_detail_id);
+        $data['creditor_detail'] = $this->db->get('creditor_detail')->row();
+
+        echo json_encode($data);
+    }
+
+    public function edit(){
+
+        $creditor_detail =array(
+            'creditor_detail_date_at_pay'=> $this->input->post('creditor_detail_date_at_pay')
+        );
+
+        $this->db->where('creditor_id', $this->input->post('creditor_id'));
+        $this->db->where('creditor_detail_id', $this->input->post('creditor_detail_id'));
+        $this->db->update('creditor_detail',$creditor_detail);
+
+        redirect(base_url().'order_debtor/pay_order_debtor/'.$this->input->post('creditor_id'));
+    }
+
 }
