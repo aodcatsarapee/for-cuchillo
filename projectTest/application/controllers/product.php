@@ -276,7 +276,8 @@ class product extends CI_Controller{
       "cate_name"=>$this->input->post("name_cate")
     );
     $this->db->insert("categories",$data);
-    echo json_encode($data);
+    //echo json_encode($data);
+    redirect('product/categories');
   }
 
   public function form_update_cate(){
@@ -286,19 +287,22 @@ class product extends CI_Controller{
   }
 
   public function cate_update(){
-    $id=$this->input->post("up_id");
+    $id=$this->input->post("Edit_id_cate");
     $data=array(
-      "cate_name"=>$this->input->post("up_name")
+      "cate_name"=>$this->input->post("Edit_name_cate")
       );
 
     $this->db->where("cate_id",$id)->update("categories",$data);
-    echo json_encode($data);
+    redirect('product/categories');
   }
 
-  public function delete_cate($_id){
-      $this->db->delete("categories",array('cate_id'=>$_id));
+  public function delete_cate(){
+    $user_id=$this->input->post('Del_id');
+    $data=$this->db->delete("categories",array('cate_id'=>$user_id));
+    echo json_encode($data);
+      /*$this->db->delete("categories",array('cate_id'=>$_id));
       redirect("product/categories","refesh");
-      exit();
+      exit();*/
   }
 
   public function band(){
@@ -314,7 +318,7 @@ class product extends CI_Controller{
       "band_name"=>$this->input->post("name_band")
     );
     $this->db->insert("band",$data);
-    echo json_encode($data);
+    redirect("product/band");
   }
 
   public function form_update_band(){
@@ -333,10 +337,10 @@ class product extends CI_Controller{
     echo json_encode($data);
   }
 
-  public function delete_band($_id){
-      $this->db->delete("band",array('band_id'=>$_id));
-      redirect("product/band","refesh");
-      exit();
+  public function delete_band(){
+      $user_id=$this->input->post('Del_id');
+      $data=$this->db->delete("band",array('band_id'=>$user_id));
+      echo json_encode($data);
   }
 
 }

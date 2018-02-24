@@ -87,19 +87,19 @@
         <div class="modal-body">
 
           <?php
-          echo form_open();
+          echo form_open('product/cate_insert');
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>ชื่อประเภทสินค้า : </label> <input type='text' id='name_cate' class='form-control'>";
+                echo "<label>ชื่อประเภทสินค้า : </label> <input type='text' id='name_cate' name='name_cate' class='form-control' required>";
               echo "</div>";
             echo "</div>";
-          echo form_close();
           ?>
 
           <span style='padding-left:400px;'></span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" id='saveCate'>SAVE</button>
+          <input type='submit' class="btn btn-success" value='SAVE'>
+          <?php echo form_close(); ?>
         </div>
       </div>
 
@@ -120,25 +120,26 @@
         <div class="modal-body">
 
           <?php
-          echo form_open();  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
+          echo form_open('product/cate_update');  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>รหัสประเภทสินค้า : </label> <input type='text' id='Edit_id_cate' class='form-control' disabled>";
+                echo "<label>รหัสประเภทสินค้า : </label> <input type='text' id='Edit_id_cate' name='Edit_id_cate' class='form-control' readonly>";
               echo "</div>";
             echo "</div>";
 
-            echo "<div class='form-group form-float'>";
+            echo "<div class='input-group'>";
               echo "<div class='form-line'>";
-                echo "<label>ชื่อประเภทสินค้า : </label> <input type='text' id='Edit_name_cate' class='form-control'>";
+                echo "<label>ชื่อประเภทสินค้า : </label> <input type='text' id='Edit_name_cate' name='Edit_name_cate' class='form-control' required>";
               echo "</div>";
             echo "</div>";
-          echo form_close();
+
           ?>
 
           <span style='padding-left:400px;'></span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" id='updateCate'>UPDATE</button>
+          <input type='submit' class="btn btn-success" value='UPDATE'>
+    <?php echo form_close(); ?>
         </div>
       </div>
 
@@ -175,7 +176,7 @@
 $(document).ready(function(){
     $('#example').DataTable();
 
-    $("#saveCate").click(function (){
+    $("#saveCate2").click(function (){
         var name_cate = $("#name_cate").val();
         $.ajax({
           url: "<?php echo base_url() ?>product/cate_insert",
@@ -197,7 +198,7 @@ $(document).ready(function(){
         });
     })
 
-    $("#updateCate").click(function (){
+    $("#updateCat111e").click(function (){
         var up_id = $("#Edit_id_cate").val();
         var up_name = $("#Edit_name_cate").val();
         $.ajax({

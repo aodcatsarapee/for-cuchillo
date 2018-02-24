@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <ul class="header-dropdown m-r--5">
-                          <a href='javascript:void(0);' onclick="EditEmp(<?php echo $result['product_id']; ?>)" style='margin-right:20px;' class="btn btn-default btn-lg waves-effect waves-light-blue">แก้ไข </a>
+                          <!--<a href='javascript:void(0);' onclick="EditEmp(<?php echo $result['product_id']; ?>)" style='margin-right:20px;' class="btn btn-default btn-lg waves-effect waves-light-blue">แก้ไข </a>-->
                           <?php
                             $back=image_asset('icon/back.png');
                             echo "<a href=",base_url(),"product class='btn btn-primary btn-lg waves-effect waves-light'>BACK </a>";

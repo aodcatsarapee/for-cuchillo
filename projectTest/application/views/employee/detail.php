@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
 <style type='text/css'>
   .warring{background-color:#FFFF99;color:red;}
   .thcenter th{
@@ -104,13 +105,13 @@
 
                             echo "<div class='row clearfix'>";
                               echo "<div class='form-line'>";
-                                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' value=",$result['emp_idcard']," class='form-control' disabled>";
+                                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' value=",$result['emp_idcard']," class='form-control _number' disabled>";
                               echo "</div>";
                             echo "</div>";
 
                             echo "<div class='row clearfix'>";
                               echo "<div class='form-line'>";
-                                echo "<label>อายุ : </label> <input type='text' value=",$result['emp_age']," class='form-control' disabled>";
+                                echo "<label>อายุ : </label> <input type='text' value=",$result['emp_age']," class='form-control _number' disabled>";
                               echo "</div>";
                             echo "</div>";
 
@@ -123,7 +124,7 @@
 
                             echo "<div class='row clearfix'>";
                               echo "<div class='form-line'>";
-                                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' value=",$result['emp_tel']," class='form-control' disabled>";
+                                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' value=",$result['emp_tel']," class='form-control _number' disabled>";
                               echo "</div>";
                             echo "</div>";
                             echo form_close();
@@ -143,28 +144,29 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header" style="background-color:#FFFF99;">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="text-align:center;">แก้ไขข้อมูลส่วนตัว</h4>
+        <div class="modal-header" style="background-color:#336699;">
+          <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+          <h4 class="modal-title" style="text-align:center;color:white;">แก้ไขข้อมูลส่วนตัว</h4>
         </div>
         <div class="modal-body">
 
           <?php
           echo form_open_multipart('employee/update_byEmp/');  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
               echo "<input type='hidden' id='edit_userid' name='edit_userid' class='form-control'>";
-              echo "<label>Username : </label> <input type='text' id='edit_username' name='edit_username' class='form-control' required>";
+              echo "<input type='hidden' id='edit_usernameV2' name='edit_usernameV2' class='form-control _number' required>";
+              echo "<label>Username : </label> <input type='text' id='edit_username' name='edit_username' readyonly class='form-control _number' required>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
-              echo "<label>Password : </label> <input type='text' id='edit_password' name='edit_password' class='form-control' required>";
+              echo "<label>Password : </label> <input type='text' id='edit_password' name='edit_password' class='form-control' maxlength='10' required>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group'>";
+          echo "<div class='input-group'>";
             echo "<label>คำนำหน้า : </label>";
             echo "<input type='radio' id='edit_prename1' name='edit_prename' class='with-gap' value='นาย'>";
             echo "<label for='prename'>นาย</label>";
@@ -176,40 +178,40 @@
             echo "<label for='prename2'>นางสาว</label>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
               echo "<label>ชื่อ : </label> <input type='text' id='edit_fristname' name='edit_fristname' class='form-control' required>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
               echo "<label>นามสกุล : </label> <input type='text' id='edit_lastname' name='edit_lastname' class='form-control' required>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
-              echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='edit_id_card' name='edit_id_card' class='form-control' maxlength='13' required>";
+              echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='edit_id_card' name='edit_id_card' class='form-control _number' maxlength='13' required>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
-              echo "<label>อายุ : </label> <input type='text' id='edit_age' name='edit_age' class='form-control'>";
+              echo "<label>อายุ : </label> <input type='text' id='edit_age' name='edit_age' class='form-control _number'>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
               echo "<label for='comment'>ที่อยู่:</label>";
               echo "<textarea class='form-control' rows='5' id='edit_address' name='edit_address'></textarea>";
             echo "</div>";
           echo "</div>";
 
-          echo "<div class='form-group form-float'>";
+          echo "<div class='input-group'>";
             echo "<div class='form-line'>";
-              echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='edit_tel' name='edit_tel' class='form-control' maxlength='10'>";
+              echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='edit_tel' name='edit_tel' class='form-control _number' maxlength='10'>";
             echo "</div>";
           echo "</div>";
 
@@ -287,20 +289,21 @@
       success: function(data){
           $("#edit_userid").val(data.user_id);
           $("#edit_username").click();
+          $("#edit_usernameV2").val(data.user_name);
           $("#edit_username").val(data.user_name);
           $("#edit_password").val(data.user_password);
           var Eprename = data.emp_prename;
           if(Eprename == "นาย"){
-            $("#edit_prename1").prop("checked", true);
-            $("#edit_prename2").prop("checked", false);
-            $("#edit_prename3").prop("checked", false);
+            //$("#edit_prename1").prop("checked", true);
+            //$("#edit_prename2").prop("checked", false);
+            //$("#edit_prename3").prop("checked", false);
           }else if(Eprename == "นาง"){
-            $("#edit_prename1").prop("checked", false);
-            $("#edit_prename2").prop("checked", true);
-            $("#edit_prename3").prop("checked", false);
+            //$("#edit_prename1").prop("checked", false);
+            //$("#edit_prename2").prop("checked", true);
+            //$("#edit_prename3").prop("checked", false);
           }else{
-            $("#edit_prename1").prop("checked", false);
-            $("#edit_prename2").prop("checked", false)
+            //$("#edit_prename1").prop("checked", false);
+            //$("#edit_prename2").prop("checked", false)
             $("#edit_prename3").prop("checked", true);
           }
 

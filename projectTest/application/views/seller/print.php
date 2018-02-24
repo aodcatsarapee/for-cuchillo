@@ -46,8 +46,8 @@ input{
         <tr>
         <td style="text-align:center;">qty</td>
         <td style="text-align:left;">ชื่อ</td>
-        <td style="text-align:center;">ราคา</td>
-        <td style="text-align:center;">รวม</td>
+        <td style="text-align:right;">ราคา</td>
+        <td style="text-align:right;">รวม</td>
       </tr>
 <?php
     foreach($product_sell as $pro_sell){
@@ -57,7 +57,7 @@ input{
         <tr>
             <td style="text-align:left;"><?php echo $pro_sell['sell_detail_amount']; ?></td>
             <td><?php echo $pro_sell['sell_detail_name']; ?></td>
-            <td style="text-align:center;"><?php echo number_format($product_price); ?></td>
+            <td style="text-align:right;"><?php echo number_format($product_price); ?></td>
             <td style="text-align:right;"><?php echo number_format($total); ?></td>
 						<td></td>
 						<td></td>
@@ -74,17 +74,17 @@ input{
     <table style="font-size:15px;">
         <tr>
             <td>รวมราคา</td>
-            <td><?php echo number_format($product['sell_total'], 2, '.', ',') ?></td>
+            <td style="text-align:right;"><?php echo number_format($product['sell_total'], 2, '.', ',') ?></td>
             <td>บาท</td>
         </tr>
         <tr>
             <td>เงินสดรับ</td>
-            <td><?php echo number_format($product['sell_receive'], 2, '.', ',') ?></td>
+            <td style="text-align:right;"><?php echo number_format($product['sell_receive'], 2, '.', ',') ?></td>
             <td>บาท</td>
         </tr>
         <tr>
             <td>เงินถอน</td>
-            <td><?php echo number_format($product['sell_change'], 2, '.', ',')  ?></td>
+            <td style="text-align:right;"><?php echo number_format($product['sell_change'], 2, '.', ',')  ?></td>
             <td>บาท</td>
         </tr>
     </table>

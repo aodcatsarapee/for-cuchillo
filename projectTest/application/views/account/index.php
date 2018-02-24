@@ -245,7 +245,9 @@
 
 <script>
     $(function () {
-        $('#data-table').DataTable({});
+        $('#data-table').DataTable({
+          "order": [[ 0, "desc" ]]
+        });
         $("#select-date_account").submit(function (event) {
             event.preventDefault();
 
@@ -308,5 +310,3 @@
 </body>
 
 </html>
-
-
