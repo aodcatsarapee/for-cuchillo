@@ -7,6 +7,11 @@
  */
 ?>
 
+<?php require("modal/modal-select-date.php") ?>
+
+<?php require("modal/modal-alert-select-date.php") ?>
+
+<?php require("modal/modal-alert-error-date.php") ?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <section class="content">
     <div class="container-fluid">
@@ -20,9 +25,16 @@
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
                                 <h2>รายรับ - รายจ่าย
+                                    <button type="button" class="btn btn-success " id="insert" data-toggle="modal"
+                                            data-target="#modal-select-date-account"
+                                            style="float: right; margin-left: 20px;">
+                                        <spen class="glyphicon glyphicon-plus"></spen>
+                                        เลือกวันที่
+                                    </button>
                                     <button class="btn btn-success " style="float: right;" data-toggle='modal'
                                             data-target='#addaccount'>เพิ่มรายรับ - รายจ่าย
                                     </button>
+
 
                                 </h2>
                             </div>
@@ -43,7 +55,7 @@
                             <tbody>
                             <?php
                             $i = 1;
-                            $this->db->order_by('account_id','DESC');
+                            $this->db->order_by('account_id', 'DESC');
                             $account = $this->db->get('account')->result();
                             foreach ($account as $list) {
 
@@ -58,7 +70,7 @@
                                         <a href="javascript:void(0)" class="btn btn-warning  "
                                            onclick="update(<?php echo $list->account_id; ?>)"> เเก้ไข </a>
 
-                                        <button class="btn btn-danger "  data-toggle='modal'
+                                        <button class="btn btn-danger " data-toggle='modal'
                                                 data-target='#delete' onclick="del(<?php echo $list->account_id ?>)"> ลบ
                                         </button>
 
@@ -144,7 +156,7 @@
                         <label class="col-sm-3 control-label">ประเภท :</label>
                         <div class="col-sm-7">
                             <input type="text" name="account_type_edit" id="test" value="" class="form-control"
-                                   style="background-color: #E9E9E9;"  readonly>
+                                   style="background-color: #E9E9E9;" readonly>
                             <input type="hidden" name="account_id" id="account_id" value="">
                         </div>
                     </div>
@@ -177,22 +189,25 @@
 
 <div class="modal fade" id="delete" role="dialog">
     <div class="modal-dialog ">
-    <div class="modal-dialog ">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #FB483A;">
-                <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-                <h4 class="modal-title" style="color:white;">ลบข้อมูลรายรับ - รายจ่าย</h4>
-            </div>
-            <div class="modal-body">
+        <div class="modal-dialog ">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #FB483A;">
+                    <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+                    <h4 class="modal-title" style="color:white;">ลบข้อมูลรายรับ - รายจ่าย</h4>
+                </div>
+                <div class="modal-body">
                     <h2 class="text-center"> ต้องการลบข้อมูลใช่หรือไม่? </h2>
-                <br>
-                <br>
-                <div class="text-center"><button class="btn btn-danger " id="check_del"> ลบข้อมูล</button> <button type="button"  class="  btn btn-default" data-dismiss="modal">ยกเลิก</button></div>
+                    <br>
+                    <br>
+                    <div class="text-center">
+                        <button class="btn btn-danger " id="check_del"> ลบข้อมูล</button>
+                        <button type="button" class="  btn btn-default" data-dismiss="modal">ยกเลิก</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.min.js"></script>
@@ -219,6 +234,26 @@
 <script>
     $(function () {
         $('#data-table').DataTable({});
+        $("#select-date_account").submit(function (event) {
+            event.preventDefault();
+
+            if ($("#date_start").val() == "" || $("#date_end").val() == "") {
+
+                $("#alert_select-date").modal('show');
+
+            } else {
+                if ($("#date_start").val() > $("#date_end").val()) {
+
+                    $("#alert-error-date").modal('show');
+
+                } else {
+                    var id = $("#id").val();
+                    var date_start = $("#date_start").val();
+                    var date_end = $("#date_end").val();
+                    window.open('Account/Account_all_1?id=' + id + '&date_start=' + date_start + '&date_end=' + date_end + '', '_blank')
+                }
+            }
+        });
     })
     function update(id) {
         $.ajax({
@@ -229,9 +264,9 @@
                 $('#editaccount').modal('show');
 
                 $("#account_detail_edit").val(data.account.account_detail);
-                $("#test").attr('value' ,data.account.account_type);
+                $("#test").attr('value', data.account.account_type);
 
-                $("#account_id").attr('value' ,data.account.account_id);
+                $("#account_id").attr('value', data.account.account_id);
 
                 if (data.account.account_type == 'รายรับ') {
                     $("#money_edit").attr('value', data.account.account_income);
@@ -242,7 +277,6 @@
         });
 
     }
-
     function del(id) {
         $('#check_del').click(function () {
             $.ajax({
