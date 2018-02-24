@@ -65,12 +65,12 @@
         <?php $i++;  }?>
 
     <tr>
-        <td colspan="3" style="text-align: center";> <b>ยอดค้างชำระ</b> </td>
+        <td colspan="4" style="text-align: center";> <b>ยอดค้างชำระ</b> </td>
         <td style="text-align: center;"> <?php echo  number_format($total_pay,2); ?> </td>
         <td style="text-align: center">-</td>
     </tr>
     <tr>
-        <td colspan="3" style="text-align: center";><b>ชำระเเล้ว</b> </td>
+        <td colspan="4" style="text-align: center";><b>ชำระเเล้ว</b> </td>
         <td style="text-align: center";>
 
             <?php

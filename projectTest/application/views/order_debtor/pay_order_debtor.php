@@ -19,7 +19,7 @@
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-12">
                                 <h2>ชำระหนี้จากการสั่งซื้อสินค้า
-                                    <a href="<?php echo base_url() ?>/order_debtor" class=" btn btn-success"
+                                    <a href="<?php echo base_url() ?>order_debtor" class=" btn btn-success"
                                        style=" float: right;">
                                         กลับ </a>
 
