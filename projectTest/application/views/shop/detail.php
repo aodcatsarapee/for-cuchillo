@@ -198,6 +198,8 @@ body{
 				        <div class="single_right">
 				        	<h3><?php echo $product['product_name']; ?></h3>
 				        	<p class="m_10"></p>
+                  <h4 class="m_12">จำนวนสินค้า</h4>
+                  <p class="m_10"><?php echo $product['product_quantity']; ?> ชิ้น</p>
 								  <h4 class="m_12">แบรนด์สินค้า</h4>
                   <p class="m_10"><?php echo $product['band_name']; ?></p>
 								<h3>ประเภทสินค้า</h3>
@@ -215,9 +217,15 @@ body{
 				<div class="col-md-3">
 				  <div class="box-info-product">
 					<p class="price2"><?php echo number_format($product['product_price']);?> บาท</p>
-							<a href="<?php echo base_url(); ?>shop/add/<?php echo $product['product_id']; ?>"><button type="submit" name="Submit" class="exclusive">
-							   <span>Add to cart</span>
-							</button></a>
+              <?php if($product['product_quantity'] < 1){
+                echo "<a ><button type='submit' name='Submit' class='exclusive'>
+                   <span>Out Of Stock</span>
+                </button></a>";
+             }else{
+               echo "<a href=",base_url(),"shop/add/".$product['product_id'],"><button type='submit' name='Submit' class='exclusive'>
+                  <span>Add to cart</span>
+               </button></a>";
+             } ?>
 				   </div>
 			   </div>
 			</div>

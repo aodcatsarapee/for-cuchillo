@@ -16,6 +16,11 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
+  <?php require("modal/modal-select-date.php") ?>
+
+  <?php require("modal/modal-alert-select-date.php") ?>
+
+  <?php require("modal/modal-alert-error-date.php") ?>
 <section class="content">
     <div class="container-fluid">
         <!-- CPU Usage -->
@@ -24,8 +29,14 @@
                 <div class="card">
                     <div class="header">
                         <div class="row clearfix">
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-12">
                                 <h2>ประวัติรายการสินค้าที่ลูกค้าสั่ง (ออนไลน์)</h2>
+                                <button type="button" class="btn btn-success " id="insert" data-toggle="modal"
+                                        data-target="#modal-select-date-account"
+                                        style="float: right;">
+                                    <spen class="glyphicon glyphicon-plus"></spen>
+                                    PRINT
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -50,6 +61,10 @@
                       </form>
                        <!-- Form code ends -->
                        <br>
+                       <div class="alert alert-info" style='width:400px;'>
+                          <strong>วันที่เริ่มต้น : </strong> <?php echo $Start; ?><strong> วันที่สิ้นสุด : </strong> <?php echo $End; ?>
+                      </div>
+                       <br>
                       <table id="example" class="display" cellspacing="0" width="100%">
                           <thead>
                               <tr>
@@ -72,7 +87,7 @@
                                   echo "<td>",$pro_sell['sell_status'],"</td>";
                                   echo "<td>",$pro_sell['emp_name'],"</td>";
                                   echo "<td>",$pro_sell['sell_date'],"</td>";
-                                  echo "<td><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#showHis' id='idShowHistory' onclick='showHistoryAjax(",$pro_sell['sell_order_id'],")'>",$show,"</button></td>";
+                                  echo "<td><button style='margin-right:20px;' class='btn bg-light-blue waves-effect' onclick='showHistoryAjax(",$pro_sell['sell_order_id'],")' data-toggle='modal' data-target='#showHis'>DETAIL</button></td>";
                                 echo "</tr>";
                               }
                             ?>
@@ -89,10 +104,21 @@
                             <div class="modal-content">
                               <div class="modal-header" style="background-color:#336699;">
                                 <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-                                <h4 class="modal-title" style="color:white;">ข้อมูลขายสินค้า</h4>
-                                <!--<button type="button" style="margin-left:500px;" class="btn btn-default" id='mdCloseCus' data-dismiss="modal">Close</button>-->
+                                <h4 class="modal-title" style="text-align:center;color:white;">รายละเอียดสินค้า</h4>
                               </div>
-                              <div class="modal-body" id='data'>
+                              <div class="modal-body">
+                                <table class='table table-striped table-bordered' cellspacing='0' width='100%'>
+                                  </head>
+                                  <tr>
+                                    <th>ชื่อสินค้า</th>
+                                    <th>ราคาต่อชิ้น</th>
+                                    <th>จำนวน</th>
+                                    <th>ราคารวม</th>
+                                  </tr>
+                                  </thead>
+                                  <tbody id='data'>
+                                  </tbody>
+                                </table>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-success" id='mdCloseCus' data-dismiss="modal">CLOSE</button>
@@ -112,7 +138,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <!--<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
@@ -147,12 +173,14 @@ function showHistoryAjax (idShow){
       },
       dataType: 'json',
       success: function(data){
+        var sumtotal = 0;
         $.each(data,function( key, value ){
-          $("#data").append("ชื่อสินค้า : ",value.sell_detail_name," : ");
-          $("#data").append(" จำนวน ",(addCommas(value.sell_detail_amount)),"  * ");
-          $("#data").append(" ",(addCommas(value.sell_detail_price))," :: ");
-          $("#data").append(" รวมราคา ",addCommas((value.sell_detail_price * value.sell_detail_amount)),"</p>");
-        })
+            var total = value.sell_detail_amount * value.sell_detail_price;
+            sumtotal = sumtotal + total;
+            $("#data").append('<tr><td>' + value.sell_detail_name + '</td><td>' + addCommas(parseFloat(value.sell_detail_price).toFixed(2)) + ' บาท</td><td>' + value.sell_detail_amount + ' ชิ้น</td><td>' + addCommas((total).toFixed(2)) + ' บาท</td></tr>');
+          })
+            $("#data").append('<tr><td id=sumtotal colspan=4>รวมทั้งหมด ' + addCommas((sumtotal).toFixed(2)) + ' บาท</td></tr>');
+            $("#sumtotal").css('text-align','right');
       },
       error: function(){
         alert('Error....');
@@ -162,10 +190,33 @@ function showHistoryAjax (idShow){
 }
 
 $(document).ready(function(){
-    $('#example').DataTable();
+  $('#example').DataTable( {
+    "order": [[ 0, "desc" ]]
+  } );
 
-    $(".modal").on("hidden.bs.modal", function(){
-      $(".modal-body").html("");
+    $("#showHis").on("hidden.bs.modal", function(){
+      $("#showHis").find("#data").html("");
+    });
+
+    $("#select-date_account").submit(function (event) {
+        event.preventDefault();
+
+        if ($("#date_start").val() == "" || $("#date_end").val() == "") {
+
+            $("#alert_select-date").modal('show');
+
+        } else {
+            if ($("#date_start").val() > $("#date_end").val()) {
+
+                $("#alert-error-date").modal('show');
+
+            } else {
+                var id = $("#id").val();
+                var date_start = $("#date_start").val();
+                var date_end = $("#date_end").val();
+                window.open('sell_detail_history_online?id=' + id + '&date_start=' + date_start + '&date_end=' + date_end + '', '_blank')
+            }
+        }
     });
 
     /*$("#submit").click(function (){

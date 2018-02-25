@@ -352,9 +352,14 @@
                     echo "<li>";
                         echo "<a href='javascript:void(0);' class='menu-toggle'>";
                             echo "<i class='material-icons'>perm_media</i>";
-                            echo "<span>จัดการข้อมูลลูกค้าขายเชื่อ</span>";
+                            echo "<span>จัดการข้อมูลลูกค้า</span>";
                         echo "</a>";
                         echo "<ul class='ml-menu'>";
+                            echo "<li>";
+                                echo "<a href=",base_url(),"sell/approve>";
+                                  echo "<span>ข้อมูลลูกค้าขายสด (ออนไลน์)</span>";
+                                echo "</a>";
+                            echo "</li>";
                             echo "<li>";
                                 echo "<a href=",base_url(),"debtor>";
                                   echo "<span>ข้อมูลลูกค้าขายเชื่อ (แจกแจง)</span>";

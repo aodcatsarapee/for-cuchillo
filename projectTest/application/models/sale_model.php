@@ -104,6 +104,12 @@ class sale_model extends CI_Model{
     return $rs;
   }
 
+  public function check_login_member($username,$password){
+    $rs=$this->db->where("member_username",$username)->where("member_password",$password)->get('member')->row_array();
+    return $rs;
+  }
+
+
 }
 
 

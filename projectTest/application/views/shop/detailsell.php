@@ -153,7 +153,7 @@ body{
    </div>
     </div>
 
-      <div class="footer" style="height:100px;position: absolute;width:100%;">
+      <div class="footer" style="height:100px;bottom:0px;position: fixed;width:100%;">
   			<div class="container">
   				<div class="row">
 

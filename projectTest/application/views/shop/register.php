@@ -28,8 +28,9 @@ body{
 </style>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/shop/jquery.min.js"></script>
+<script src="<?php echo base_url();?>Frontend/js/jquery.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
+<script src="<?php echo base_url();?>Frontend/js/bootstrap.js"></script>
 <script type="text/javascript">
         $(document).ready(function() {
             $(".dropdown img.flag").addClass("flagvisibility");
@@ -143,6 +144,12 @@ body{
 	  </div>
      <div class="main">
       <div class="shop_top">
+        <?php if(@$error){ ?>
+        <div class="alert alert-danger">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <h4 style="text-align: center;"><strong>ไม่สามารถเข้าสู่ระบบได้ เนื่องจาก Username หรือ Password ไม่ถูกต้อง</strong>! </h4>
+        </div>
+      <?php } ?>
 	     <div class="container">
 						<?php echo form_open('shop/add_register');?>
 								<div class="register-top-grid" style="float:left;width:600px;">
@@ -176,19 +183,20 @@ body{
 
 								</div>
             </form>
+
             <?php echo form_open('shop/login'); ?>
 								<div class="register-bottom-grid" style="float:right;">
 										<h3>สำหรับสมาชิก</h3>
 										<div>
 											<span>Username<label>*</label></span>
-											<input type="text" name='username'>
+											<input type="text" id='user_name' name='username'>
 										</div>
 										<div>
 											<span>Password<label>*</label></span>
-											<input type="text" name='password'>
+											<input type="text" id='user_password' name='password'>
 										</div>
 										<div>
-                      <input type="submit" value="เข้าสู่ระบบ">
+                      <input type="submit" id='Login' value="เข้าสู่ระบบ">
                     </div>
 								</div>
             <?php echo form_close(); ?>
@@ -225,10 +233,44 @@ $(document).ready(function(){
           $("#register").prop('disabled','true');
         }else{
           $("#re_username").removeClass('text-danger');
+          $("#register").prop('disabled',false);
         }
       }
     });
   });
+
+  $("#Loginddd").click(function(){
+    var user_name = $("#user_name").val();
+    var password = $("#user_password").val();
+    $.ajax({
+      url: "<?php echo base_url() ?>shop/login",
+      type: "POST",
+      data: {
+        "username" : user_name,
+        "password" : password
+      },
+      dataType: 'json',
+      success: function(data){
+          swal("เข้าสู่ระบบสำเร็จ", "", "success")
+          .then((value) => {
+            window.location = "<?php echo base_url(); ?>shop/product";
+          });
+      },
+      error: function(){
+        swal({
+          title: "ไม่สามารถเข้าใช้งานได้",
+          text: "Username หรือ Password ไม่ถูกต้องกรุณาลองอีกครั้ง",
+          icon: "error",
+          button: "Ok !",
+        })
+        .then((value) => {
+          alert("test");
+          //window.location = "<?php echo base_url(); ?>shop/register";
+        });
+      }
+    });
+  });
+
 });
 
 /*$("#register").click(function(){

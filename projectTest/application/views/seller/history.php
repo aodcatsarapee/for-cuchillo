@@ -16,6 +16,11 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
+  <?php require("modal/modal-select-date.php") ?>
+
+  <?php require("modal/modal-alert-select-date.php") ?>
+
+  <?php require("modal/modal-alert-error-date.php") ?>
 <section class="content">
     <div class="container-fluid">
         <!-- CPU Usage -->
@@ -24,8 +29,14 @@
                 <div class="card">
                     <div class="header">
                         <div class="row clearfix">
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-xs-12 col-sm-12">
                                 <h2>ประวัติรายการสินค้าที่ลูกค้าสั่ง (หลังร้าน)</h2>
+                                <button type="button" class="btn btn-success " id="insert" data-toggle="modal"
+                                        data-target="#modal-select-date-account"
+                                        style="float: right;">
+                                    <spen class="glyphicon glyphicon-plus"></spen>
+                                    PRINT
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -61,7 +72,6 @@
                                 <th>ประเภทการขาย</th>
                                 <th>พนักงานที่ขาย</th>
                                 <th>วันที่ขายสินค้า</th>
-                                <th>เวลาที่ขายสินค้า</th>
                                 <th>Action</th>
                               </tr>
                           </thead>
@@ -83,8 +93,8 @@
                                   echo "<td>",$pro_sell['sell_status'],"</td>";
                                   echo "<td>",$type,"</td>";
                                   echo "<td>",$pro_sell['emp_name'],"</td>";
-                                  echo "<td>",$pro_sell['sell_date'],"</td>";
-                                  echo "<td>",$pro_sell['sell_time'],"</td>";
+                                  echo "<td>",$pro_sell['sell_date']," / ",$pro_sell['sell_time'],"</td>";
+                                  //echo "<td>",$pro_sell['sell_time'],"</td>";
                                   echo "<td><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#showHis' id='idShowHistory' onclick='showHistoryAjax(",$pro_sell['sell_order_id'],")'>",$show,"</button></td>";
                                 echo "</tr>";
                                 $num++;
@@ -125,7 +135,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <!--<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
@@ -185,8 +195,29 @@ $(document).ready(function(){
       "order": [[ 0, "desc" ]]
     } );
 
-    $(".modal").on("hidden.bs.modal", function(){
-      $(".modal-body").html("");
+    $("#showHis").on("hidden.bs.modal", function(){
+      $("#showHis").find("#data").html("");
+    });
+
+    $("#select-date_account").submit(function (event) {
+        event.preventDefault();
+
+        if ($("#date_start").val() == "" || $("#date_end").val() == "") {
+
+            $("#alert_select-date").modal('show');
+
+        } else {
+            if ($("#date_start").val() > $("#date_end").val()) {
+
+                $("#alert-error-date").modal('show');
+
+            } else {
+                var id = $("#id").val();
+                var date_start = $("#date_start").val();
+                var date_end = $("#date_end").val();
+                window.open('sell_detail_history?id=' + id + '&date_start=' + date_start + '&date_end=' + date_end + '', '_blank')
+            }
+        }
     });
 
     /*$("#submit").click(function (){

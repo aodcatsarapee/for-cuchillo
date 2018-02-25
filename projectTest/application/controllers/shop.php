@@ -187,11 +187,11 @@ class shop extends CI_Controller{
   public function login(){
     $data['product']=$this->db->join('band','product.product_band = band.band_id')->order_by('product_id','DESC')->limit('4')->get('product')->result_array();
     $data['band']=$this->db->get('band');
-    $data['username']=$username=$this->input->post("username");
-    $data['password']=$this->input->post("password");
     $data['Get_product']=$this->db->select('product_id')->get('product')->row_array();
 
-    $result=$this->sale_model->getuser($data);
+    $username=$this->input->post("username");
+    $password=$this->input->post("password");
+    $result=$this->sale_model->check_login_member($username,$password);
 
     $session=array(
         "membername"=>$result['member_username'],
@@ -202,7 +202,8 @@ class shop extends CI_Controller{
     if($this->session->userdata('membername') != null){
       redirect('shop/index');
     }else{
-      $this->load->view('shop/register');
+      $data['error']="ไม่สามารถเข้าสู่ระบบได้";
+      $this->load->view('shop/register',$data);
     }
   }
 
@@ -306,13 +307,6 @@ class shop extends CI_Controller{
                   "sell_detail_date"=>date('Y-m-d H:i:s')
                 );
                 $this->db->insert("product_sell_detail",$sell_detail);
-
-                $delivery=array(
-                  "sell_order_id"=>$newsell_id,
-                  "delivery_status"=>'1'
-                );
-
-                $this->db->insert("delivery",$delivery);
 
             //$new_quantity=$old_quantity-$amount_cart;
             //$quantity=array("product_quantity"=>$new_quantity);

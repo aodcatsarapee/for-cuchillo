@@ -81,6 +81,7 @@
           }
         }else{
           var change = GetReceive - newtotal;
+          $("#submit_sale").prop('disabled', true);
           $("#change").val(addCommas(change.toFixed(2)));
         }
     })
@@ -226,7 +227,7 @@
 
                         }
 
-                        
+
                       echo "</div>";
 
                       echo "<div class='col-4 col-sm-4 col-md-4'>";

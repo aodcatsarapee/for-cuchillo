@@ -192,7 +192,7 @@ body{
     	  </div>
 	   </div>
 	  </div>
-    <div class="footer" style="height:100px;position: absolute;width:100%;bottom:0;">
+    <div class="footer" style="height:100px;width:100%;bottom:0;">
 			<div class="container">
 				<div class="row">
 

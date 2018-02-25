@@ -220,7 +220,11 @@ body{
                 echo "<div class='block_img'>";
                   echo "<img src=",base_url(),"assets/images/shop/product/",$_product['product_picture']," class='img-responsive' style='height:250px;' alt=''/>";
                       echo "<div class='middle'>";
-                        echo "<a href=",base_url(),"shop/add/",$_product['product_id']," class='btn bg-pink waves-effect text add'>Add To Cart</a>";
+                        if($_product['product_quantity'] < 1){
+                          echo "<a class='btn bg-pink waves-effect text add'>Out Of Stock</a>";
+                        }else{
+                          echo "<a href=",base_url(),"shop/add/",$_product['product_id']," class='btn bg-pink waves-effect text add'>Add To Cart</a>";
+                        }
                       echo "</div>";
                 echo "</div>";
                 echo "<span class='new-box'>";

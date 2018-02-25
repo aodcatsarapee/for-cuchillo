@@ -1,9 +1,12 @@
 <?php
 class sell extends CI_Controller{
 
-    public function _construct(){
-      parent_construct();
-    }
+  public function __construct()
+  {
+      parent::__construct();
+
+      $this->load->library('Pdf');
+  }
 
     public function index(){
       $data['product']=$this->sale_model->get_product();
@@ -400,13 +403,13 @@ class sell extends CI_Controller{
       if($this->input->post('Startdate') != null){
         $Startdate = $this->input->post('Startdate');
       }else{
-        $Startdate = "''";
+        $Startdate = date('Y-m-d');
       }
 
       if($this->input->post('Enddate') != null){
         $Enddate = $this->input->post('Enddate');
       }else{
-        $Enddate = "''";
+        $Enddate = date('Y-m-d');
       }
 
       $data['history']=$this->db->where("sell_detail_date BETWEEN '$Startdate' AND '$Enddate'")->where("sell_detail_type !=",'4')->get('product_sell_detail')->result_array();
@@ -434,19 +437,20 @@ class sell extends CI_Controller{
       if($this->input->post('Startdate') != null){
         $Startdate = $this->input->post('Startdate');
       }else{
-        $Startdate = "''";
+        $Startdate = date('Y-m-d');
       }
 
       if($this->input->post('Enddate') != null){
         $Enddate = $this->input->post('Enddate');
       }else{
-        $Enddate = "''";
+        $Enddate = date('Y-m-d');
       }
       $data['history']=$this->db->where("sell_detail_date BETWEEN '$Startdate' AND '$Enddate'")->where("sell_detail_type","4")->get('product_sell_detail')->result_array();
       $data['product_sell']=$this->db->where("sell_date BETWEEN '$Startdate' AND '$Enddate'")->join("member","product_sell.member_id = member.member_id")->where("sell_type","4")->get('product_sell')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
 
-      echo json_encode($data['product_sell']);
+      $data['Start']=$Startdate;
+      $data['End']=$Enddate;
       $this->load->view("home/header",$data);
       $this->load->view("seller/history_website",$data);
       $this->load->view("home/footer");
@@ -539,6 +543,470 @@ class sell extends CI_Controller{
     }
 
 
+
+
+
+    public function sell_detail_history()
+    {
+
+
+        // สร้าง object สำหรับใช้สร้าง pdf
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // กำหนดรายละเอียดของ pdf
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Nicola Asuni');
+        $pdf->SetTitle('Account');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+        // กำหนดข้อมูลที่จะแสดงในส่วนของ header และ footer
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+        $pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+        $pdf->setPrintHeader(false);
+
+        // กำหนดรูปแบบของฟอนท์และขนาดฟอนท์ที่ใช้ใน header และ footer
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // กำหนดค่าเริ่มต้นของฟอนท์แบบ monospaced
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // กำหนด margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // กำหนดการแบ่งหน้าอัตโนมัติ
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // กำหนดรูปแบบการปรับขนาดของรูปภาพ
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        // ---------------------------------------------------------
+
+        // set default font subsetting mode
+        $pdf->setFontSubsetting(true);
+
+        // กำหนดฟอนท์
+        // ฟอนท์ freeserif รองรับภาษาไทย
+        $pdf->SetFont('freeserif', '', 14, '', true);
+
+
+
+        // เพิ่มหน้า pdf
+        // การกำหนดในส่วนนี้ สามารถปรับรูปแบบต่างๆ ได้ ดูวิธีใช้งานที่คู่มือของ tcpdf เพิ่มเติม
+        $pdf->AddPage('L', 'A4');
+
+        // กำหนดเงาของข้อความ
+        $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+// กำหนดเนื้อหาข้อมูลที่จะสร้าง pdf ในที่นี้เราจะกำหนดเป็นแบบ html โปรดระวัง EOD; โค้ดสุดท้ายต้องชิดซ้ายไม่เว้นวรรค
+
+
+
+        $id=$_GET['id'];
+
+        $date_start= date($_GET['date_start']);
+
+        $date_end= date($_GET['date_end']);
+
+
+        $nice_date_start = date('d-m-Y', strtotime($date_start));
+
+        $nice_date_end = date('d-m-Y', strtotime($date_end));
+
+
+
+        $tbl = '<table cellspacing="0" cellpadding="8" >
+                   <tr>
+                          <th style="border: 1px solid #000000;  text-align:center;" colspan="4" > ร้าน สถิตพรอะไหล่ <br>  ข้อมูลการขายสินค้า (หลังร้าน)<br>ระหว่างวันที่ '.$nice_date_start.' ถึงวันที่ '.$nice_date_end.'</th>
+
+                   </tr> ';
+
+
+        // ถึงวันที่ '.$nice_date_end
+
+        // -----------------------------------------------------------------------------
+        $tbl = $tbl . ' <thead> <tr>
+         <th  width="11%" style="border: 1px solid #000000;  text-align:center;"><b> รหัสการขาย</b></th>
+          <th width="25%"  style="border: 1px solid #000000; "><b>ชื่อสินค้า</b></th>
+          <th width="15%"  style="border: 1px solid #000000;  text-align:right;"><b>ราคา/ชิ้น</b></th>
+           <th width="10%"  style="border: 1px solid #000000;  text-align:center;"><b>จำนวน</b></th>
+          <th width="15%" style="border: 1px solid #000000;  text-align:right;"><b>รวมจำนวนเงิน</b></th>
+          <th width="10%" style="border: 1px solid #000000;  text-align:center;"><b>สถานะ</b></th>
+          <th width="14%" style="border: 1px solid #000000;  text-align:center;"><b>ว/ด/ป</b></th>
+
+      </tr>  </thead>';
+
+
+        $this->load->model('Genpdf_models');
+
+        $history=$this->Genpdf_models->sell_detail_history($id,$date_start,$date_end);
+
+        foreach ($history as $value) {
+            # code...
+            $date=date_create($value['sell_detail_date']);
+
+            $date_format = date_format($date,"d-m-Y");
+            if($value['sell_detail_type'] == 1){
+              $type = "ขายสด";
+            }else if($value['sell_detail_type'] == 2){
+              $type = "ขายเชื่อ";
+            }else if($value['sell_detail_type'] == 3){
+
+            }
+
+            $tbl .='
+    <tbody>
+    <tr nobr="true">
+    <td width="11%"  style="border: 1px solid #000000;  text-align:center">'.$value['sell_order_id'].' </td>
+    <td width="25%" style="border: 1px solid #000000; ">'.$value['sell_detail_name'].' </td>
+    ';
+            $tbl .='
+    <td width="15%" style="border: 1px solid #000000;  text-align:right">'.number_format($value['sell_detail_price']).' บาท</td>
+    ';
+
+            $tbl .='
+    <td  width="10%" style="border: 1px solid #000000;  text-align:center">'.$value['sell_detail_amount'].' </td>
+    <td width="15%" style="border: 1px solid #000000;  text-align:right">'.number_format($value['sell_detail_price']*$value['sell_detail_amount']).' บาท</td>
+    <td width="10%" style="border: 1px solid #000000;  text-align:center">'.$type.'</td>
+    <td style="border: 1px solid #000000;  text-align:center">'.$date_format.'</td>
+
+    </tr>
+
+    ';
+
+
+        }
+
+        if(count($history)==0){
+
+            $tbl = $tbl . '
+      <tr>
+          <td  width="11%" style="border: 1px solid #000000;  text-align:center; "> - </td>
+          <td  width="25%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td  width="15%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td width="10%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td  width="15%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td width="10%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td style="border: 1px solid #000000;  text-align:center"> - </td>
+
+      </tr>
+
+      ';
+
+        }else{
+          /*  $total1=0;
+            $total2=0;
+            foreach ($accounts as $key => $value) {
+
+                $total1+=$value['account_income'];
+                $total2+=$value['account_expenses'];
+
+
+                if ($value === end($accounts)) {
+
+                    $tbl = $tbl . '
+     <tr>
+           <td style="border: 1px solid #000000;  text-align:center; ">รวม</td>
+           <td style="border: 1px solid #000000;  text-align:center"> - </td>
+           <td style="border: 1px solid #000000;  text-align:center"> '.number_format($total1,2).' บาท</td>
+           <td style="border: 1px solid #000000;  text-align:center"> '.number_format($total2,2).' บาท </td>
+            <td style="border: 1px solid #000000;  text-align:center"> - </td>
+             <td style="border: 1px solid #000000;  text-align:center"> - </td>
+
+      </tr>
+<tbody>
+      ';
+
+                }
+            }*/
+        }
+
+        $tbl = $tbl . '</table>';
+
+
+
+
+        $pdf->writeHTML($tbl, true, false, false, false, '');
+
+
+        // สร้างข้อเนื้อหา pdf ด้วยคำสั่ง writeHTMLCell()
+        // $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+// write some JavaScript code
+        $js = <<<EOD
+
+EOD;
+
+// force print dialog
+        $js .= 'print(true);';
+
+// set javascript
+        $pdf->IncludeJS($js);
+
+// ---------------------------------------------------------
+
+//Close and output PDF document
+        $pdf->Output('amount_detail.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+    }
+
+    public function sell_detail_history_online()
+    {
+
+
+        // สร้าง object สำหรับใช้สร้าง pdf
+        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+        // กำหนดรายละเอียดของ pdf
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Nicola Asuni');
+        $pdf->SetTitle('Account');
+        $pdf->SetSubject('TCPDF Tutorial');
+        $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+
+        // กำหนดข้อมูลที่จะแสดงในส่วนของ header และ footer
+        $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
+        $pdf->setFooterData(array(0,64,0), array(0,64,128));
+
+        $pdf->setPrintHeader(false);
+
+        // กำหนดรูปแบบของฟอนท์และขนาดฟอนท์ที่ใช้ใน header และ footer
+        $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+        // กำหนดค่าเริ่มต้นของฟอนท์แบบ monospaced
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // กำหนด margins
+        $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+        // กำหนดการแบ่งหน้าอัตโนมัติ
+        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+        // กำหนดรูปแบบการปรับขนาดของรูปภาพ
+        $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+        // ---------------------------------------------------------
+
+        // set default font subsetting mode
+        $pdf->setFontSubsetting(true);
+
+        // กำหนดฟอนท์
+        // ฟอนท์ freeserif รองรับภาษาไทย
+        $pdf->SetFont('freeserif', '', 14, '', true);
+
+
+
+        // เพิ่มหน้า pdf
+        // การกำหนดในส่วนนี้ สามารถปรับรูปแบบต่างๆ ได้ ดูวิธีใช้งานที่คู่มือของ tcpdf เพิ่มเติม
+        $pdf->AddPage('L', 'A4');
+
+        // กำหนดเงาของข้อความ
+        $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
+
+// กำหนดเนื้อหาข้อมูลที่จะสร้าง pdf ในที่นี้เราจะกำหนดเป็นแบบ html โปรดระวัง EOD; โค้ดสุดท้ายต้องชิดซ้ายไม่เว้นวรรค
+
+
+
+        $id=$_GET['id'];
+
+        $date_start= date($_GET['date_start']);
+
+        $date_end= date($_GET['date_end']);
+
+
+        $nice_date_start = date('d-m-Y', strtotime($date_start));
+
+        $nice_date_end = date('d-m-Y', strtotime($date_end));
+
+
+
+        $tbl = '<table cellspacing="0" cellpadding="8" >
+                   <tr>
+                          <th style="border: 1px solid #000000;  text-align:center;" colspan="4" > ร้าน สถิตพรอะไหล่ <br>  ข้อมูลการขายสินค้า (ออนไลน์)<br>ระหว่างวันที่ '.$nice_date_start.' ถึงวันที่ '.$nice_date_end.'</th>
+
+                   </tr> ';
+
+
+        // ถึงวันที่ '.$nice_date_end
+
+        // -----------------------------------------------------------------------------
+        $tbl = $tbl . ' <thead> <tr>
+         <th  width="11%" style="border: 1px solid #000000;  text-align:center;"><b> รหัสการขาย</b></th>
+          <th width="25%"  style="border: 1px solid #000000; "><b>ชื่อสินค้า</b></th>
+          <th width="15%"  style="border: 1px solid #000000;  text-align:right;"><b>ราคา/ชิ้น</b></th>
+           <th width="10%"  style="border: 1px solid #000000;  text-align:center;"><b>จำนวน</b></th>
+          <th width="15%" style="border: 1px solid #000000;  text-align:right;"><b>รวมจำนวนเงิน</b></th>
+          <th width="10%" style="border: 1px solid #000000;  text-align:center;"><b>สถานะ</b></th>
+          <th width="14%" style="border: 1px solid #000000;  text-align:center;"><b>ว/ด/ป</b></th>
+
+      </tr>  </thead>';
+
+
+        $this->load->model('Genpdf_models');
+
+        $history=$this->Genpdf_models->sell_detail_history($id,$date_start,$date_end);
+
+        foreach ($history as $value) {
+            # code...
+            //$date=date_create($value['sell_detail_date']);
+            $date=$value['sell_detail_date'];
+            //$date_format = date_format($date,"d-m-Y H:iP");
+            if($value['sell_detail_type'] == 1){
+              $type = "ขายสด";
+            }else if($value['sell_detail_type'] == 2){
+              $type = "ขายเชื่อ";
+            }else if($value['sell_detail_type'] == 3){
+
+            }
+
+            $tbl .='
+    <tbody>
+    <tr nobr="true">
+    <td width="11%"  style="border: 1px solid #000000;  text-align:center">'.$value['sell_order_id'].' </td>
+    <td width="25%" style="border: 1px solid #000000; ">'.$value['sell_detail_name'].' </td>
+    ';
+            $tbl .='
+    <td width="15%" style="border: 1px solid #000000;  text-align:right">'.number_format($value['sell_detail_price']).' บาท</td>
+    ';
+
+            $tbl .='
+    <td  width="10%" style="border: 1px solid #000000;  text-align:center">'.$value['sell_detail_amount'].' </td>
+    <td width="15%" style="border: 1px solid #000000;  text-align:right">'.number_format($value['sell_detail_price']*$value['sell_detail_amount']).' บาท</td>
+    <td width="10%" style="border: 1px solid #000000;  text-align:center">'.$type.'</td>
+    <td style="border: 1px solid #000000;  text-align:center">'.$date.'</td>
+
+    </tr>
+
+    ';
+
+
+        }
+
+        if(count($history)==0){
+
+            $tbl = $tbl . '
+      <tr>
+          <td  width="11%" style="border: 1px solid #000000;  text-align:center; "> - </td>
+          <td  width="25%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td  width="15%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td width="10%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td  width="15%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td width="10%" style="border: 1px solid #000000;  text-align:center"> - </td>
+          <td style="border: 1px solid #000000;  text-align:center"> - </td>
+
+      </tr>
+
+      ';
+
+        }else{
+          /*  $total1=0;
+            $total2=0;
+            foreach ($accounts as $key => $value) {
+
+                $total1+=$value['account_income'];
+                $total2+=$value['account_expenses'];
+
+
+                if ($value === end($accounts)) {
+
+                    $tbl = $tbl . '
+     <tr>
+           <td style="border: 1px solid #000000;  text-align:center; ">รวม</td>
+           <td style="border: 1px solid #000000;  text-align:center"> - </td>
+           <td style="border: 1px solid #000000;  text-align:center"> '.number_format($total1,2).' บาท</td>
+           <td style="border: 1px solid #000000;  text-align:center"> '.number_format($total2,2).' บาท </td>
+            <td style="border: 1px solid #000000;  text-align:center"> - </td>
+             <td style="border: 1px solid #000000;  text-align:center"> - </td>
+
+      </tr>
+<tbody>
+      ';
+
+                }
+            }*/
+        }
+
+        $tbl = $tbl . '</table>';
+
+
+
+
+        $pdf->writeHTML($tbl, true, false, false, false, '');
+
+
+        // สร้างข้อเนื้อหา pdf ด้วยคำสั่ง writeHTMLCell()
+        // $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+
+// write some JavaScript code
+        $js = <<<EOD
+
+EOD;
+
+// force print dialog
+        $js .= 'print(true);';
+
+// set javascript
+        $pdf->IncludeJS($js);
+
+// ---------------------------------------------------------
+
+//Close and output PDF document
+        $pdf->Output('amount_detail.pdf', 'I');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+    }
+
+    function approve(){
+      $data['result']=$this->db->where("sell_status","ขายโอน")->join("member","product_sell.member_id = member.member_id ")->get("product_sell")->result_array();
+      $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
+
+      $this->load->view("home/header",$data);
+      $this->load->view('seller/approve',$data);
+    }
+
+    function change_status($id){
+      $data=array(
+        "sell_status"=>'ชำระเงินแล้ว'
+      );
+      $this->db->where("sell_id",$id)->update("product_sell",$data);
+
+      $delivery=array(
+        "sell_order_id"=>$id,
+        "delivery_status"=>'1'
+      );
+      $this->db->insert("delivery",$delivery);
+
+      $result=$this->sale_model()->get_sell_debtor($id);
+
+      $account=array(
+        "account_detail"=>'รายรับจากการขายสด (ออนไลน์)',
+        "account_income"=>$result['sell_total'],
+        "account_type"=>'รายรับ',
+        "account_datasave"=>date('Y-m-d H:i:s')
+      );
+      $this->db->insert("account",$account);
+
+      redirect("sell/approve","refesh");
+      exit();
+    }
+
+    public function detail_approve(){
+      $id=$this->input->post("idShow");
+      $data=$this->db->where("sell_order_id",$id)->get('product_sell_detail')->result_array();
+      echo json_encode($data);
+    }
 
 }
 
