@@ -34,11 +34,11 @@
                     <div class="header">
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-6">
-                                <h2>จัดการข้อมูลลูกค้าขายเชื่อ</h2>
+                                <h2>จัดการข้อมูลลูกค้าขายเชื่อ (สรุป)</h2>
                             </div>
                         </div>
                     </div>
-                    <div class="body table-responsive">
+                    <div class="body">
                       <?php
                         echo "<table class='table'>";
                           echo "<thead class='thead-dark'>";
@@ -52,31 +52,26 @@
                         <table id="example" class="display" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                  <th>รหัสลูกค้า</th>
-                                  <th>รหัสการขาย</th>
+                                  <th>#</th>
                                   <th>รหัสบัตรประชาชน</th>
                                   <th>ชื่อ - นามสกุล</th>
                                   <th>ที่อยู่</th>
                                   <th>เบอร์โทร</th>
-                                  <th>รายละเอียด</th>
-                                  <th>วันที่ทำการซื้อ</th>
+                                  <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                               <?php
                               $num=1;
-                              foreach($result as $data){
+                              foreach($debtor as $data){
                                   echo "<tr>";
                                     echo "<td>".$num."</td>";
-                                    echo "<td>".$data['sell_id']."</td>";
                                     echo "<td>".$data['cus_cardid']."</td>";
                                     echo "<td>".$data['cus_name']."</td>";
                                     echo "<td>".$data['cus_address']."</td>";
                                     echo "<td>".$data['cus_tel']."</td>";
-                                    echo "<td><a href=",base_url(),"debtor/detail/".$data['sell_order_id']," style='margin-right:20px;' class='btn bg-light-blue waves-effect'>DETAIL</a></td>";
-                                    ///echo "<td>".anchor("debtor/detail/".$data['sell_order_id'],'<img src="'.base_url().'assets/images/icon/show.png" alt="Delete" width="30"/>'),"</td>";
-                                    echo "<td style='width:150px;'>".$data['sell_date']," ",$data['sell_time'],"</td>";
-                                    //echo "<td align='center'>",$data['pay_status'],"</td>";
+                                    echo "<td><a href=",base_url(),"debtor/conclude_detail/".$data['cus_id']," style='margin-right:20px;' target='_blank' class='btn bg-light-blue waves-effect'>PRINT </a></td>";
+                                    //echo "<td>".anchor("debtor/conclude_detail/".$data['cus_id'],'<img src="'.base_url().'assets/images/icon/show.png" alt="Delete" width="30"/>',array('target'=>'blank')),"</td>";
                                   echo "</tr>";
                                   $num++;
                               }

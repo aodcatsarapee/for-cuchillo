@@ -166,7 +166,7 @@ $type=$this->session->userdata['type'];
                 echo "<div class='input-group'>";
                   echo "<div class='form-line'>";
                     echo "<label for='comment'>Detail:</label>";
-                    echo "<textarea class='form-control' rows='5' id='detail_product' name='detail_product'></textarea>";
+                    echo "<textarea class='form-control' rows='5' id='detail_product' name='detail_product' required></textarea>";
                   echo "</div>";
                 echo "</div>";
 
@@ -267,7 +267,7 @@ $type=$this->session->userdata['type'];
               echo "<div class='input-group'>";
                 echo "<div class='form-line'>";
                   echo "<label for='comment'>Detail:</label>";
-                  echo "<textarea class='form-control' rows='5' id='Edit_detail_product' name='Edit_detail_product'></textarea>";
+                  echo "<textarea class='form-control' rows='5' id='Edit_detail_product' name='Edit_detail_product' required></textarea>";
                 echo "</div>";
               echo "</div>";
 

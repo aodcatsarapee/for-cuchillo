@@ -15,7 +15,7 @@ class sale_model extends CI_Model{
   }
 
   public function get_customer($data){
-      $result=$this->db->where('cus_name',$data)->get('customer')->row_array();
+      $result=$this->db->where('cus_id',$data)->get('customer')->row_array();
 
       return $result;
   }

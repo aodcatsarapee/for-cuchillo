@@ -54,27 +54,34 @@
     });
 
     $("#receive").change(function(){
-        var total = $("#total").val();
-        var receive = $("#receive").val();
+        var total = parseInt($("#total").val());
+        var receive = parseInt($("#receive").val());
         $("#GetReceive").val(receive);
         var GetReceive = $("#GetReceive").val();
         var newtotal = $("#totalsellbeforecomma").val();
+        var checkQty = $("#checkQty").val();
 
-        if(receive<newtotal){
-          var change = receive - newtotal;
-          $("#change").val(addCommas(change.toFixed(2)));
-          $("#submit_sale").prop('disabled', true);
+        if(receive>=total){
           if(receive == total){
-            var change = receive - newtotal;
+            var change = GetReceive - newtotal;
             $("#change").val(addCommas(change.toFixed(2)));
-            $("#submit_sale").prop('disabled', false);
-            //$("#receive").val(addCommas(change.toFixed(2)));
+            if(checkQty == "disabled"){
+              $("#submit_sale").prop('disabled', true);
+            }else{
+              $("#submit_sale").prop('disabled', false);
+            }
+          }else{
+            var change = GetReceive - newtotal;
+            $("#change").val(addCommas(change.toFixed(2)));
+            if(checkQty == "disabled"){
+              $("#submit_sale").prop('disabled', true);
+            }else{
+              $("#submit_sale").prop('disabled', false);
+            }
           }
         }else{
-          var change = receive - newtotal;
+          var change = GetReceive - newtotal;
           $("#change").val(addCommas(change.toFixed(2)));
-          //$("#receive").val(addCommas($("#receive").val()));
-          //$("#submit_sale").prop('disabled', false);
         }
     })
   })
@@ -94,6 +101,34 @@
                             </div>
                         </div>
                     </div>
+                    <?php
+                    foreach ($product as $_product) {
+                      $Checkcart = $this->cart->contents();
+                      $id = $_product['product_id'];
+                      $amount = $_product['product_quantity'];
+                      foreach ($Checkcart as $item){
+                        if ($id==$item['id']) {
+                            if ($amount >= $item['qty']) {
+                            }else{
+                              $disabled='disabled';
+                              $text='สินค้าไม่เพียงพอ!';
+                            }
+                        }
+                      }
+                    }
+                    ?>
+                    <input type='hidden' name='checkQty' id='checkQty' value='<?php echo $disabled; ?>'>
+
+                    <?php if (@$text) {?>
+                        <div class="alert alert-danger">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                          <h4 style="text-align: center;"><strong>ไม่สามารถดำเนินการได้ สินค้าไม่พอจำหน่าย</strong>! </h4>
+                        </div>
+                    <?php $border="1px red solid;"; $table_bg_color="background:#f56954;color:#fff;";}
+                    else if(count($this->cart->contents())==0){
+                           $border=""; $table_bg_color="";
+                    }?>
+
                     <div class="body" id='mainbody' style="height:600px;">
                       <?php
                       $addnewcus = "<button type='button' class='btn btn-sm btn-danger'>เพิ่มข้อมูลลูกค้า</button>";
@@ -109,7 +144,7 @@
                                 echo "<input list='browsers' class='form-control' name='barcode' id='barcode' style=' font-size:18px; font-weight:20px;text-align:center;' placeholder='กรุณากรอกรหัสบาร์โค้ด'>";
                                     echo "<datalist id='browsers'>";
                                         foreach($product as $pro){ ?>
-                                          <option value="<?php echo $pro['product_barcode']; ?>"><label><?php echo $pro['product_name']; ?></label><option>
+                                          <option value="<?php echo $pro['product_barcode']; ?>"><label><?php echo $pro['product_name']," มีจำนวน ",$pro['product_quantity']," ชิ้น"; ?></label><option>
                                         <?php
                                         }
                                     echo "</datalist>";
@@ -117,60 +152,81 @@
                             echo form_close();
                         }
 
-                          echo "<table class='table table-hover'>";
-                            echo "<tr>";
-                                echo "<td align='center'>รหัสบาร์โค้ด</td>";
-                                echo "<td align='center'>ชื่อสินค้า</td>";
-                                echo "<td align='center'>ราคา/ชิ้น</td>";
-                                echo "<td align='center'>จำนวน</td>";
-                                echo "<td align='center'>รวมราคาสินค้า</td>";
-                            echo "</tr>";
-
                             if($cart=$this->cart->contents()){
                             $update = "<button type='button' class='btn btn-sm btn-danger'>อัพเดท</button>";
                             $del = "<button type='button' class='btn btn-sm btn-danger'>ลบ</button>";
+                            $ExUp = "<button type='button' style='width:40px;' class='btn bg-green btn-block btn-xs waves-effect'>อัพเดท</button>";
+                            $ExDel = "<button type='button' style='width:40px;' class='btn bg-red btn-block btn-xs waves-effect'>ลบ</button>";
+                            ?>
 
-                            echo form_open('sell/update');
-                              foreach($cart as $item){
-                                $sumprice=$item['price']*$item['qty'];
-                                $sumcost=$item['cost']*$item['qty'];
-                                echo "<tr align='center'>";
-                                  echo "<td>",$item['barcode'],"</td>";
-                                  echo "<td>",$item['name'],"</td>";
-                                  echo "<td>",number_format($item['price']),"</td>";
-                                  echo "<td><input type='number' name='addtotal'style='width: 40px; text-align:right;' min='1'  value=",$item['qty'],"></td>";
-                                  echo "<td>",number_format($sumprice),"</td>";
-                                  echo "<td><input type='submit' name='add' class='btn btn-sm btn-danger' value='อัพเดท'></td>";
-                                  echo "<td>".anchor("sell/del/".$item['rowid'],$del),"<td>";
-                                  echo "<input type='hidden' name='rowid' value=",$item['rowid'],">";
-                                  echo "<input type='hidden' name='quantity' value=",$item['qty'],">";
-                                  echo "<input type='hidden' name='product_quantity' value=",$item['quantity'],">";
-                                  echo "<input type='hidden' name='product_id' value=",$item['id'],">";
-                                  echo "<input type='hidden' name='product_cost' value=",$sumcost,">";
-                                echo "</tr>";
-                                }
-                            echo form_close();
-                                echo "<tr>";
-                                  echo "<td colspan='6' align='right'>ราคารวม :</td>";
-                                  echo "<td>",number_format($this->cart->total()),"<td>";
-                                echo "</tr>";
+                            <?php echo form_open('sell/update'); ?>
 
-                                echo "<tr>";
-                                  echo "<td colspan='6' align='right'></td>";
-                                  echo "<td><td>";
-                                echo "</tr>";
-                        }else{
-                            for($i=0; $i<7; $i++){
-                              echo "<tr>";
-                                  echo "<td><br></td>";
-                                  echo "<td></td>";
-                                  echo "<td></td>";
-                                  echo "<td></td>";
-                                  echo "<td></td>";
-                              echo "</tr>";
-                            }
+                            <table class='table table-hover' cellpadding="6" cellspacing="1" style="width:100%" border="0">
+
+                            <tr>
+                              <th>Action</th>
+                              <th>จำนวนสินค้า</th>
+                              <th>ชื่อสินค้า</th>
+                              <th style="text-align:right">ราคา/ชิ้น</th>
+                              <th style="text-align:right">รวมราคา</th>
+                            </tr>
+
+                            <?php $i = 1; ?>
+
+                            <?php foreach ($this->cart->contents() as $items): ?>
+
+                              <?php //echo form_hidden($i.'[rowid]', $items['rowid']);
+                                    echo form_hidden('cart[' . $items['id'] . '][id]', $items['id']);
+                                    echo form_hidden('cart[' . $items['id'] . '][rowid]', $items['rowid']);
+                                    echo form_hidden('cart[' . $items['id'] . '][name]', $items['name']);
+                                    echo form_hidden('cart[' . $items['id'] . '][price]', $items['price']);
+                                    echo form_hidden('cart[' . $items['id'] . '][qty]', $items['qty']);
+                              ?>
+
+                              <tr>
+                                <td><?php echo anchor("sell/del/".$items['rowid'],$ExDel); ?> &nbsp;</td>
+                                <td>
+                                  <input type="number" name="<?php echo 'cart[' . $items['id'] . '][qty]', $items['qty'] ?>" min="1" max="100" style="width: 60px; text-align: right;"  value="<?php echo $items['qty']; ?>" >
+                                </td>
+                                <!-- <td><?php //echo form_input(array('name' => 'qty'.$i, 'value' => $items['qty'], 'maxlength' => '100', 'size' => '5')); ?></td> -->
+                                <td>
+                                <?php echo $items['name']; ?>
+
+                                  <?php if ($this->cart->has_options($items['rowid']) == TRUE): ?>
+
+                                    <p>
+                                      <?php foreach ($this->cart->product_options($items['rowid']) as $option_name => $option_value): ?>
+
+                                        <strong><?php echo $option_name; ?>:</strong> <?php echo $option_value; ?><br />
+
+                                      <?php endforeach; ?>
+                                    </p>
+
+                                  <?php endif; ?>
+
+                                </td>
+                                <td style="text-align:right"><?php echo $this->cart->format_number($items['price']); ?></td>
+                                <td style="text-align:right"><?php echo $this->cart->format_number($items['subtotal']); ?></td>
+                              </tr>
+
+                            <?php $i++; ?>
+
+                            <?php endforeach; ?>
+                            <tr>
+                              <td colspan="3"> </td>
+                              <td class="right"><strong></strong></td>
+                              <td style="text-align:right"><input type='submit' name='add' style='width:100px;' class='btn bg-green btn-block btn-lg  waves-effect' value='อัพเดท'></td>
+                            </tr>
+
+
+                            </table>
+
+                            <p><?php  //echo form_submit('', 'Update your Cart'); ?></p>
+                            <?php echo form_close();
+
                         }
-                        echo "</table>";
+
+                        
                       echo "</div>";
 
                       echo "<div class='col-4 col-sm-4 col-md-4'>";
@@ -188,11 +244,7 @@
                           if(empty($cart)){
                             echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect' disabled>";
                           }else{
-                            if($item['qty'] > $item['quantity']){
                               echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect' disabled>";
-                            }else{
-                              echo "<label></label><input type='submit' id='submit_sale' name='submit_sale' style='font-size:30px;width:100%;height50px;margin-top:20px;' value='ขายสินค้า' class='btn btn-primary waves-effect'>";
-                            }
                           }
                         echo form_close();
                       echo "</div>";

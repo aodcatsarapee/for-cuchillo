@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="body"  style="height:600px;">
+                    <div class="body table-responsive"  style="height:600px;">
                       <?php echo form_open('sell/ranking'); ?>
                         <div class="row clearfix">
                           <div class="col-sm-2">
@@ -175,19 +175,19 @@ $(document).ready(function(){
     var Getcate = $("#Searchcate").val();
     var Getband = $("#Searchband").val();
 
-    if(Getmonth != null){
+    if(Getmonth != ""){
       $('#month option[value=' + Getmonth + ']').attr('selected','selected');
     }
 
-    if(Getyear != null){
+    if(Getyear != ""){
       $('#year option[value=' + Getyear + ']').attr('selected','selected');
     }
 
-    if(Getcate != null){
+    if(Getcate != ""){
       $('#cate option[value=' + Getcate + ']').attr('selected','selected');
     }
 
-    if(Getband != null){
+    if(Getband != ""){
       $('#band option[value=' + Getband + ']').attr('selected','selected');
     }
 

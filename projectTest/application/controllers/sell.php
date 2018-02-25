@@ -36,7 +36,7 @@ class sell extends CI_Controller{
               "emp_name"=>$this->input->post("emp_name")
             );
 
-            $this->db->insert("product_sell",$sell); //ทำการ insert ไปยังตาราง product โดยใช้ข้อมูลในตัวแปร product*/
+            $this->db->insert("product_sell",$sell);
 
             $data_cart=$this->cart->contents();
             //echo print_r($data_cart);
@@ -60,7 +60,8 @@ class sell extends CI_Controller{
                   "sell_detail_cate"=>$cate,
                   "sell_detail_band"=>$band,
                   "sell_detail_type"=>'1',
-                  "sell_detail_date"=>date('Y-m-d H:i:s')
+                  "sell_detail_date"=>date('Y-m-d H:i:s')//,
+                  //"sell_detail_cus"=>
                 );
                 $this->db->insert("product_sell_detail",$sell_detail);
 
@@ -70,7 +71,15 @@ class sell extends CI_Controller{
             $this->db->where("product_id",$id);
             $this->db->update("product",$quantity);
            }
-            $this->cart->destroy();
+           $account=array(
+             "account_detail"=>'รายรับจากการขายสด',
+             "account_income"=>$this->input->post("totalsellbeforecomma"),
+             "account_type"=>'รายรับ',
+             "account_datasave"=>date('Y-m-d H:i:s')
+           );
+           $this->db->insert("account",$account);
+           $this->cart->destroy();
+
         redirect("sell/print_sell","refesh"); //กลับหน้าเดิม
         exit();
       }
@@ -108,12 +117,10 @@ class sell extends CI_Controller{
       $data=$this->sale_model->get_customer($ID);
 
       $session=array(
-          "cusname"=>$data['cus_name']
+          "cusname"=>$data['cus_name'],
+          "cusid"=>$data['cus_id']
       );
       $this->session->set_userdata($session);
-
-      //echo $ID;
-      //print_r($data);
 
       redirect("sell/debtor","refresh");
       exit();
@@ -122,6 +129,7 @@ class sell extends CI_Controller{
     public function del_cusDebtor(){
       if(!empty($this->session->userdata['cusname'])){
         $this->session->unset_userdata('cusname');
+        $this->session->unset_userdata('cusid');
       }
 
       redirect("sell/debtor","refresh");
@@ -129,7 +137,25 @@ class sell extends CI_Controller{
     }
 
     public function update(){
-      $newqty=$this->input->post("addtotal");
+      $cart_info =  $_POST['cart'] ;
+      foreach( $cart_info as $id => $cart)
+		  {
+  			$rowid  = $cart['rowid'];
+  			$price  = $cart['price'];
+  			$amount = $price * $cart['qty'];
+  			$qty    = $cart['qty'];
+        $Product_id     = $cart['id'];
+
+  			$data    = array(
+  					'rowid'  => $rowid,
+  					'qty'    => $qty
+  			);
+  			$this->cart->update($data);
+  		}
+      redirect("sell/","refresh");
+
+
+      /*$newqty=$this->input->post("addtotal");
       $rowid=$this->input->post("rowid");
       $old_cost=$this->input->post("product_cost");
       $new_cost=$this->input->post("product_cost");
@@ -143,7 +169,7 @@ class sell extends CI_Controller{
       $data_cart=$this->cart->contents();
 
       redirect("sell","refresh");
-      exit();
+      exit();*/
     }
 
     public function del($rowid){
@@ -152,7 +178,6 @@ class sell extends CI_Controller{
         "qty"=>"0"
       );
       $this->cart->update($product);
-      $data_cart=$this->cart->contents();
 
       redirect("sell","refresh");
       exit();
@@ -183,11 +208,8 @@ class sell extends CI_Controller{
     }
 
     public function add_debtor(){
-      //$data=$this->sale_model->get_product_id($this->input->post("productid"));
       $barcode=$this->input->post("barcode");
-      $N_barcode=explode("<label",$barcode);
-      $G_barcode=$N_barcode['0'];
-      $data=$this->sale_model->get_product_barcode($G_barcode);
+      $data=$this->sale_model->get_product_barcode($barcode);
       $product=array(
         "id"=>$data['product_id'],
         "price"=>$data['product_price'],
@@ -202,21 +224,20 @@ class sell extends CI_Controller{
       );
       //print_r($product);
       $this->cart->insert($product);
-      $data_cart=$this->cart->contents();
 
       redirect("sell/debtor","refresh");
       exit();
     }
 
     public function sell_product_debtor(){
-      //if($this->input->post("submit_sale")!=null){
+      if($this->input->post("submit_sale")!= null){
             $pay_status="ยังไม่ได้ชำระเงิน";
             $paymentBalance = $this->input->post("totalsellbeforecomma");
             $SumpaymentBalance = $paymentBalance*0.10;
             $totalpaymentBalance = $paymentBalance + $SumpaymentBalance;
             $newtotal=$this->input->post("totalsellbeforecomma");
             $change=$this->input->post("debtor_change");
-            $payment_total =$newtotal/6;
+            $payment_total =$totalpaymentBalance/6;
             $sell_id=$this->input->post("sell_id");
             $newsell_id=$sell_id+1;
             $sell=array(
@@ -233,14 +254,14 @@ class sell extends CI_Controller{
               "payment_total"=>$payment_total,
               "payment_balance"=>$totalpaymentBalance,
               "payment_pay"=>$totalpaymentBalance,
-              "cus_id"=>$this->input->post("cus_name"),
+              "cus_id"=>$this->input->post("cus_id"),
               "emp_name"=>$this->input->post("emp_name")
             );
-            //print_r($sell);
+
             $this->db->insert("product_sell",$sell);
 
             $data_cart=$this->cart->contents();
-            //echo print_r($data_cart);
+
             foreach($data_cart as $datacart){
                 $name_cart=$datacart['name'];
                 $price_cart=$datacart['price'];
@@ -261,7 +282,8 @@ class sell extends CI_Controller{
                   "sell_detail_cate"=>$cate,
                   "sell_detail_band"=>$band,
                   "sell_detail_type"=>"2",
-                  "sell_detail_date"=>date('Y-m-d H:i:s')
+                  "sell_detail_date"=>date('Y-m-d H:i:s'),
+                  "sell_detail_cus"=>$this->input->post("cus_id")
                 );
                 $this->db->insert("product_sell_detail",$sell_detail);
 
@@ -271,28 +293,75 @@ class sell extends CI_Controller{
             $this->db->where("product_id",$id);
             $this->db->update("product",$quantity);
            }
+
             $this->cart->destroy();
-        redirect("sell/debtor","refesh"); //กลับหน้าเดิม
+            if(!empty($this->session->userdata['cusname'])){
+              $this->session->unset_userdata('cusname');
+              $this->session->unset_userdata('cusid');
+            }
+        redirect("sell/debtor","refesh");
         exit();
-      //}
+      }
     }
 
     public function update_debtor(){
+      $cart_info =  $_POST['cart'] ;
+      foreach( $cart_info as $id => $cart)
+		  {
+  			$rowid  = $cart['rowid'];
+  			$price  = $cart['price'];
+  			$amount = $price * $cart['qty'];
+  			$qty    = $cart['qty'];
+        $Product_id     = $cart['id'];
+
+  			$data    = array(
+  					'rowid'  => $rowid,
+  					'qty'    => $qty
+  			);
+  			$this->cart->update($data);
+  		}
+      redirect("sell/debtor","refresh");
+
+    }
+
+    public function update_debtor_backup(){
       $newqty=$this->input->post("addtotal");
       $rowid=$this->input->post("rowid");
+      $product_id=$this->input->post("product_id");
       $old_cost=$this->input->post("product_cost");
       $new_cost=$this->input->post("product_cost");
       $cost=$old_cost+$new_cost;
-      $product=array(
-        "rowid"=>$rowid,
-        "qty"=>$newqty,
-        "cost"=>$cost
-      );
-      $this->cart->update($product);
-      $data_cart=$this->cart->contents();
 
-      redirect("sell/debtor","refresh");
-      exit();
+      $data=$this->sale_model->get_product_id($product_id);
+
+      if($newqty > $data['product_quantity']){
+        $session=array(
+            "product_quantity"=>"Fail",
+            "balance_quantity"=>$data['product_quantity']
+        );
+        $this->session->set_userdata($session);
+      }else{
+        $product=array(
+          "rowid"=>$rowid,
+          "qty"=>$newqty,
+          "cost"=>$cost
+        );
+        echo $newqty;
+        echo "<br>";
+        echo $product_id;
+        //print_r($data);
+
+        $this->cart->update($product);
+        $data_cart=$this->cart->contents();
+
+        if(!empty($this->session->userdata['product_quantity'])){
+          $this->session->unset_userdata('product_quantity');
+          $this->session->unset_userdata('balance_quantity');
+        }
+      }
+
+      //redirect("sell/debtor","refresh");
+      //exit();
     }
 
     public function del_debtor($rowid){

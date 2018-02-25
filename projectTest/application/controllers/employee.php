@@ -232,7 +232,7 @@ class employee extends CI_Controller{
 
     $user_id=$this->input->post("edit_userid");
     $data=array(
-        "user_name"=>$this->input->post("edit_username"),
+        "user_name"=>$this->input->post("edit_usernameV2"),
         "user_password"=>$this->input->post("edit_password"),
         "emp_idcard"=>$this->input->post("edit_id_card"),
         "emp_prename"=>$this->input->post("edit_prename"),

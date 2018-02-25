@@ -1,12 +1,12 @@
 <?php
-require_once dirname(__file__).'/tcpdf/tcpdf.php';
+require_once APPPATH."/third_party/tcpdf/tcpdf.php";
 class payment_pdf extends TCPDF{
 
   public function __construct(){
     //$this->ci -& get_instance();
   }
 
-  public function Footer() {
+  /*public function Footer() {
       $this->SetFillColorArray(_hex2rgb('#FFF200'));
       $this->SetTextColorArray(_hex2rgb('#000000'));
       $this->SetFont('thsarabun', '', _conversion(18,'px-pt'), '', true);
@@ -18,7 +18,7 @@ class payment_pdf extends TCPDF{
       $this->Cell(_conversion(450,'px-mm'),0,
       'หน้า '.$this->getAliasNumPage().' / '.$this->getAliasNbPages(),
       0,1,'R',false,'',0,false,'T','B');
-  }
+  }*/
 }
 
 

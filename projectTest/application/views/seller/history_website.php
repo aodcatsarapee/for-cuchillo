@@ -29,7 +29,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="body">
+                    <div class="body table-responsive">
                       <?php
                       $show=image_asset('icon/show.png');
 
@@ -37,28 +37,19 @@
                     echo form_open('sell/history_website');
                       ?>
                         <div class="row">
-                          <div style="-webkit-flex-basis: 0;float:left;">
+                          <div style="-webkit-flex-basis: 0;float:left;margin-left:20px;">
                             <label class="control-label" for="date">วันที่เริ่มต้น</label>
                             <input class="form-control" id="Startdate" name="Startdate"  placeholder="MM/DD/YYY" style="width:200px;" type="text"/>
                           </div>
-                          <div style="-webkit-flex-basis: 0;float:left;">
+                          <div style="-webkit-flex-basis: 0;float:left;margin-left:20px;">
                             <label class="control-label" for="date">วันทีสิ้นสุด</label>
                             <input class="form-control" id="Enddate" name="Enddate" placeholder="MM/DD/YYY" style="width:200px;" type="text"/>
                           </div>
-                          <button class="btn btn-primary" style="margin-top:23px;margin-left:10px;" name="submit" id="submit" type="submit">Submit</button>
+                          <button class="btn btn-primary" style="margin-top:26px;margin-left:15px;" name="submit" id="submit" type="submit">Submit</button>
                         </div>
                       </form>
                        <!-- Form code ends -->
-                      <?php
-                      echo "<table class='table'>";
-                        echo "<thead class='thead-dark'>";
-                          echo "<tr class='thcenter'>";
-                            echo "<th colspan='9'>ประวัติรายการสินค้าที่ลูกค้าสั่ง</th>";
-                          echo "</tr>";
-                        echo "</thead>";
-                      echo "</table>";
-
-                      ?>
+                       <br>
                       <table id="example" class="display" cellspacing="0" width="100%">
                           <thead>
                               <tr>

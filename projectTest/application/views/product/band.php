@@ -36,19 +36,8 @@
                             <div class="col-xs-12 col-sm-6">
                                 <h2>จัดการข้อมูลแบรนด์สินค้า</h2>
                             </div>
+                            <button type='button' style="float:right;" class='btn bg-teal waves-effect' data-toggle='modal' data-target='#addBand'><i class='material-icons'>forum</i><span>เพิ่มข้อมูล</span></button>
                         </div>
-                        <!--<ul class="header-dropdown m-r--5">
-                            <li class="dropdown">
-                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <i class="material-icons">more_vert</i>
-                                </a>
-                                <ul class="dropdown-menu pull-right">
-                                    <li><a href="javascript:void(0);">Action</a></li>
-                                    <li><a href="javascript:void(0);">Another action</a></li>
-                                    <li><a href="javascript:void(0);">Something else here</a></li>
-                                </ul>
-                            </li>
-                        </ul> -->
                     </div>
                     <div class="body"  style="height:600px;">
                       <?php
@@ -56,13 +45,6 @@
                           $show=image_asset('icon/show.png');
                           $edit=image_asset('icon/edit.png');
                           $del=image_asset('icon/del.png');
-                            echo "<table class='table'>";
-                              echo "<thead class='thead-dark'>";
-                                echo "<tr class='thcenter'>";
-                                  echo "<th colspan='9'>ข้อมูลแบรนด์สินค้า<button type='button' style='background-color:white;float:right;' class='btn' data-toggle='modal' data-target='#addBand'>",$add,"</button></th>";
-                                echo "</tr>";
-                              echo "</thead>";
-                            echo "</table>";
                       ?>
                       <table id="example" class="display" cellspacing="0" width="100%">
                           <thead>
@@ -77,8 +59,8 @@
                                foreach($band as $_band){
                                      echo "<tr>";
                                        echo "<td>".$_band['band_id']."</td>";
-                                       echo "<td>".$_band['band_name']."</td>";
-                                       echo "<td><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#editBand' id='idBandEdit' onclick='editBandAjax(",$_band['band_id'],")'>",$edit,"</button>".anchor("product/delete_band/".$_band['band_id'],$del,array("onclick"=>"javascript:return confirm('คุณต้องการลบหรือไม่ ?');"))."</td>";
+                                       echo "<td style='width:500px;'>".$_band['band_name']."</td>";
+                                       echo "<td><button type='button' data-toggle='modal' data-target='#editBand' id='idEdit' onclick='editBandAjax(",$_band['band_id'],")' class='btn bg-orange waves-effect'><i class='material-icons'>content_cut</i><span>EDIT</span></button>&nbsp;<button type='button'  onclick='deleteData(",$_band['band_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
                                      echo "</tr>";
                                  }
                             ?>
@@ -98,31 +80,26 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="text-align:center;">เพิ่มข้อมูลแบรนด์สินค้า</h4>
+        <div class="modal-header" style="background-color:#336699;">
+          <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+          <h4 class="modal-title" style="text-align:center;color:white;">เพิ่มข้อมูลแบรนด์สินค้า</h4>
         </div>
         <div class="modal-body">
 
           <?php
-          echo form_open();
+          echo form_open('product/band_insert');
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                //echo "<label>ชื่อแบรนด์สินค้า : </label> <input type='text' id='name_band' class='form-control'>";
+                echo "<label>ชื่อแบรนด์สินค้า : </label> <input type='text' id='name_band' name='name_band' class='form-control' required>";
               echo "</div>";
             echo "</div>";
-            echo "<div class='form-group form-float'>";
-              echo "<div class='form-line'>";
-                echo "<label>ชื่อแบรนด์สินค้า : </label> <input type='text' id='name_band' class='form-control'>";
-              echo "</div>";
-            echo "</div>";
-          echo form_close();
           ?>
 
           <span style='padding-left:400px;'></span>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" id='saveBand'>SAVE</button>
+          <input type='submit' class="btn btn-success" value='SAVE'>
+          <?php echo form_close(); ?>
         </div>
       </div>
 
@@ -136,17 +113,17 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="text-align:center;">แก้ไขข้อมูลแบรนด์สินค้า</h4>
+        <div class="modal-header" style="background-color:#336699;">
+          <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+          <h4 class="modal-title" style="text-align:center;color:white;">แก้ไขข้อมูลแบรนด์สินค้า</h4>
         </div>
         <div class="modal-body">
 
           <?php
-          echo form_open();
+          echo form_open('product/band_update');
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>รหัสแบรนด์สินค้า : </label> <input type='text' id='Edit_id_band' class='form-control' disabled>";
+                echo "<label>รหัสแบรนด์สินค้า : </label> <input type='text' id='Edit_id_band' class='form-control' readonly>";
               echo "</div>";
             echo "</div>";
 
@@ -168,7 +145,7 @@
     </div>
   </div>
 <!-- End Edit Band -->
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
@@ -198,7 +175,7 @@
 $(document).ready(function(){
     $('#example').DataTable();
 
-    $("#saveBand").click(function (){
+    $("#saveBand11").click(function (){
         var name_band = $("#name_band").val();
         $.ajax({
           url: "<?php echo base_url() ?>product/band_insert",
@@ -220,7 +197,7 @@ $(document).ready(function(){
         });
     })
 
-    $("#updateBand").click(function (){
+    $("#updateBand22").click(function (){
         var up_id = $("#Edit_id_band").val();
         var up_name = $("#Edit_name_band").val();
         $.ajax({
@@ -245,6 +222,41 @@ $(document).ready(function(){
     })
 
 });
+
+function deleteData(id){
+  var Delid = id;
+  swal({
+    title: "คุณต้องการจะลบข้อมูล ?",
+    text: "ข้อมูลเมื่อถูกลบไปแล้วจะไม่สามารถกู้คืนได้",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      $.ajax({
+        url: "<?php echo base_url() ?>product/delete_band",
+        type: "POST",
+        data: {
+          "Del_id" : Delid
+        },
+        dataType: 'json',
+        openloading : true,
+        success: function(data){
+          swal("ข้อมูลที่คุณเลือกถูกลบเรียบร้อยแล้ว !", {
+            icon: "success",
+          }).then((value) => {
+            location.reload();
+          });
+        },
+        error: function(){
+          alert('Error....');
+          $("#mdClose").click();
+        }
+      });
+    }
+  });
+}
 
 function editBandAjax (idBandEdit){
     var idEdit = idBandEdit;

@@ -59,57 +59,61 @@
                         echo "<th colspan='6'>รายละเอียดสินค้าขายเชื่อ</th>";
                       echo "</tr>";
                       echo "<tr>";
-                        echo "<th>วันที่ทำการซื้อเชื่อ</th>";
-                        echo "<th>สินค้า</th>";
-                        echo "<th>จำนวน</th>";
-                        echo "<th>ราคา</th>";
-                        echo "<th>เดือนในการผ่อนชำระ</th>";
-                        echo "<th>ชำระต่อเดือน</th>";
+                        echo "<th>เลขที่อ้างอิง</th>";
+                        echo "<th colspan='2'>วันที่ทำการซื้อเชื่อ</th>";
                       echo "</tr>";
                       echo "</thead>";
+
                         foreach ($detail as $_detail) {
-                          $id = $_detail['sell_id'];
-                          $vat = ($_detail['sell_detail_price'] * $_detail['sell_detail_amount']) * 0.10;
-                          $numTotal = ($_detail['sell_detail_price'] * $_detail['sell_detail_amount']) + $vat;
-                          $avg_price = $total['payment_balance'] / 6;
-                          $paytotal = $_detail['sell_total'] / 6;
-                          $payMonth = $numTotal/6;
-                          echo "<input type='hidden' name='id' id='id' value=",$_detail['sell_id'],">";
-                          echo "<input type='hidden' name='price' id='price' value=",number_format($avg_price),">";
-                          echo "<input type='hidden' name='month' id='month' value=",$_detail['payment_month'],">";
                           echo "<tbody>";
                           echo "<tr>";
-                            echo "<td>",$_detail['sell_date'],"</td>";
-                            echo "<td>",$_detail['sell_detail_name'],"</td>";
-                            echo "<td>",number_format($_detail['sell_detail_amount'])," ชิ้น</td>";
-                            echo "<td>",number_format($numTotal)," บาท</td>";
-                            echo "<td align='center'>6 เดือน</td>";
-                            echo "<td align='center'>",number_format($payMonth)," บาท</td>";
+                            echo "<td>",$_detail['sell_id'],"</td>";
+                            echo "<td colspan='2'>",$_detail['sell_detail_date'],"</td>";
+
+                            echo "<thead>";
+                            echo "<tr>";
+                              echo "<th>สินค้า</th>";
+                              echo "<th>จำนวน</th>";
+                              echo "<th>ราคา</th>";
+                            echo "</tr>";
+                            echo "</thead>";
+
+                            foreach ($detail_name as $__detail_name) {
+                              if($_detail['sell_detail_date'] == $__detail_name['sell_detail_date']){
+                                echo "<tr>";
+                                  echo "<td>",$__detail_name['sell_detail_name'],"</td>";
+                                  echo "<td>",number_format($_detail['sell_detail_amount'])," ชิ้น</td>";
+                                  echo "<td>",number_format($_detail['sell_detail_price'])," บาท</td>";
+                                echo "</tr>";
+                              }
+                            }
+                          echo "</tr>";
+                          echo "<tr>";
+                            echo "<td colspan='3' style='text-align:right;'>ราคารวมดอกเบี้ย : ",number_format($_detail['sell_total'])," บาท</td>";
                           echo "</tr>";
                           echo "</tbody>";
                         }
-                        $day = substr($date=$_detail['sell_date'],8,2);
-                        $month = substr($date=$_detail['sell_date'],5,2);
-                        echo "<input type='hidden' id='PayTomonth' value=",$month,">";
-                        echo "<input type='hidden' id='PayToday' value=",$day,">";
+                        //$day = substr($date=$_detail['sell_date'],8,2);
+                        //$month = substr($date=$_detail['sell_date'],5,2);
+                        //echo "<input type='hidden' id='PayTomonth' value=",$month,">";
+                        //echo "<input type='hidden' id='PayToday' value=",$day,">";
                           echo "<tbody>";
                           echo "<tr>";
-                            echo "<td colspan='5' align='center'>จำนวนเงินที่ค้างชำระ : ",number_format($total['payment_pay']),"</td>";
+                            //echo "<td colspan='5' align='center'>จำนวนเงินที่ค้างชำระ : ",number_format($total['payment_pay']),"</td>";
                           echo "</tr>";
                           echo "</tbody>";
 
-                          if($total['sell_status'] == 'ขายเชื่อ'){$credit='selected';$sell="";}else{$sell='selected';$credit="";}
+                          //if($total['sell_status'] == 'ขายเชื่อ'){$credit='selected';$sell="";}else{$sell='selected';$credit="";}
                           echo "<tbody>";
                           echo "<tr>";
                             echo "<td colspan='6' align='left'>";
                               //echo "<button type='button' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal'>ชำระเงิน</button> <button type='button' class='btn btn-info btn-lg' id='print'>".anchor("debtor/report_payment_debtor/".$_detail['sell_order_id'],"ออกใบแจ้งชำระเงิน")."</button>";
-                              echo "<button type='button' id='pay' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal'>ชำระเงิน</button>";
-                              echo "&nbsp;<a href=",base_url(),"debtor/report_payment_debtor/".$_detail['sell_order_id']," style='margin-right:20px;' target='_blank' class='btn btn-lg bg-light-blue waves-effect'>ออกใบแจ้งหนี้ </a>";
-                              //echo "<button type='button' class='btn btn-lg bg-light-blue waves-effect'>".anchor("debtor/report_payment_debtor/".$_detail['sell_order_id'],"ออกใบแจ้งหนี้")."</button>";
+                              //echo "<button type='button' id='pay' class='btn btn-info btn-lg' data-toggle='modal' data-target='#myModal'>ชำระเงิน</button>";
                             echo "</td>";
                           echo "</tr>";
                           echo "</tbody>";
                       echo "</table>";
+                      //echo "<button type='button' class='btn btn-info btn-lg'>".anchor("debtor/report_payment_debtor/".$_detail['sell_order_id'],"Print")."</button>";
                     echo "</div>";
                       ?>
 
@@ -130,7 +134,7 @@
                                       <th>วันที่่ต้องชำระ</th>
                                       <th>จำนวนเงิน</th>
                                       <th>Action</th>
-                                      <th>วันที่ชำระ</th>
+                                      <th>ชำระเมื่อ</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -258,7 +262,15 @@ if(month == 1){
 
 $(document).ready(function(){
 
-  $('#example').DataTable();
+  $('#example').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'print',
+                messageTop: 'This print was produced using the Print button for DataTables'
+            }
+        ]
+    } );
 
   $("#pay").click(function(){
     var monthtoPay = $("#PayTomonth").val();
