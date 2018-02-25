@@ -117,7 +117,7 @@
                         </div>
                         <ul class="header-dropdown m-r--5">
                           <?php
-                            echo "<img id='myImg' class='data-toggle='modal' data-target='#addCus' src=",base_url('Frontend/images/icon/add.png'),">";
+                            //echo "<img id='myImg' class='data-toggle='modal' data-target='#addCus' src=",base_url('Frontend/images/icon/add.png'),">";
                           ?>
                         </ul>
                     </div>

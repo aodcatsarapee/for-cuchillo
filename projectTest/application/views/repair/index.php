@@ -3,20 +3,19 @@
 <title></title>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.min.js"></script>
 <link href="<?php echo base_url(); ?>Frontend/css/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<link href="<?php echo base_url(); ?>Frontend/css/style.css" rel="stylesheet">
 <link href="<?php echo base_url(); ?>Frontend/css/waves.css" rel="stylesheet" />
 <link href="<?php echo base_url(); ?>Frontend/css/animate.css" rel="stylesheet" />
 <link href="<?php echo base_url(); ?>Frontend/css/morris.css" rel="stylesheet" />
-<link href="<?php echo base_url(); ?>Frontend/css/style.css" rel="stylesheet">
 <link href="<?php echo base_url(); ?>Frontend/css/all-themes.css" rel="stylesheet">
-<link href="<?php echo base_url(); ?>Frontend/css/multi-select.css" rel="stylesheet">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.multi-select.js"></script>
 
 <style type='text/css'>
   .warring{background-color:#FFFF99;color:red;}
@@ -59,7 +58,7 @@
                         ?>
                         <input type='hidden' id='loop'>
                         <input type='hidden' id='num'>
-                        <table id="example" class="display" cellspacing="0" width="100%">
+                        <table id="example" class='table table-striped table-bordered' cellspacing='0' width='100%'>
                             <thead>
                                 <tr>
                                   <th>#</th>
@@ -192,7 +191,34 @@
             echo "<div role='tabpanel' class='tab-pane fade' id='profile'>";
               echo "<br>";
               echo "<div class='input-group'>";
-              echo "<label>อะไหล่ที่ใช้ : </label>";
+
+              echo "<label>อะไหล่ที่ใช้ :  </label>";
+              echo "<select class='selectpicker form-control' id='re_product_name' name='re_product_name' title='กรุณาเลือกอะไหล่' data-live-search='true'>";
+                foreach ($product as $_product) {
+                  echo "<optgroup label=",$_product['band_name'],">";
+                  echo "<option value=",$_product['product_id'],">",$_product['product_name'],"</option>";
+                }
+              echo "</select>";
+
+              echo "<button id='AddPro' class='btn btn-primary btn-xs waves-effect waves-light'>";
+                  echo "<i class='material-icons'>search</i>";
+                  echo "<span>ADD</span>";
+              echo "</button>";
+
+              echo "<table class='table table-striped table-bordered' cellspacing='0' width='100%'>";
+                echo "<thead>";
+                  echo "<tr>";
+                    echo "<th>ชื่อสินค้า</th>";
+                    echo "<th>จำนวนที่ใช้</th>";
+                    echo "<th>Action</th>";
+                  echo "</tr>";
+                echo "</thead>";
+
+                echo "<tbody id='data'>";
+                echo "</tbody>";
+              echo "</table>";
+
+              /*echo "<label>อะไหล่ที่ใช้ : </label>";
               ?>
               <select id='optgroup' name="optgroup[]" class='ms' multiple='multiple'>";
                 <?php
@@ -200,7 +226,7 @@
                   echo "<optgroup label=",$_product['band_name'],">";
                   echo "<option value=",$_product['product_id'],">",$_product['product_name'],"</option>";
                 }
-              echo "</select>";
+              echo "</select>";*/
               echo "</div>";
 
               echo "<div class='form-group'>";
@@ -303,11 +329,11 @@
                  echo "</div>";
 
                  echo "<div class='input-group'>";
-                   echo "<label>สถานะ : </label><select id='edit_repair_status' name='edit_repair_status' class='form-control'>";
+                   /*echo "<label>สถานะ : </label><select id='edit_repair_status' name='edit_repair_status' class='form-control'>";
                        foreach($status as $repair_status){
                          echo "<option value=",$repair_status['re_status_id'],">",$repair_status['re_status_name'],"</option>";
                        }
-                   echo "</select>";
+                   echo "</select>";*/
                  echo "</div>";
 
                  echo "<div class='form-group'>";
@@ -434,22 +460,13 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
-
-<!--
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>-->
-<!--<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.time.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/index.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.resize.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.pie.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.flot.categories.js"></script>-->
-<!-- <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/morris.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/Chart.bundle.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap-select.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.countTo.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>-->
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/demo.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.sparkline.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/Chart.bundle.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.countTo.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/raphael.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.slimscroll.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/form-validation.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/sell.js"></script>
@@ -462,8 +479,8 @@ function ShowDetail(id){
   window.location = '<?php echo base_url(); ?>repair/detail/'+ Detailid;
 }
 $(document).ready(function(){
-    $('#optgroup').multiSelect();
-    $('#Editoptgroup').multiSelect();
+    //$('#optgroup').multiSelect();
+    //$('#Editoptgroup').multiSelect();
 
     $('#example').DataTable( {
         "order": [[ 0, "desc" ]]
@@ -511,6 +528,56 @@ $(document).ready(function(){
     $("#myImg").click(function (){
       $("#addProduct").modal('show');
     })
+
+    $("#AddPro").click(function(){
+      var id = $("#re_product_name").val();
+      $.ajax({
+        url: "<?php echo base_url() ?>repair/add_pro",
+        type: "POST",
+        data: {
+          "product_id" : id
+        },
+        dataType: 'json',
+        openloading : true,
+        success: function(data){
+          var num = 1;
+          if(data != null){
+            $("#data").append('<tr><td><input type=text name="proname[]" id="proname'+ num +'"   value=' + data.product_name + ' readonly></td><td><input type=number min=1 max=100 value=1></td><td><button type=button onclick="deleteData(' + data.product_id + ')" class=btn bg-red waves-effect><i class=material-icons>report_problem</i><span>DELETE</span></button></td></tr>');
+          }
+          $(proname1)
+          for(var item in proname1){
+            var name = proname1[item].value;
+              //console.log(proname1[item].value);
+          }
+
+        },
+        error: function(){
+          alert('Error....');
+          $("#mdCloseCus").click();
+        }
+      });
+    });
+
+    $("SaveData").click(function(){
+      $.ajax({
+        url: "<?php echo base_url() ?>repair/add_pro",
+        type: "POST",
+        data: {
+          "product_id" : id
+        },
+        dataType: 'json',
+        openloading : true,
+        success: function(data){
+          for(var item in proname1){
+              //console.log(proname1[item].value);
+          }
+        },
+        error: function(){
+          alert('Error....');
+          $("#mdCloseCus").click();
+        }
+      });
+    });
 
 });
 

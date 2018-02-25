@@ -415,6 +415,8 @@ class sell extends CI_Controller{
       $data['history']=$this->db->where("sell_detail_date BETWEEN '$Startdate' AND '$Enddate'")->where("sell_detail_type !=",'4')->get('product_sell_detail')->result_array();
       $data['product_sell']=$this->db->where("sell_date BETWEEN '$Startdate' AND '$Enddate'")->join("customer","customer.cus_id = product_sell.cus_id")->where("sell_type !=",'4')->get('product_sell')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
+      $data['Start']=$Startdate;
+      $data['End']=$Enddate;
 
       $this->load->view("home/header",$data);
       $this->load->view("seller/history",$data);
@@ -854,19 +856,15 @@ EOD;
 
         $this->load->model('Genpdf_models');
 
-        $history=$this->Genpdf_models->sell_detail_history($id,$date_start,$date_end);
+        $history=$this->Genpdf_models->sell_detail_history_online($id,$date_start,$date_end);
 
         foreach ($history as $value) {
             # code...
             //$date=date_create($value['sell_detail_date']);
             $date=$value['sell_detail_date'];
             //$date_format = date_format($date,"d-m-Y H:iP");
-            if($value['sell_detail_type'] == 1){
-              $type = "ขายสด";
-            }else if($value['sell_detail_type'] == 2){
-              $type = "ขายเชื่อ";
-            }else if($value['sell_detail_type'] == 3){
-
+            if($value['sell_detail_type'] == 4){
+              $type = "Web Site";
             }
 
             $tbl .='

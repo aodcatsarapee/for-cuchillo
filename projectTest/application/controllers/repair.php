@@ -252,6 +252,13 @@ class repair extends CI_Controller{
         $this->load->view("home/header",$data);
         $this->load->view('repair/history',$data);
       }
+
+      function add_pro(){
+        $id=$this->input->post('product_id');
+        $data=$this->db->where('product_id',$id)->get('product')->row_array();
+        echo json_encode($data);
+      }
+
 }
 
 
