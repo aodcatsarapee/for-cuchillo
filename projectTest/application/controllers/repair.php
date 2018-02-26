@@ -27,32 +27,34 @@ class repair extends CI_Controller{
     }
 
     public function insert(){
-      if($this->input->post('saveRepair') != null){
         $config['upload_path'] = 'assets/images/shop/repair';  //ตำแหน่งโฟร์เดอร์เก็ยไฟล์
         $config['allowed_types'] = 'gif|jpg|jpeg|png';
         $config['max_size'] = '0'; //ขนาดเป็น kb 0 คือไม่จำกัดขนาด
         $config['remove_spaces'] = TRUE;  //เจอช่องว่าง ติดมาบนชื่อไฟล์จะทำการเปลี่ยนเป็น _  หรือเครื่องหมาย underscore ให้เลย
         $this->load->library('upload',$config);
-
         if($this->upload->do_upload('repair_picture'))
         {  //ถ้า upload ไม่มีปัญหา
-          $repair_picture=$this->upload->data();
-          rename($repair_picture['full_path'],$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext']);
-          $config['image_library']="gd2";
-          $config['source_image']=$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext'];
-          $config['width']=600;
-          $config['height']=600;
-          $this->load->library("image_lib",$config);
-          $this->image_lib->resize();
-          $picture = date("YmdHis").$repair_picture['file_ext'];
+            $repair_picture=$this->upload->data();
+            rename($repair_picture['full_path'],$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext']);
+            $config['image_library']="gd2";
+            $time = date("YmdHis");
+            $config['source_image']=$repair_picture['file_path'].$time.$repair_picture['file_ext'];
+            $config['width']=600;
+            $config['height']=600;
+            $this->load->library("image_lib",$config);
+            $this->image_lib->resize();
+            $picture = $time.$repair_picture['file_ext'];
         }
         else
         {
-          $picture="default.jpg";
+            $picture="default.jpg";
         }
-          $test = $this->input->post("optgroup");
-          $result_multi = implode(" - ",$test);
-          $repairproduct = $this->input->post("repair_product");
+        $result_multi = "";
+        foreach ($this->input->post("proid") as $key => $value){
+            $result_multi .= $value.":".$this->input->post("proname")[$key].":".$this->input->post("proqty")[$key].",";
+        }
+
+        //$repairproduct = $this->input->post("repair_product");
           $repair=array(
             "customer_name"=>$this->input->post("cus_name"),
             "customer_tel"=>$this->input->post("cus_tel"),
@@ -67,22 +69,28 @@ class repair extends CI_Controller{
             "emp_name"=>$this->input->post("emp_name")
           );
           $this->db->insert("repair",$repair);
-      }
-            redirect("repair","refesh");
-            exit();
     }
 
     public function detail($id){
       $data['result']=$this->db->where('repair_id',$id)->join('repair_band','repair.repair_band = repair_band.repair_band_id')->join('repair_type','repair.repair_type = repair_type.repair_type_id')->get('repair')->row_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
-      $re_pro=explode(" - ",$data['result']['repair_product']);
-      for($i=0; $i<count($re_pro); $i++){
+      $re_pro=explode(",",$data['result']['repair_product']);
+      array_pop($re_pro);
+      //$products = explode(":",$re_pro);
+      //print_r($data['result']['repair_product']);
+
+      $data['product']=$re_pro;
+      //print_r($data['product']);
+      /*for($i=0; $i<count($re_pro); $i++){
         $result=$this->sale_model->get_product_id_count($re_pro[$i]);
         $detail[] = $result['product_name'];
         $detail_amount[] = $result['total_name'];
-      }
-      $data['detail_pro']=implode("+",$detail);
-      $data['detail_amount']=implode("+",$detail_amount);
+      }*/
+
+
+      //$data['detail_pro']=explode(':',$re_pro);
+      //print_r($re_pro);
+      //$data['detail_amount']=implode("+",$detail_amount);
       $this->load->view("home/header",$data);
       $this->load->view('repair/detail',$data);
     }
@@ -100,21 +108,32 @@ class repair extends CI_Controller{
       $config['remove_spaces'] = TRUE;  //เจอช่องว่าง ติดมาบนชื่อไฟล์จะทำการเปลี่ยนเป็น _  หรือเครื่องหมาย underscore ให้เลย
       $this->load->library('upload',$config);
 
-          if($this->upload->do_upload('repair_picture'))
-          {  //ถ้า upload ไม่มีปัญหา
-            $repair_picture=$this->upload->data();
-            rename($repair_picture['full_path'],$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext']);
-            $config['image_library']="gd2";
-            $config['source_image']=$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext'];
-            $config['width']=600;
-            $config['height']=600;
-            $this->load->library("image_lib",$config);
-            $this->image_lib->resize();
-            $picture = date("YmdHis").$repair_picture['file_ext'];
-          }
-          else
-          {
+        if(count($_FILES) != 0){
+            if($this->upload->do_upload('repair_picture'))
+            {  //ถ้า upload ไม่มีปัญหา
+                $repair_picture=$this->upload->data();
+                rename($repair_picture['full_path'],$repair_picture['file_path'].date("YmdHis").$repair_picture['file_ext']);
+                $config['image_library']="gd2";
+                $time = date("YmdHis");
+                $config['source_image']=$repair_picture['file_path'].$time.$repair_picture['file_ext'];
+                $config['width']=600;
+                $config['height']=600;
+                $this->load->library("image_lib",$config);
+                $this->image_lib->resize();
+                $picture = $time.$repair_picture['file_ext'];
+            }
+            else
+            {
+                $picture=$this->input->post("old_pic");
+            }
+        }
+        else
+        {
             $picture=$this->input->post("old_pic");
+        }
+          $result_multi = "";
+          foreach ($this->input->post("proid") as $key => $value){
+              $result_multi .= $value.":".$this->input->post("proname")[$key].":".$this->input->post("proqty")[$key].",";
           }
             $id=$this->input->post("edit_id");
             $repair=array(
@@ -126,17 +145,28 @@ class repair extends CI_Controller{
               "repair_picture"=>$picture,
               "repair_status"=>$this->input->post("edit_repair_status"),
               "repair_cause"=>$this->input->post("edit_repair_cause"),
-              "repair_product"=>$this->input->post("edit_repair_product")
+              "repair_product"=>$result_multi
             );
+
+            if($this->input->post("edit_repair_status") == '4'){
+              $account=array(
+                "account_detail"=>'รายรับจากการซ่อม',
+                "account_income"=>$this->input->post("pay_repair"),
+                "account_type"=>'รายรับ',
+                "account_datasave"=>date('Y-m-d H:i:s')
+              );
+              $this->db->insert("account",$account);
+            }
+
             $this->db->where("repair_id",$id)->update("repair",$repair);
             redirect("repair","refesh"); //กลับหน้าเดิม
             exit();
     }
 
     public function delete($id){
-      $this->db->delete("repair",array('repair_id'=>$id));
-      redirect("repair","refesh");
-      exit();
+      $user_id=$this->input->post('Del_id');
+      $data=$this->db->delete("repair",array('repair_id'=>$user_id));
+      echo json_encode($data);
     }
 
     public function conclude(){
@@ -149,7 +179,8 @@ class repair extends CI_Controller{
 
     public function add_conclude($id){
       $detail_repair = $this->sale_model->get_repair($id);
-      $newrepair=explode(",",$detail_repair['repair_product']);
+      $pro_re=$detail_repair['repair_product'];
+      $newrepair=explode(",",$pro_re);
       $sell_order_id = $this->sale_model->get_order_id();
       $newsell_id = $sell_order_id['sell_order_id']+1;
       $sell_total=0;
@@ -158,9 +189,24 @@ class repair extends CI_Controller{
         "repair_status"=>'5'
       );
 
-      $this->db->where('repair_id',$id)->update('repair',$update_repair);
+      $numCount = count($newrepair);
 
-      for($i=0; $i<count($newrepair); $i++){
+      /*for($e=0;$e<$numCount;$e++){
+        $item=$newrepair[$e];
+        $products = explode(":",$item);
+        //print_r($products);
+        $data=$products[0];
+        echo "<br>";
+        $product = $this->sale_model->get_product_barcode(substr($data,0));
+        print_r($product);
+        echo $product;
+      }*/
+
+
+
+      //$this->db->where('repair_id',$id)->update('repair',$update_repair);
+
+      /*for($i=0; $i<count($newrepair); $i++){
         $product = $this->sale_model->get_product_barcode($newrepair[$i]);
         if(empty($product)){
           $pro_name = "";
@@ -174,8 +220,9 @@ class repair extends CI_Controller{
           $pro_price=$product['product_price'];
           $pro_cate=$product['product_cate'];
           $pro_band=$product['product_band'];
-        }
-        $sell_detail=array(
+        }*/
+        //echo $pro_name," - ",$pro_cost," - ",$pro_price," - ",$pro_cate," - ",$pro_band,"";
+        /*$sell_detail=array(
           "sell_order_id"=>$newsell_id,
           "sell_detail_name"=>$pro_name,
           "sell_detail_cost"=>$pro_cost,
@@ -189,9 +236,9 @@ class repair extends CI_Controller{
         );
         $this->db->insert("product_sell_detail",$sell_detail);
         $sell_total += $product['product_price'];
-      }
+      }*/
 
-        $sell=array(
+        /*$sell=array(
           "sell_status"=>"ขายสด",
           "pay_status"=>"ยังไม่ได้ชำระเงิน",
           "sell_total"=>$sell_total,
@@ -204,8 +251,8 @@ class repair extends CI_Controller{
           "cus_id"=>'0',
           "emp_name"=>$this->session->userdata['name']
         );
-        $this->db->insert("product_sell",$sell);
-
+        $this->db->insert("product_sell",$sell);*/
+        $newsell_id="";
         $conclude=array(
           "conclude_title"=>$detail_repair['repair_cause'],
           "conclude_detail"=>$this->input->post('how_repair'),
@@ -224,6 +271,10 @@ class repair extends CI_Controller{
       public function conclude_detail(){
         $id=$this->input->post("idDetail");
         $data=$this->db->where('conclude_repair_id',$id)->get('repair_conclude')->row_array();
+        $data['result']=$this->db->where('repair_id',$id)->join('repair_band','repair.repair_band = repair_band.repair_band_id')->join('repair_type','repair.repair_type = repair_type.repair_type_id')->get('repair')->row_array();
+        $re_pro=explode(",",$data['result']['repair_product']);
+        array_pop($re_pro);
+        $data['product']=$re_pro;
         echo json_encode($data);
       }
 

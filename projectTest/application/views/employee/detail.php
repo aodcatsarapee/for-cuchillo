@@ -42,7 +42,7 @@
                             </div>
                         </div>
                         <ul class="header-dropdown m-r--5">
-                          <a href='javascript:void(0);' onclick="EditEmp(<?php echo $result['user_id']; ?>)" style='margin-right:20px;' class="btn btn-default btn-lg waves-effect waves-light-blue">แก้ไข </a>
+                          <!--<a href='javascript:void(0);' onclick="EditEmp(<?php echo $result['user_id']; ?>)" style='margin-right:20px;' class="btn btn-default btn-lg waves-effect waves-light-blue">แก้ไข </a>-->
                           <?php
                             $back=image_asset('icon/back.png');
                             if($this->session->userdata['type'] == '1' || $this->session->userdata['type'] == '2'){
@@ -294,12 +294,12 @@
           $("#edit_password").val(data.user_password);
           var Eprename = data.emp_prename;
           if(Eprename == "นาย"){
-            //$("#edit_prename1").prop("checked", true);
+            $("#edit_prename1").prop("checked", true);
             //$("#edit_prename2").prop("checked", false);
             //$("#edit_prename3").prop("checked", false);
           }else if(Eprename == "นาง"){
             //$("#edit_prename1").prop("checked", false);
-            //$("#edit_prename2").prop("checked", true);
+            $("#edit_prename2").prop("checked", true);
             //$("#edit_prename3").prop("checked", false);
           }else{
             //$("#edit_prename1").prop("checked", false);

@@ -119,17 +119,21 @@ body{
 				    </div>
 	    		    <div class="clear"></div>
 	    	    </div>
-	            <div class="header_right">
-				    <ul class="icon1 sub-icon1 profile_img">
-					 <li><a class="active-icon c1" href="#"> </a>
+            <?php
+             if($member_name !=null){
+              echo "<div class='header_right' style='width:450px;'>";
+   				    echo "<ul class='icon1 sub-icon1 profile_img'>";
+              echo "<li style='color:white;'>ยินดีต้อนรับคุณ : ",$member_name,"&nbsp;",anchor('shop/logout',' ออกจากระบบ '),"</li>";
+              echo "<li><a class='active-icon c1' href='#'> </a>";
+            }else{
+              echo "<div class='header_right'>";
+   				    echo "<ul class='icon1 sub-icon1 profile_img'>";
+              echo "<li><a class='active-icon c1' href='#'> </a>";
+            }
+            ?>
 						<ul class="sub-icon1 list">
 						   <div class="clear"></div>
                <?php
-
-                if($member_name !=null){
-                 echo "<strong>ยินดีต้อนรับคุณ : </strong>",$member_name,"&nbsp;",anchor('shop/logout',' : ออกจากระบบ'),"";
-                 echo "<hr>";
-                }
                 $cart=$this->cart->contents();
                 foreach($cart as $item){
                   echo "<li class='list_img'><img src=",base_url(),"assets/images/shop/product/",$item['picture']," style='width:50px;' alt=''/></li>";

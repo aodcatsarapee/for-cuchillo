@@ -216,7 +216,9 @@ class shop extends CI_Controller{
         "name"=>$data['product_name'],
         "quantity"=>$data['product_quantity'],
         "picture"=>$data['product_picture'],
-        "pro_id"=>$data['product_id']
+        "pro_id"=>$data['product_id'],
+        "cate"=>$data['product_cate'],
+        "band"=>$data['product_band']
     );
 
     $this->cart->insert($data);
@@ -304,19 +306,21 @@ class shop extends CI_Controller{
                   "sell_detail_pricePay"=>"0",
                   "sell_detail_amount"=>$amount_cart,
                   "sell_detail_type"=>"4",
-                  "sell_detail_date"=>date('Y-m-d H:i:s')
+                  "sell_detail_date"=>date('Y-m-d H:i:s'),
+                  "sell_detail_cate"=>$datacart['cate'],
+                  "sell_detail_band"=>$datacart['band'],
+                  "sell_detail_mem"=>$this->input->post("member_id")
                 );
                 $this->db->insert("product_sell_detail",$sell_detail);
 
-            //$new_quantity=$old_quantity-$amount_cart;
-            //$quantity=array("product_quantity"=>$new_quantity);
+            $new_quantity=$old_quantity-$amount_cart;
+            $quantity=array("product_quantity"=>$new_quantity);
 
-            //$this->db->where("product_id",$id);
-            //$this->db->update("product",$quantity);
+            $this->db->where("product_id",$id);
+            $this->db->update("product",$quantity);
            }
             $this->cart->destroy();
             header('Location:'.base_url().'/shop/detailsell/'.$newsell_id);
-            //redirect("shop/detailsell","refesh"); //กลับหน้าเดิม
             exit();
     }else{
       redirect("shop/register","refesh");
@@ -329,6 +333,9 @@ class shop extends CI_Controller{
   }
 
   public function account($id){
+    $data['product']=$this->db->join('band','product.product_band = band.band_id')->order_by('product_id','DESC')->limit('4')->get('product')->result_array();
+    $data['band']=$this->db->get('band');
+    $data['Get_product']=$this->db->select('product_id')->get('product')->row_array();
     $data['detail']=$this->db->where('member_username',$id)->get('member')->row_array();
     $this->load->view('shop/account',$data);
   }

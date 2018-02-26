@@ -61,29 +61,32 @@
         var newtotal = $("#totalsellbeforecomma").val();
         var checkQty = $("#checkQty").val();
 
-        if(receive>=total){
-          if(receive == total){
-            var change = GetReceive - newtotal;
-            $("#change").val(addCommas(change.toFixed(2)));
-            if(checkQty == "disabled"){
-              $("#submit_sale").prop('disabled', true);
+        if(newtotal != 0){
+          if(receive>=total){
+            if(receive == total){
+              var change = GetReceive - newtotal;
+              $("#change").val(addCommas(change.toFixed(2)));
+              if(checkQty == "disabled"){
+                $("#submit_sale").prop('disabled', true);
+              }else{
+                $("#submit_sale").prop('disabled', false);
+              }
             }else{
-              $("#submit_sale").prop('disabled', false);
+              var change = GetReceive - newtotal;
+              $("#change").val(addCommas(change.toFixed(2)));
+              if(checkQty == "disabled"){
+                $("#submit_sale").prop('disabled', true);
+              }else{
+                $("#submit_sale").prop('disabled', false);
+              }
             }
           }else{
             var change = GetReceive - newtotal;
+            $("#submit_sale").prop('disabled', true);
             $("#change").val(addCommas(change.toFixed(2)));
-            if(checkQty == "disabled"){
-              $("#submit_sale").prop('disabled', true);
-            }else{
-              $("#submit_sale").prop('disabled', false);
-            }
           }
-        }else{
-          var change = GetReceive - newtotal;
-          $("#submit_sale").prop('disabled', true);
-          $("#change").val(addCommas(change.toFixed(2)));
         }
+
     })
   })
 </script>

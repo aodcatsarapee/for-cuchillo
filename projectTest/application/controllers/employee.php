@@ -13,6 +13,18 @@ class employee extends CI_Controller{
     $this->load->view("employee/index",$data);
   }
 
+  public function checkuser(){
+    $user_name = $this->input->post('user_name');
+    if(!empty($user_name)){
+      $data=$this->sale_model->get_login_same($user_name);
+      if(count($data) > 0){
+        echo json_encode($data);
+      }else{
+        echo json_encode($data);
+      }
+    }
+  }
+
   public function form_insert(){
     $position=$this->db->get('position');
     $position_name=$this->db->get('employee');

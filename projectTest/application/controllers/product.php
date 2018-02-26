@@ -16,6 +16,18 @@ class product extends CI_Controller{
     //$this->load->view("home/footer");
   }
 
+  public function checkuser(){
+    $user_name = $this->input->post('user_name');
+    if(!empty($user_name)){
+      $data=$this->sale_model->get_product_barcode($user_name);
+      if(count($data) > 0){
+        echo json_encode($data);
+      }else{
+        echo json_encode($data);
+      }
+    }
+  }
+
   public function form_insert(){
     $cate=$this->db->get('categories');
     $band=$this->db->get('band');
@@ -222,10 +234,13 @@ class product extends CI_Controller{
 
   }
 
-  public function delete($product_id){
-      $this->db->delete("product",array('product_id'=>$product_id));
+  public function delete(){
+    $user_id=$this->input->post('Del_id');
+    $data=$this->db->delete("product",array('product_id'=>$user_id));
+    echo json_encode($data);
+      /*$this->db->delete("product",array('product_id'=>$product_id));
       redirect("product","refesh");
-      exit();
+      exit();*/
   }
 
   public function selectproduct(){

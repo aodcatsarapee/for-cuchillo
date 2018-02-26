@@ -26,7 +26,7 @@
                     </div>
                     <div class="body" style="min-height: 600px;">
                         <table class="table table-responsive table-bordered table-hover" id="data-table">
-                            <thead class="bg-primary">
+                            <thead>
                             <tr>
                                 <th width="10%" class="text-center">ลำดับ</th>
                                 <th>เจ้าหนี้</th>
@@ -99,4 +99,3 @@
 </body>
 
 </html>
-

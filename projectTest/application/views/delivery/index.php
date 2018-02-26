@@ -66,7 +66,8 @@
                                   echo "<td>".$_delivery['member_firstname']." ".$_delivery['member_lastname']."</td>";
                                   echo "<td>".$_delivery['member_address']."</td>";
                                   echo "<td>".$_delivery['member_tel']."</td>";
-                                  echo "<td><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#showHis' id='idShowHistory' onclick='showHistoryAjax(",$_delivery['sell_order_id'],")'>",$show,"</button><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#changeDelivery' id='idEdit' onclick='editEmpAjax(",$detail['user_id'],")'>",$change,"</button>".anchor("delivery/print/".$_delivery['sell_order_id'],$print),"</td>";
+                                  //echo "<td><button style='margin-right:20px;' class='btn bg-light-blue waves-effect' onclick='showHistoryAjax(",$_delivery['sell_order_id'],")' data-toggle='modal' data-target='#showHis'>DETAIL</button></td>"; onclick='editEmpAjax(",$_delivery['sell_order_id'],")'
+                                  echo "<td style='width:300px;'><button class='btn bg-light-blue waves-effect' onclick='showHistoryAjax(",$_delivery['sell_order_id'],")' data-toggle='modal' data-target='#showHis'>DETAIL</button> &nbsp; <button class='btn bg-light-blue waves-effect'  data-toggle='modal' data-target='#changeDelivery'>EDIT</button>  &nbsp;  <a href=",base_url(),"delivery/delivery_detail/".$_delivery['sell_order_id']," style='margin-right:20px;' target='_blank' class='btn bg-light-blue waves-effect'>PRINT </a></td>";
                                 echo "</tr>";
                             }
                             ?>
@@ -90,11 +91,13 @@
 
                                  <?php
                                  echo form_open('delivery/change_status/'.$_delivery['sell_order_id']);  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
-                                 echo "<div class='form-group'>";
-                                   echo "<label for='position'>สถานะ : </label>";
-                                   echo "<select class='form-control' id='Status' name='Status' style='height:34px;'>";
-                                     echo "<option value='1'>จัดส่งเรียบร้อย</option>";
-                                   echo "</select>";
+                                 echo "<div class='row clearfix'>";
+                                   echo "<div class='form-line'>";
+                                     echo "<label for='position'>สถานะ : </label>";
+                                     echo "<select class='form-control' id='Status' name='Status' style='height:34px;'>";
+                                       echo "<option value='2'>จัดส่งเรียบร้อย</option>";
+                                     echo "</select>";
+                                   echo "</div>";
                                  echo "</div>";
                                  ?>
 
@@ -122,7 +125,19 @@
                                  <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
                                  <h4 class="modal-title" style="text-align:center;color:white;">ข้อมูลรายละเอียดการส่งสินค้า</h4>
                                </div>
-                               <div class="modal-body" id='data'>
+                               <div class="modal-body">
+                                 <table class='table table-striped table-bordered' cellspacing='0' width='100%'>
+                                   </head>
+                                   <tr>
+                                     <th>ชื่อสินค้า</th>
+                                     <th>ราคาต่อชิ้น</th>
+                                     <th>จำนวน</th>
+                                     <th>ราคารวม</th>
+                                   </tr>
+                                   </thead>
+                                   <tbody id='data'>
+                                   </tbody>
+                                 </table>
                                </div>
                                <div class="modal-footer">
                                  <button type="button" class="btn btn-success" id='mdCloseCus' data-dismiss="modal">CLOSE</button>
@@ -178,9 +193,9 @@ function addCommas(nStr)
   }
   return x1 + x2;
 }
+
 function showHistoryAjax (idShow){
     var idShow = idShow;
-    $("#showHis").click();
     $.ajax({
       url: "<?php echo base_url() ?>delivery/detail/",
       type: "POST",
@@ -189,20 +204,30 @@ function showHistoryAjax (idShow){
       },
       dataType: 'json',
       success: function(data){
+        var sumtotal = 0;
         $.each(data,function( key, value ){
-          $("#data").append("ชื่อสินค้า : ",value.sell_detail_name," : ");
-          $("#data").append(" จำนวน ",(addCommas(value.sell_detail_amount))," อัน </p> ");
+          var total = value.sell_detail_amount * value.sell_detail_price;
+          sumtotal = sumtotal + total;
+          $("#data").append('<tr><td>' + value.sell_detail_name + '</td><td>' + addCommas(parseFloat(value.sell_detail_price).toFixed(2)) + ' บาท</td><td>' + value.sell_detail_amount + ' ชิ้น</td><td>' + addCommas((total).toFixed(2)) + ' บาท</td></tr>');
         })
+          $("#data").append('<tr><td id=sumtotal colspan=4>รวมทั้งหมด ' + addCommas((sumtotal).toFixed(2)) + ' บาท</td></tr>');
+          $("#sumtotal").css('text-align','right');
       },
       error: function(){
         alert('Error....');
         $("#mdCloseCus").click();
       }
     });
-}
+  }
 
 $(document).ready(function(){
-  $('#example').DataTable();
+  $('#example').DataTable({
+    "order": [[0, "desc" ]]
+  });
+
+  $("#showHis").on("hidden.bs.modal", function(){
+    $("#showHis").find("#data").html("");
+  });
 
 });
 </script>

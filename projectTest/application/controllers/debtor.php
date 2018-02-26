@@ -124,7 +124,7 @@ class debtor extends CI_Controller{
     }
 
     public function conclude_debtor(){
-      $data['debtor']=$this->db->group_by('cus_name')->join("customer","customer.cus_id = product_sell.cus_id")->get('product_sell')->result_array();
+      $data['debtor']=$this->db->group_by('cus_name')->where('cus_type','ลูกค้าสมาชิก')->join("customer","customer.cus_id = product_sell.cus_id")->get('product_sell')->result_array();
       $data['employee']=$this->db->where('user_name',$this->session->userdata('username'))->get('employee')->row_array();
       $this->load->view("home/header",$data);
       $this->load->view('debtor/conclude',$data);

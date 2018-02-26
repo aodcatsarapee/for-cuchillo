@@ -57,7 +57,7 @@
                                         <td class="text-center"><?php echo $list->creditor_detail_num; ?></td>
                                         <td class="text-center"><?php if($list->creditor_detail_date_at_pay != '' ){  $date=date_create($list->creditor_detail_date_at_pay); echo date_format($date,"d/m/Y ") ; }else{ echo "-"; } ?></td>
                                         <td class="text-center"> <?php echo $list->creditor_detail_status; ?> </td>
-                                        <td class="text-center"><?php echo number_format($list->creditor_detail_total,2); ?></td>
+                                        <td class="text-center"><?php echo number_format($list->creditor_detail_total,2); ?> บาท</td>
                                         <td class="text-center"><?php if($list->creditor_detail_date_pay != '' ){  $date=date_create($list->creditor_detail_date_pay); echo date_format($date,"d/m/Y ") ; }else{ echo "-"; } ?></td>
                                         <td width="25%" class="text-center">
                                             <?php
@@ -76,13 +76,13 @@
 
                             <tr>
                                 <td colspan="4" class="text-center"> <b>ยอดค้างชำระ</b> </td>
-                                <td class="text-center"> <?php echo  number_format($total_pay,2); ?> </td>
+                                <td class="text-center"> <?php echo  number_format($total_pay,2); ?> บาท</td>
                                 <td  class="text-center"><b>ชำระเเล้ว</b> </td>
                                 <td class="text-center">
                                     <?php
 
                                     echo  number_format(($total_all_pay - $total_pay),2); ?>
-                                </td>
+                                บาท</td>
                             </tr>
                             </tbody>
                         </table>
@@ -178,4 +178,3 @@
 </body>
 
 </html>
-

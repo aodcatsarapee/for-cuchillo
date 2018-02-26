@@ -76,11 +76,18 @@
                               echo "</div>";
                             echo "</div>";
 
-                            $newDetail = str_replace("+","\n",$detail_pro);
+
+
+                            //$newDetail = str_replace(":","\n",$data['product']);
                             //$newDetailAmount = str_replace("+","\n",$detail_amount);
                             echo "<div class='row clearfix'>";
                               echo "<div class='form-line'>";
-                                echo "<label>อะไหล่ที่ใช้ : </label> <textarea name='repair_product' rows=5 disabled class='form-control'>",$newDetail,"</textarea>";
+                                echo "<label>อะไหล่ที่ใช้ : </label> <textarea name='repair_product' rows=5 disabled class='form-control'>";
+                                $count = count($product);
+                                for($i=0;$i<$count;$i++){
+                                  echo $product[$i]," ชิ้น\n";
+                                }
+                                echo "</textarea>";
                               echo "</div>";
                             echo "</div>";
 

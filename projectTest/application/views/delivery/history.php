@@ -58,7 +58,11 @@
                           </div>
                         </div>
                       </form>
-
+                      <br>
+                      <div class="alert alert-info" style='width:400px;'>
+                         <strong>วันที่เริ่มต้น : </strong> <?php echo $Start; ?><strong> วันที่สิ้นสุด : </strong> <?php echo $End; ?>
+                     </div>
+                      <br>
                       <table id="example" class="display" cellspacing="0" width="100%">
                           <thead>
                               <tr>
@@ -80,7 +84,7 @@
                                   echo "<td>".$_delivery['member_firstname']." ".$_delivery['member_lastname']."</td>";
                                   echo "<td>".$_delivery['member_address']."</td>";
                                   echo "<td>".$_delivery['member_tel']."</td>";
-                                  echo "<td><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#showHis' id='idShowHistory' onclick='showHistoryAjax(",$_delivery['sell_order_id'],")'>",$show,"</button></td>";
+                                  echo "<td><button class='btn bg-light-blue waves-effect' onclick='showHistoryAjax(",$_delivery['sell_order_id'],")' data-toggle='modal' data-target='#showHis'>DETAIL</button></td>";
                                 echo "</tr>";
                                 $num++;
                             }
@@ -137,7 +141,19 @@
                                  <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
                                  <h4 class="modal-title" style="color:white;">ข้อมูลการส่งสินค้า</h4>
                                </div>
-                               <div class="modal-body" id='data'>
+                               <div class="modal-body">
+                                 <table class='table table-striped table-bordered' cellspacing='0' width='100%'>
+                                   </head>
+                                   <tr>
+                                     <th>ชื่อสินค้า</th>
+                                     <th>ราคาต่อชิ้น</th>
+                                     <th>จำนวน</th>
+                                     <th>ราคารวม</th>
+                                   </tr>
+                                   </thead>
+                                   <tbody id='data'>
+                                   </tbody>
+                                 </table>
                                </div>
                                <div class="modal-footer">
                                  <button type="button" class="btn btn-success" id='mdCloseCus' data-dismiss="modal">CLOSE</button>
@@ -193,9 +209,10 @@ function addCommas(nStr)
   }
   return x1 + x2;
 }
+
+
 function showHistoryAjax (idShow){
     var idShow = idShow;
-    $("#showHis").click();
     $.ajax({
       url: "<?php echo base_url() ?>delivery/detail/",
       type: "POST",
@@ -204,17 +221,22 @@ function showHistoryAjax (idShow){
       },
       dataType: 'json',
       success: function(data){
+        var sumtotal = 0;
         $.each(data,function( key, value ){
-          $("#data").append("ชื่อสินค้า : ",value.sell_detail_name," : ");
-          $("#data").append(" จำนวน ",(addCommas(value.sell_detail_amount))," อัน </p> ");
+          var total = value.sell_detail_amount * value.sell_detail_price;
+          sumtotal = sumtotal + total;
+          $("#data").append('<tr><td>' + value.sell_detail_name + '</td><td>' + addCommas(parseFloat(value.sell_detail_price).toFixed(2)) + ' บาท</td><td>' + value.sell_detail_amount + ' ชิ้น</td><td>' + addCommas((total).toFixed(2)) + ' บาท</td></tr>');
         })
+          $("#data").append('<tr><td id=sumtotal colspan=4>รวมทั้งหมด ' + addCommas((sumtotal).toFixed(2)) + ' บาท</td></tr>');
+          $("#sumtotal").css('text-align','right');
       },
       error: function(){
         alert('Error....');
         $("#mdCloseCus").click();
       }
     });
-}
+  }
+
 
 $(document).ready(function(){
   $('#example').DataTable();

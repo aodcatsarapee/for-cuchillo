@@ -99,16 +99,13 @@
                                       }
                                     }
                                     echo "<td>",$re['repair_date'],"</td>";
-                                    if($position == '5'){
                                       if($re['repair_status'] == '4'){
                                         echo "<td style='width:390px;'><button type='button' onclick='ShowDetail(",$re['repair_id'],")' class='btn bg-light-green waves-effect'><i class='material-icons'>search</i><span>DETAIL</span></button>&nbsp; <button type='button' data-toggle='modal' data-target='#editEmp' id='idEdit' onclick='editRepairAjax(",$re['repair_id'],")' class='btn bg-orange waves-effect'><i class='material-icons'>content_cut</i><span>EDIT</span></button> &nbsp;<button type='button' onclick='conclude_repair(",$re['repair_id'],")' class='btn bg-black waves-effect'><i class='material-icons'>settings</i><span>CONCLUDE</span></button> &nbsp;<button type='button'  onclick='deleteData(",$re['repair_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
                                         /*echo "<td style='width:150px;'>".anchor("repair/detail/".$re['repair_id'],$show),"<button type='button' data-toggle='modal' data-target='#editEmp' id='idEdit' onclick='editRepairAjax(",$re['repair_id'],")' class='btn bg-orange waves-effect'><i class='material-icons'>content_cut</i><span>EDIT</span></button><img id='myImgConclude' onclick='javascript:conclude_repair(",$re['repair_id'],")' src=",base_url('Frontend/images/icon/check.png'),">"?><img style="padding-left:5px;" src="<?php echo base_url(); ?>Frontend/images/icon/del.png" onclick="deleteData(<?php echo $re['repair_id']; ?>)"></td>*/
                                       }else{
                                         echo "<td style='width:270px;'><button type='button' onclick='ShowDetail(",$re['repair_id'],")' class='btn bg-light-green waves-effect'><i class='material-icons'>search</i><span>DETAIL</span></button>&nbsp; <button type='button' data-toggle='modal' data-target='#editEmp' id='idEdit' onclick='editRepairAjax(",$re['repair_id'],")' class='btn bg-orange waves-effect'><i class='material-icons'>content_cut</i><span>EDIT</span></button> &nbsp;<button type='button'  onclick='deleteData(",$re['repair_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
                                       }
-                                    }else{
-                                      echo "<td style='width:270px;'><button type='button' onclick='ShowDetail(",$re['repair_id'],")' class='btn bg-light-green waves-effect'><i class='material-icons'>search</i><span>DETAIL</span></button>&nbsp;<button type='button'  onclick='deleteData(",$re['repair_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
-                                    }
+                                      //echo "<td style='width:270px;'><button type='button' onclick='ShowDetail(",$re['repair_id'],")' class='btn bg-light-green waves-effect'><i class='material-icons'>search</i><span>DETAIL</span></button>&nbsp;<button type='button'  onclick='deleteData(",$re['repair_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
                                 echo "</tr>";
                               }
                               ?>
@@ -134,11 +131,11 @@
         </div>
         <div class="modal-body">
           <ul class="nav nav-tabs tab-nav-right" role="tablist">
-            <li role="presentation" class="active"><a href="#home" data-toggle="tab">Basic Data</a></li>
+            <li role="presentation" class="active"><a href="#home" id="basictab" data-toggle="tab">Basic Data</a></li>
             <li role="presentation"><a href="#profile" data-toggle="tab">Detail & Picture</a></<li></li>
           </ul>
           <?php
-          echo form_open_multipart('repair/insert');
+          echo form_open_multipart('repair/insert','id="frmInsertRepair"');
           echo "<div class='tab-content'>";
             echo "<div role='tabpanel' class='tab-pane fade in active' id='home'>";
               echo "<br>";
@@ -148,13 +145,13 @@
 
               echo "<div class='input-group'>";
                 echo "<div class='form-line'>";
-                  echo "<label>ชื่อลูกค้า : </label> <input type='text' name='cus_name' class='form-control' required>";
+                  echo "<label>ชื่อลูกค้า : </label> <input type='text' name='cus_name' class='form-control'>";
                 echo "</div>";
               echo "</div>";
 
               echo "<div class='input-group'>";
                 echo "<div class='form-line'>";
-                  echo "<label>เบอร์โทรศัพท์ลูกค้า : </label> <input type='text' name='cus_tel' class='form-control _number' maxlength='10' required>";
+                  echo "<label>เบอร์โทรศัพท์ลูกค้า : </label> <input type='text' name='cus_tel' class='form-control _number' maxlength='10'>";
                 echo "</div>";
               echo "</div>";
 
@@ -176,14 +173,14 @@
 
               echo "<div class='input-group'>";
                 echo "<div class='form-line'>";
-                  echo "<label>ป้ายทะเบียนรถ : </label><input type='text' name='repair_label' class='form-control' required maxlength='50'>";
+                  echo "<label>ป้ายทะเบียนรถ : </label><input type='text' name='repair_label' class='form-control' maxlength='50'>";
                 echo "</div>";
               echo "</div>";
 
               echo "<div class='input-group'>";
                 echo "<div class='form-line'>";
                   echo "<label for='comment'>สาเหตุที่ต้องการซ่อม:</label>";
-                  echo "<textarea class='form-control' rows='5' id='address' name='repair_cause' maxlength='200' required></textarea>";
+                  echo "<textarea class='form-control' rows='5' id='address' name='repair_cause' maxlength='200'></textarea>";
                 echo "</div>";
               echo "</div>";
             echo "</div>";
@@ -200,12 +197,12 @@
                 }
               echo "</select>";
 
-              echo "<button id='AddPro' class='btn btn-primary btn-xs waves-effect waves-light'>";
+              echo "<button type='button' class='AddPro btn btn-primary btn-xs waves-effect waves-light'>";
                   echo "<i class='material-icons'>search</i>";
                   echo "<span>ADD</span>";
               echo "</button>";
 
-              echo "<table class='table table-striped table-bordered' cellspacing='0' width='100%'>";
+              echo "<table id='addproductstable' class='table table-striped table-bordered' cellspacing='0' width='100%'>";
                 echo "<thead>";
                   echo "<tr>";
                     echo "<th>ชื่อสินค้า</th>";
@@ -267,7 +264,7 @@
             <li role="presentation"><a href="#profileEdit" data-toggle="tab">Detail & Picture</a></<li></li>
           </ul>
           <?php
-          echo form_open_multipart('repair/update');
+          echo form_open_multipart('repair/update', 'id="frmEditRepair"');
             echo "<div class='tab-content'>";
               echo "<div role='tabpanel' class='tab-pane fade in active' id='homeEdit'>";
                 echo "<br>";
@@ -315,26 +312,59 @@
                echo "</div>";
 
                echo "<div role='tabpanel' class='tab-pane fade' id='profileEdit'>";
-                 echo "<br>";
-                 echo "<div class='input-group'>";
-                 echo "<label>อะไหล่ที่ใช้ : </label>";
-                 ?>
-                 <select id='Editoptgroup' name="Editoptgroup[]" class='ms' multiple='multiple'>";
-                   <?php
-                   foreach($product as $_product){
-                     echo "<optgroup label=",$_product['band_name'],">";
-                     echo "<option id='ee' value=",$_product['product_id'],">",$_product['product_name'],"</option>";
-                   }
-                 echo "</select>";
-                 echo "</div>";
+          echo "<br>";
+          echo "<div class='input-group'>";
 
-                 echo "<div class='input-group'>";
-                   /*echo "<label>สถานะ : </label><select id='edit_repair_status' name='edit_repair_status' class='form-control'>";
-                       foreach($status as $repair_status){
-                         echo "<option value=",$repair_status['re_status_id'],">",$repair_status['re_status_name'],"</option>";
-                       }
-                   echo "</select>";*/
-                 echo "</div>";
+          echo "<label>อะไหล่ที่ใช้ :  </label>";
+          echo "<select class='selectpicker form-control' id='re_product_name' name='re_product_name' title='กรุณาเลือกอะไหล่' data-live-search='true'>";
+          foreach ($product as $_product) {
+              echo "<optgroup label=",$_product['band_name'],">";
+              echo "<option value=",$_product['product_id'],">",$_product['product_name'],"</option>";
+          }
+          echo "</select>";
+
+          echo "<button type='button' class='AddPro btn btn-primary btn-xs waves-effect waves-light'>";
+          echo "<i class='material-icons'>search</i>";
+          echo "<span>ADD</span>";
+          echo "</button>";
+
+          echo "<table id='addproductstable' class='table table-striped table-bordered' cellspacing='0' width='100%'>";
+          echo "<thead>";
+          echo "<tr>";
+          echo "<th>ชื่อสินค้า</th>";
+          echo "<th>จำนวนที่ใช้</th>";
+          echo "<th>Action</th>";
+          echo "</tr>";
+          echo "</thead>";
+
+          echo "<tbody id='data'>";
+          echo "</tbody>";
+          echo "</table>";
+
+          /*echo "<label>อะไหล่ที่ใช้ : </label>";
+          ?>
+          <select id='optgroup' name="optgroup[]" class='ms' multiple='multiple'>";
+            <?php
+            foreach($product as $_product){
+              echo "<optgroup label=",$_product['band_name'],">";
+              echo "<option value=",$_product['product_id'],">",$_product['product_name'],"</option>";
+            }
+          echo "</select>";*/
+          echo "</div>";
+
+          echo "<div class='input-group'>";
+          echo "<label>สถานะ : </label><select id='edit_repair_status' name='edit_repair_status' class='form-control'>";
+          foreach($status as $repair_status){
+              echo "<option value=",$repair_status['re_status_id'],">",$repair_status['re_status_name'],"</option>";
+          }
+          echo "</select>";
+          echo "</div>";
+
+          echo "<div class='row clearfix'>";
+            echo "<div class='col-sm-12'>";
+              echo "<label>ค่าแรงช่าง : </label> <input type='text' id='pay_repair' name='pay_repair' class='form-control _number' required>";
+            echo "</div>";
+          echo "</div>";
 
                  echo "<div class='form-group'>";
                        echo "<label>รูปของรถ : </label> <input type='file' name='repair_picture'>";
@@ -529,8 +559,10 @@ $(document).ready(function(){
       $("#addProduct").modal('show');
     })
 
-    $("#AddPro").click(function(){
-      var id = $("#re_product_name").val();
+    $(".AddPro").click(function(){
+        var formid = $(this).parents("form").attr('id');
+        var id = $("#"+formid+" #re_product_name").val();
+
       $.ajax({
         url: "<?php echo base_url() ?>repair/add_pro",
         type: "POST",
@@ -542,12 +574,7 @@ $(document).ready(function(){
         success: function(data){
           var num = 1;
           if(data != null){
-            $("#data").append('<tr><td><input type=text name="proname[]" id="proname'+ num +'"   value=' + data.product_name + ' readonly></td><td><input type=number min=1 max=100 value=1></td><td><button type=button onclick="deleteData(' + data.product_id + ')" class=btn bg-red waves-effect><i class=material-icons>report_problem</i><span>DELETE</span></button></td></tr>');
-          }
-          $(proname1)
-          for(var item in proname1){
-            var name = proname1[item].value;
-              //console.log(proname1[item].value);
+            $("#"+formid+" #data").append('<tr><td><input type="text" class="hidden" id="proid" name="proid[]" value="'+data.product_id+'"/><input type=text name="proname[]" id="proname'+ num +'"   value=' + data.product_name + ' readonly></td><td><input id="proqty" name="proqty[]" type=number min=1 max=100 value=1></td><td><button type=button onclick="deleteDetailList(this)" class=btn bg-red waves-effect><i class=material-icons>report_problem</i><span>DELETE</span></button></td></tr>');
           }
 
         },
@@ -581,6 +608,10 @@ $(document).ready(function(){
 
 });
 
+function deleteDetailList(tag){
+    $(tag).parents('tr').remove();
+}
+
 function deleteData(id){
   var Delid = id;
   swal({
@@ -608,8 +639,11 @@ function deleteData(id){
           });
         },
         error: function(){
-          alert('Error....');
-          $("#mdClose").click();
+          swal("ข้อมูลที่คุณเลือกถูกลบเรียบร้อยแล้ว !", {
+            icon: "success",
+          }).then((value) => {
+            location.reload();
+          });
         }
       });
     }
@@ -625,37 +659,233 @@ function add_conclude_repair(id){
 
 }
 
-function editRepairAjax (idRepairEdit){
+function editRepairAjax (idRepairEdit) {
     var idEdit = idRepairEdit;
     $("#editRepair").modal('show');
     $.ajax({
-      url: "<?php echo base_url() ?>repair/form_update/",
-      type: "POST",
-      data: {
-        "idEdit" : idEdit
-      },
-      dataType: 'json',
-      success: function(data){
-          $("#edit_id").val(data.repair_id);
-          $("#edit_cus_name").val(data.customer_name);
-          $("#edit_cus_tel").val(data.customer_tel);
-          $("#edit_repair_label").val(data.repair_label);
-          $("#edit_repair_cause").val(data.repair_cause);
-          //$("#edit_repair_product").val(data.repair_product);
-          $("#old_pic").val(data.repair_picture);
-          var type = data.repair_type;
-          $('#edit_repair_type option[value=' + type + ']').attr('selected','selected');
-          var band = data.repair_band;
-          $('#edit_repair_band option[value=' + band + ']').attr('selected','selected');
-          var status = data.repair_status;
-          $('#edit_repair_status option[value=' + status + ']').attr('selected','selected');
-          var muti = data.repair_product;
+        url: "<?php echo base_url() ?>repair/form_update/",
+        type: "POST",
+        async: false,
+        data: {
+            "idEdit": idEdit
+        },
+        dataType: 'json',
+        success: function (data) {
+            $("#edit_id").val(data.repair_id);
+            $("#edit_cus_name").val(data.customer_name);
+            $("#edit_cus_tel").val(data.customer_tel);
+            $("#edit_repair_label").val(data.repair_label);
+            $("#edit_repair_cause").val(data.repair_cause);
+            //$("#edit_repair_product").val(data.repair_product);
+            $("#old_pic").val(data.repair_picture);
+            var type = data.repair_type;
+            $('#edit_repair_type option[value=' + type + ']').attr('selected', 'selected');
+            var band = data.repair_band;
+            $('#edit_repair_band option[value=' + band + ']').attr('selected', 'selected');
+            var status = data.repair_status;
+            $('#edit_repair_status option[value=' + status + ']').attr('selected', 'selected');
 
-      },
-      error: function(){
-        alert('Error....');
-        $("#mdClose").click();
-      }
+            if(data.repair_product != ""){
+                var tblobj = $(addproductstable);
+                var products = (data.repair_product).split(',');
+                products.pop();
+                for(var i in products){
+                    var detail = products[i].split(':'); // 0 id 1 name 2 qty
+                    var template = '<tr><td><input type="text" class="hidden" id="proid" name="proid[]" value="'+detail[0]+'"><input type="text" name="proname[]" id="proname1" value="'+detail[1]+'" *ทั่วไป(ใช้ได้หลายรุ่น)="" readonly=""></td><td><input id="proqty" name="proqty[]" type="number" min="1" max="100" value="'+detail[2]+'"></td><td><button type="button" onclick="deleteDetailList(this)" class="btn" bg-red="" waves-effect=""><i class="material-icons">report_problem</i><span>DELETE</span></button></td></tr>';
+                    tblobj.find("tbody").append(template);
+                }
+            }
+        },
+        error: function () {
+            alert('Error....');
+            $("#mdClose").click();
+        }
     });
 }
+
+function getModel(form){
+    var data = {
+        cus_name: form.cus_name.value ,
+        cus_tel: form.cus_tel.value ,
+        repair_type: parseInt(form.repair_type.value) ,
+        repair_band: parseInt(form.repair_band.value) ,
+        repair_label: form.repair_label.value,
+        repair_cause: form.address.value
+    };
+
+    if(form.proname1 != undefined){
+        var pronames = new Array();
+        for(var i = 0;i < form.proname1.length; i++){
+            var pronameobj = {
+                id: (form.proid[parseInt(i)].value),
+                name: (form.proname1[parseInt(i)].value),
+                qty: parseInt(form.proqty[parseInt(i)].value)
+            };
+            pronames.push(pronameobj);
+        }
+        data.products = pronames;
+    }
+
+    if(form.repair_picture.files.length == 1){
+        data.repair_picture = form.repair_picture.files[0];
+    }
+    return data;
+}
+
+function clearFrmError(frm_id){
+    $("#"+frm_id.id+" .form-line").removeClass("error");
+    $("#"+frm_id.id+" #tag-error").remove();
+}
+
+$(document).on("blur","input,textarea",function(event){
+    $(this).parents(".form-line").removeClass("focused");
+    $(this).parents(".form-line").removeClass("error");
+    $(this).parents(".form-line").parent().find("#tag-error").remove();
+});
+
+function validateSaveRepair(model,form){
+    var result = true;
+
+    clearFrmError(form);
+
+    if(model.cus_name == ""){
+        result = false;
+        $(basictab).click();
+        $(form.cus_name).parents(".form-line").addClass("focused error");
+        $(form.cus_name).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุราระบุชื่อลูกค้า</label>');
+    }
+
+    if(model.cus_tel == ""){
+        result = false;
+        $(basictab).click();
+        $(form.cus_tel).parents(".form-line").addClass("focused error");
+        $(form.cus_tel).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุณาระบุเบอร์โทรศัพท์ลูกค้า</label>');
+    }
+
+    if(model.repair_label == ""){
+        result = false;
+        $(basictab).click();
+        $(form.repair_label).parents(".form-line").addClass("focused error");
+        $(form.repair_label).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุราระบุป้ายทะเบียนรถ</label>');
+    }
+
+    if(model.repair_cause == ""){
+        result = false;
+        $(basictab).click();
+        $(form.repair_cause).parents(".form-line").addClass("focused error");
+        $(form.repair_cause).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุณาระบุสาเหตุที่ต้องการซ่อม</label>');
+    }
+
+    return result;
+}
+
+$(document).on("submit","#frmInsertRepair",function(event){
+    event.preventDefault();
+    var frm = frmInsertRepair;
+    var modeldata = getModel(frm);
+    if(validateSaveRepair(modeldata,frmInsertRepair)){
+        $.ajax({
+            url: "repair/insert", // Url to which the request is send
+            type: "POST",             // Type of request to be send, called as method
+            data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+            contentType: false,       // The content type used when sending data to the server.
+            cache: false,             // To unable request pages to be cached
+            processData:false,        // To send DOMDocument or non processed data file it is set to false
+            async: false,
+            success: function(data)   // A function to be called if request succeeds
+            {
+                $(".modal").modal('hide');
+                location.reload();
+            }
+        });
+    }
+});
+
+function getModelEdit(form){
+    var data = {
+        cus_name: form.edit_cus_name.value ,
+        cus_tel: form.edit_cus_tel.value ,
+        repair_type: parseInt(form.edit_repair_type.value) ,
+        repair_band: parseInt(form.edit_repair_band.value) ,
+        repair_label: form.edit_repair_label.value,
+        repair_cause: form.edit_repair_cause.value
+    };
+
+    if(form.proname1 != undefined){
+        var pronames = new Array();
+        for(var i = 0;i < form.proname1.length; i++){
+            var pronameobj = {
+                id: (form.proid[parseInt(i)].value),
+                name: (form.proname1[parseInt(i)].value),
+                qty: parseInt(form.proqty[parseInt(i)].value)
+            };
+            pronames.push(pronameobj);
+        }
+        data.products = pronames;
+    }
+
+    if(form.repair_picture.files.length == 1){
+        data.repair_picture = form.repair_picture.files[0];
+    }
+    return data;
+}
+
+function validateSaveRepairEdit(model,form){
+    var result = true;
+
+    clearFrmError(form);
+
+    if(model.cus_name == ""){
+        result = false;
+        $(basictab).click();
+        $(form.edit_cus_name).parents(".form-line").addClass("focused error");
+        $(form.edit_cus_name).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุราระบุชื่อลูกค้า</label>');
+    }
+
+    if(model.cus_tel == ""){
+        result = false;
+        $(basictab).click();
+        $(form.edit_cus_tel).parents(".form-line").addClass("focused error");
+        $(form.edit_cus_tel).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุณาระบุเบอร์โทรศัพท์ลูกค้า</label>');
+    }
+
+    if(model.repair_label == ""){
+        result = false;
+        $(basictab).click();
+        $(form.edit_repair_label).parents(".form-line").addClass("focused error");
+        $(form.edit_repair_label).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุราระบุป้ายทะเบียนรถ</label>');
+    }
+
+    if(model.repair_cause == ""){
+        result = false;
+        $(basictab).click();
+        $(form.edit_repair_cause).parents(".form-line").addClass("focused error");
+        $(form.edit_repair_cause).parents(".form-line").parent().append('<label id="tag-error" class="error" for="email">กรุณาระบุสาเหตุที่ต้องการซ่อม</label>');
+    }
+
+    return result;
+}
+
+$(document).on("submit","#frmEditRepair",function(event){
+    event.preventDefault();
+    var frm = frmEditRepair;
+    var modeldata = getModelEdit(frm);
+    if(validateSaveRepairEdit(modeldata,frmEditRepair)){
+        $.ajax({
+            url: "repair/update", // Url to which the request is send
+            type: "POST",             // Type of request to be send, called as method
+            data: new FormData(this), // Data sent to server, a set of key/value pairs (i.e. form fields and values)
+            contentType: false,       // The content type used when sending data to the server.
+            cache: false,             // To unable request pages to be cached
+            processData:false,        // To send DOMDocument or non processed data file it is set to false
+            async: false,
+            success: function(data)   // A function to be called if request succeeds
+            {
+                $(".modal").modal('hide');
+                location.reload();
+            }
+        });
+    }
+});
+
 </script>

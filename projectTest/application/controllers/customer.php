@@ -22,18 +22,17 @@ class customer extends CI_Controller{
 
     public function insert(){
       $data=array(
-          "cus_cardid"=>$this->input->post("cus_cardid"),
-          "cus_name"=>$this->input->post("cus_name"),
-          "cus_address"=>$this->input->post("cus_address"),
-          "cus_tel"=>$this->input->post("cus_tel"),
-          "cus_type"=>$this->input->post("cus_type"),
+          "cus_cardid"=>$this->input->post("addCus_cardid"),
+          "cus_name"=>$this->input->post("addCus_name"),
+          "cus_address"=>$this->input->post("addCus_address"),
+          "cus_tel"=>$this->input->post("addCus_tel"),
+          "cus_type"=>$this->input->post("addCus_type"),
           "cus_date"=>date('Y-m-d H:i:s')
         );
 
       $this->db->insert("customer",$data);
-      echo json_encode($data);
-      //redirect("customer","refresh");
-      //exit();
+      redirect("customer","refresh");
+      exit();
     }
 
     public function form_update(){
@@ -58,16 +57,17 @@ class customer extends CI_Controller{
         $this->db->where('cus_id',$id)->update('customer',$customer); //update เข้าตาราง product โดยใช้ข้อมูลที่เก็บไว้ใน $product
         redirect("customer","refesh");
         exit();*/
-        $id = $this->input->post("id");
+        $id = $this->input->post("editCus_id");
         $data=array(
-            "cus_cardid"=>$this->input->post("cus_cardid"),
-            "cus_name"=>$this->input->post("cus_name"),
-            "cus_address"=>$this->input->post("cus_address"),
-            "cus_tel"=>$this->input->post("cus_tel")
+            "cus_cardid"=>$this->input->post("editCus_cardid"),
+            "cus_name"=>$this->input->post("editCus_name"),
+            "cus_address"=>$this->input->post("editCus_address"),
+            "cus_tel"=>$this->input->post("editCus_tel")
           );
 
         $this->db->where("cus_id",$id)->update("customer",$data);
-        echo json_encode($data);
+        redirect("customer","refesh");
+        exit();
 
     }
 

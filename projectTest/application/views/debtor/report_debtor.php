@@ -80,8 +80,6 @@
 								foreach ($payment as $_payment) {
 									if($i == $_payment['product_payment_month']){
 										echo "<td style='text-align:center;'>",$_payment['product_payment_date'],"</td>";
-									}else{
-										echo "<td style='text-align:center;'>-</td>";
 									}
 								}
 							}else{

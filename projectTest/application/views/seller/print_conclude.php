@@ -9,7 +9,7 @@
 
 <div style="text-align: center;">
     <span style="font-size: 25px; font-weight: bold;">ร้าน สถิตพรอะไหล่</span><br>
-    <span style="font-size: 25px; font-weight: bold;">บันทึกสินค้าขายเชื่อ</span><br>
+    <span style="font-size: 25px; font-weight: bold;">บันทึกการขายสินค้า (ออนไลน์)</span><br>
     <span style="font-size: 20px; font-weight: bold;">วันที่เอกสาร
         <?php
 
@@ -19,7 +19,7 @@
     </span>
 </div>
 
-<span style="font-size: 20px; font-weight: bold;">สมาชิกชื่อ : <?php echo $customer['cus_name']; ?> </span> <span
+<span style="font-size: 20px; font-weight: bold;">สมาชิกชื่อ : <?php echo $member['member_firstname']," ",$member['member_lastname']; ?> </span> <span
         style="font-size: 20px;"><?php echo $stock_detail->partners_name; ?> </span>
 
 <?php
@@ -48,11 +48,11 @@ echo "</thead>";
       echo "</tr>";
       echo "</thead>";
 
-      if($_detail['payment_month'] != '6'){
-        $status = "อยู่ในช่วงผ่อนชำระ";
+      /*if($_detail['sell_receive'] == '0'){
+        $status = "ยังไม่ได้ชำระเงิน";
       }else{
         $status = "ชำระเสร็จสิ้น";
-      }
+      }*/
 
       foreach ($detail_name as $__detail_name) {
         if($_detail['sell_detail_date'] == $__detail_name['sell_detail_date']){
@@ -61,13 +61,13 @@ echo "</thead>";
             echo "<td style='text-align:center;'>",number_format($__detail_name['sell_detail_amount'])," ชิ้น</td>";
             echo "<td  style='text-align:right;'>",number_format($__detail_name['sell_detail_price'])," บาท</td>";
             echo "<td  style='text-align:right;'>",number_format($__detail_name['sell_detail_price']*$__detail_name['sell_detail_amount'])," บาท</td>";
-            echo "<td style='text-align:center;'>",$status,"</td>";
+            echo "<td style='text-align:center;'>",$__detail_name['pay_status'],"</td>";
           echo "</tr>";
         }
       }
     echo "</tr>";
     echo "<tr>";
-      echo "<td colspan='5' style='text-align:right;'>ราคารวมดอกเบี้ย (10%) : ",number_format($_detail['sell_total'])," บาท</td>";
+      echo "<td colspan='5' style='text-align:right;'>ราคารวม : ",number_format($_detail['sell_total'])," บาท</td>";
     echo "</tr>";
     echo "</tbody>";
   }

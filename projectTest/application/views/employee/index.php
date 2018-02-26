@@ -22,6 +22,12 @@
   .thcenter th{
     text-align:center;
   }
+  .text-danger{
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid red !important;
+  }
 </style>
 </head>
 <body>
@@ -154,13 +160,13 @@
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='id_card' name='id_card' class='form-control' maxlength='13' required>";
+                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='id_card' name='id_card' class='form-control _number' maxlength='13' required>";
               echo "</div>";
             echo "</div>";
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>อายุ : </label> <input type='text' id='age' name='age' class='form-control'>";
+                echo "<label>อายุ : </label> <input type='text' id='age' name='age' class='form-control _number'>";
               echo "</div>";
             echo "</div>";
 
@@ -173,7 +179,7 @@
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='tel' name='tel' class='form-control' maxlength='10' required>";
+                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='tel' name='tel' class='form-control _number' maxlength='10' required>";
               echo "</div>";
             echo "</div>";
 
@@ -215,9 +221,9 @@
 
       <!-- Modal content-->
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title" style="text-align:center;">แก้ไขข้อมูลพนักงาน</h4>
+        <div class="modal-header" style="background-color:#336699;">
+          <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+          <h4 class="modal-title" style="text-align:center;color:white;">แก้ไขข้อมูลพนักงาน</h4>
         </div>
         <div class="modal-body">
 
@@ -262,13 +268,13 @@
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='edit_id_card' name='edit_id_card' class='form-control' maxlength='13'>";
+                echo "<label>รหัสบัตรประชาชน : </label> <input type='text' id='edit_id_card' name='edit_id_card' class='form-control _number' maxlength='13'>";
               echo "</div>";
             echo "</div>";
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>อายุ : </label> <input type='text' id='edit_age' name='edit_age' class='form-control'>";
+                echo "<label>อายุ : </label> <input type='text' id='edit_age' name='edit_age' class='form-control _number'>";
               echo "</div>";
             echo "</div>";
 
@@ -281,13 +287,13 @@
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='edit_tel' name='edit_tel' class='form-control' maxlength='10'>";
+                echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='edit_tel' name='edit_tel' class='form-control _number' maxlength='10'>";
               echo "</div>";
             echo "</div>";
 
             echo "<div class='form-group form-float'>";
               echo "<div class='form-line'>";
-                echo "<label>ค่าแรง/วัน : </label> <input type='text' id='edit_baseSalary' name='edit_baseSalary' class='form-control' maxlength='10'>";
+                echo "<label>ค่าแรง/วัน : </label> <input type='text' id='edit_baseSalary' name='edit_baseSalary' class='form-control _number' maxlength='10'>";
               echo "</div>";
             echo "</div>";
 
@@ -331,6 +337,7 @@
   </div>
 <!-- End Edit Emp -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/waves.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/admin.js"></script>
@@ -359,7 +366,50 @@
 </html>
 <script>
 $(document).ready(function(){
-    $('#example').DataTable();
+  $("#username").blur(function(){
+    var username = $(this).val();
+    $.ajax({
+      url: "<?php echo base_url() ?>employee/checkuser",
+      type: "POST",
+      data: {"user_name":username},
+      dataType:"json",
+      success:function(html)
+      {
+        if(!html == false){
+          $("#username").addClass('text-danger');
+          $("#save").prop('disabled','true');
+        }else{
+          $("#username").removeClass('text-danger');
+          $("#save").prop('disabled',false);
+        }
+      }
+    });
+  });
+
+  $("#edit_username").blur(function(){
+    var username = $(this).val();
+    $.ajax({
+      url: "<?php echo base_url() ?>employee/checkuser",
+      type: "POST",
+      data: {"user_name":username},
+      dataType:"json",
+      success:function(html)
+      {
+        if(!html == false){
+          $("#edit_username").addClass('text-danger');
+          $("#Update").prop('disabled','true');
+        }else{
+          $("#edit_username").removeClass('text-danger');
+          $("#Update").prop('disabled',false);
+        }
+      }
+    });
+  });
+
+
+    $('#example').DataTable({
+      "order": [[ 0, "desc" ]]
+    });
 
     $("#saveEmp").click(function (){
         var username = $("#username").val();

@@ -20,6 +20,12 @@
   .thcenter th{
     text-align:center;
   }
+  .text-danger{
+    box-shadow: 0 0 5px rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 5px 1px 3px 0px;
+    border: 1px solid red !important;
+  }
 </style>
 </head>
 <body>
@@ -327,7 +333,49 @@ $type=$this->session->userdata['type'];
 </html>
 <script>
 $(document).ready(function(){
-    $('#example').DataTable();
+    $('#example').DataTable({
+        "order": [[ 0, "desc" ]]
+    });
+
+    $("#barcode_product").blur(function(){
+      var username = $(this).val();
+      $.ajax({
+        url: "<?php echo base_url() ?>product/checkuser",
+        type: "POST",
+        data: {"user_name":username},
+        dataType:"json",
+        success:function(html)
+        {
+          if(!html == false){
+            $("#barcode_product").addClass('text-danger');
+            $("#saveProduct1").prop('disabled','true');
+          }else{
+            $("#barcode_product").removeClass('text-danger');
+            $("#saveProduct1").prop('disabled',false);
+          }
+        }
+      });
+    });
+
+    $("#Edit_barcode_product").blur(function(){
+      var username = $(this).val();
+      $.ajax({
+        url: "<?php echo base_url() ?>product/checkuser",
+        type: "POST",
+        data: {"user_name":username},
+        dataType:"json",
+        success:function(html)
+        {
+          if(!html == false){
+            $("#Edit_barcode_product").addClass('text-danger');
+            $("#updateProduct1").prop('disabled','true');
+          }else{
+            $("#Edit_barcode_product").removeClass('text-danger');
+            $("#updateProduct1").prop('disabled',false);
+          }
+        }
+      });
+    });
 
     $("#saveProduct").click(function (){
         var barcode_product = $("#barcode_product").val();
@@ -422,7 +470,7 @@ function deleteData(id){
   .then((willDelete) => {
     if (willDelete) {
       $.ajax({
-        url: "<?php echo base_url() ?>product/delete_cate",
+        url: "<?php echo base_url() ?>product/delete",
         type: "POST",
         data: {
           "Del_id" : Delid

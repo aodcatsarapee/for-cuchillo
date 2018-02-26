@@ -249,4 +249,39 @@ public function sell_detail_history_online($id,$date_start,$date_end)
 	}
 
 
+  public function conclude_sell($id,$date_start,$date_end)
+{
+
+    $this->db->select('*');
+
+    $this->db->from('product_sell_detail');
+
+        //$this->db->order_by('account_id', 'ASC');
+
+    $this->db->order_by('sell_detail_date', 'ASC');
+
+    $this->db->where('sell_detail_type','1');
+
+    $this->db->where('sell_detail_date >=', $date_start);
+
+        list($Y,$m,$d) = explode('-',$date_end);
+
+    $this->db->where('sell_detail_date <=', $Y."-".$m."-".($d+1));
+
+
+    $sql=$this->db->get();
+
+    if ($sql->num_rows() > 0) {
+
+      return $sql->result_array();
+    }
+    else
+    {
+      return $sql->result_array();
+    }
+
+
+}
+
+
 }

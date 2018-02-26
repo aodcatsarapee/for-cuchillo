@@ -36,8 +36,9 @@
                     <div class="header">
                         <div class="row clearfix">
                             <div class="col-xs-12 col-sm-6">
-                                <h2>จัดการข้อมูลผู้ใช้</h2>
+                                <h2>จัดการข้อมูลลูกค้า</h2>
                             </div>
+                            <button type='button' style="float:right;" class='btn bg-teal waves-effect' data-toggle='modal' data-target='#addCus'><i class='material-icons'>forum</i><span>เพิ่มข้อมูล</span></button>
                         </div>
                     </div>
                     <div class="body">
@@ -45,14 +46,6 @@
                       $add=image_asset('icon/add.png');
                       $edit=image_asset('icon/edit.png');
                       $del=image_asset('icon/del.png');
-                      echo "<table class='table'>";
-                        echo "<thead class='thead-dark'>";
-                          echo "<tr class='thcenter'>";
-                            echo "<th colspan='9'>ข้อมูลผู้ใช้<img id='myImg' style='float:right;' class='data-toggle='modal' data-target='#addCus' src=",base_url('Frontend/images/icon/add.png'),"></th>";
-                            //echo "<th colspan='9'>ข้อมูลผู้ใช้<button type='button' style='background-color:white;float:right;' class='btn' data-toggle='modal' data-target='#addCus'>",$add,"</button></th>";
-                          echo "</tr>";
-                        echo "</thead>";
-                      echo "</table>";
                       ?>
                       <table id="example" class="display" cellspacing="0" width="100%">
                           <thead>
@@ -82,8 +75,7 @@
                                     echo "<td>".$_data['cus_name']."</td>";
                                     echo "<td>".$_data['cus_address']."</td>";
                                     echo "<td>".$_data['cus_tel']."</td>";
-                                    echo "<td align='center'><button type='button' style='background-color:white;' class='btn' data-toggle='modal' data-target='#editCus' id='idEditCus' onclick='editCusAjax(",$_data['cus_id'],")'>",$edit,"</button>"?><img src="<?php echo base_url(); ?>Frontend/images/icon/del.png" onclick="deleteData(<?php echo $_data['cus_id']; ?>)"></td>
-                                  <?php
+                                    echo "<td style='width:200px;'><button type='button' data-toggle='modal' data-target='#editCus' id='idEditCus' onclick='editCusAjax(",$_data['cus_id'],")' class='btn bg-orange waves-effect'><i class='material-icons'>content_cut</i><span>EDIT</span></button> &nbsp;<button type='button'  onclick='deleteData(",$_data['cus_id'],")' class='btn bg-red waves-effect'><i class='material-icons'>report_problem</i><span>DELETE</span></button></td>";
                                   echo "</tr>";
                                   $num++;
                               }
@@ -100,53 +92,54 @@
 
                       <!-- Start Add Emp -->
                       <div class="modal fade" id="addCus" role="dialog">
-                          <div class="modal-dialog modal-sm !Important">
+                          <div class="modal-dialog !Important">
 
                             <!-- Modal content-->
                             <div class="modal-content">
-                              <div class="modal-header" style="background-color:#FFFF99;">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title" style="text-align:center;">เพิ่มข้อมูลผู้ใช้</h4>
+                              <div class="modal-header" style="background-color:#336699;">
+                                <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+                                <h4 class="modal-title" style="text-align:center;color:white;">เพิ่มข้อมูลลูกค้า</h4>
                               </div>
                               <div class="modal-body">
 
                                 <?php
-                                echo form_open();
+                                echo form_open('customer/insert');
                                   echo "<div class='row clearfix'>";
                                     echo "<div class='col-sm-12'>";
                                       echo "<label class='form-label'>รหัสบัตรประชาชน :</label>";
-                                      echo "<input type='text' maxlength='13' id='addCus_cardid' class='form-control' required>";
+                                      echo "<input type='text' maxlength='13' id='addCus_cardid' name='addCus_cardid' class='form-control _number' required>";
                                     echo "</div>";
                                   echo "</div>";
 
                                   echo "<div class='row clearfix'>";
                                     echo "<div class='col-sm-12'>";
-                                      echo "<label>ชื่อ - นามสกุล : </label> <input type='text' id='addCus_name' class='form-control' required>";
+                                      echo "<label>ชื่อ - นามสกุล : </label> <input type='text' id='addCus_name' name='addCus_name' class='form-control' required>";
                                     echo "</div>";
                                   echo "</div>";
 
                                   echo "<div class='row clearfix'>";
                                     echo "<div class='col-sm-12'>";
-                                      echo "<label>ที่อยู่ : </label><textarea id='addCus_address' class='form-control' required> </textarea>";
+                                      echo "<label>ที่อยู่ : </label><textarea id='addCus_address' name='addCus_address' class='form-control' required> </textarea>";
                                     echo "</div>";
                                   echo "</div>";
 
                                   echo "<div class='row clearfix'>";
                                     echo "<div class='col-sm-12'>";
-                                      echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='addCus_tel' class='form-control' maxlength='10' required>";
+                                      echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='addCus_tel' name='addCus_tel' class='form-control _number' maxlength='10' required>";
                                     echo "</div>";
                                   echo "</div>";
 
                                   echo "<div class='form-group'>";
-                                        echo "<input type='hidden' id='addCus_type' class='form-control' value='สมาชิก'>";
+                                        echo "<input type='hidden' id='addCus_type' name='addCus_type' class='form-control' value='สมาชิก'>";
                                   echo "</div>";
-                                echo form_close();
+
                                 ?>
 
                                 <span style='padding-left:400px;'></span>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-success" id='saveCus'>SAVE</button>
+                                <button type="submit" class="btn btn-success" id='saveCus1'>SAVE</button>
+                                <?php echo form_close(); ?>
                               </div>
                             </div>
 
@@ -160,45 +153,46 @@
 
                             <!-- Modal content-->
                             <div class="modal-content">
-                              <div class="modal-header">
-                                <h4 class="modal-title">แก้ไขข้อมูลผู้ใช้</h4>
-                                <button type="button" style="margin-left:200px;" class="btn btn-default" id='mdCloseCus' data-dismiss="modal">Close</button>
+                              <div class="modal-header" style="background-color:#336699;">
+                                <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+                                <h4 class="modal-title" style="text-align:center;color:white;">แก้ไขข้อมูลลูกค้า</h4>
                               </div>
                               <div class="modal-body">
 
                                 <?php
-                                echo form_open();  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
-                                  echo "<div class='form-group form-float'>";
-                                    echo "<div class='form-line'>";
-                                      echo "<input type='hidden' id='editCus_id'>";
-                                      echo "<label>รหัสบัตรประชาชน : </label> <input type='text' maxlength='13' id='editCus_cardid' class='form-control'>";
+                                echo form_open('customer/update');  //1.ตำแหน่งโฟร์เดอร์ที่จะวิ่งไป(ชื่อไฟล์ตรง Controllers) 2.ไฟล์ที่จะให้วิ่งไป(ชื่อ method ท่ี่เรียกใช้)
+                                echo "<div class='row clearfix'>";
+                                  echo "<div class='col-sm-12'>";
+                                      echo "<input type='hidden' id='editCus_id' name='editCus_id'>";
+                                      echo "<label>รหัสบัตรประชาชน : </label> <input type='text' maxlength='13' name='editCus_cardid' id='editCus_cardid' class='form-control  _number' required>";
                                     echo "</div>";
                                   echo "</div>";
 
-                                  echo "<div class='form-group form-float'>";
-                                    echo "<div class='form-line'>";
-                                      echo "<label>ชื่อ - นามสกุล : </label> <input type='text' id='editCus_name' class='form-control'>";
+                                  echo "<div class='row clearfix'>";
+                                    echo "<div class='col-sm-12'>";
+                                      echo "<label>ชื่อ - นามสกุล : </label> <input type='text' name='editCus_name' id='editCus_name' class='form-control' required>";
                                     echo "</div>";
                                   echo "</div>";
 
-                                  echo "<div class='form-group form-float'>";
-                                    echo "<div class='form-line'>";
-                                        echo "<label>ที่อยู่ : </label> <input type='text' id='editCus_address' class='form-control'>";
+                                  echo "<div class='row clearfix'>";
+                                    echo "<div class='col-sm-12'>";
+                                        echo "<label>ที่อยู่ : </label> <input type='text'  name='editCus_address' id='editCus_address' class='form-control' required>";
                                     echo "</div>";
                                   echo "</div>";
 
-                                  echo "<div class='form-group form-float'>";
-                                    echo "<div class='form-line'>";
-                                      echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' id='editCus_tel' class='form-control' maxlength='10'>";
+                                  echo "<div class='row clearfix'>";
+                                    echo "<div class='col-sm-12'>";
+                                      echo "<label>เบอร์โทรศัพท์ : </label> <input type='text' name='editCus_tel' id='editCus_tel' class='form-control _number' maxlength='10' required>";
                                     echo "</div>";
                                   echo "</div>";
-                                echo form_close();
+
                                 ?>
 
                                 <span style='padding-left:400px;'></span>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-success" id='updateCus'>UPDATE</button>
+                                <button type="submit" class="btn btn-success" id='updateCu1s'>UPDATE</button>
+                                <?php echo form_close(); ?>
                               </div>
                             </div>
 
@@ -236,11 +230,14 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/jquery.validate.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/form-validation.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/sell.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>Frontend/js/satitporn.js"></script>
 </head>
 </body>
 </html>
 <script>
-$('#example').dataTable();
+$('#example').dataTable({
+  "order": [[ 0, "desc" ]]
+});
 
 function deleteData(id){
   var Delid = id;

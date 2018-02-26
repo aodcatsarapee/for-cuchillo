@@ -162,9 +162,16 @@ function detail_conclude(id){
         //$("#fixRepair").append("<span>",data.conclude_detail,"</span>");
         $("#fixRepair").val(data.conclude_detail);
         var order_id = data.conclude_order_id;
-        //$("#productRepair").append("<span>",data.conclude_product,"</span>");
+        var data=data.product;
 
-        $.ajax({
+        var count = data.length;
+        //for(var i=0;i<count;i++){
+          $("#productRepair").append("<span>",data,"<br></span>");
+        //}
+
+        $("#detailConclude").modal('show');
+
+        /*$.ajax({
           url: "<?php echo base_url() ?>repair/conclude_product/",
           type: "POST",
           data: {
@@ -185,7 +192,7 @@ function detail_conclude(id){
             alert('Error....');
             $("#mdClose").click();
           }
-      })
+      })*/
     },
     error: function(){
       alert('Error....');

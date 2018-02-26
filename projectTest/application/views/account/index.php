@@ -15,9 +15,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <section class="content">
     <div class="container-fluid">
-        <div class="block-header">
-            <h2>DASHBOARD</h2>
-        </div>
         <div class="row clearfix">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="card">
@@ -42,7 +39,7 @@
                     </div>
                     <div class="body" style="min-height: 600px;">
                         <table class="table table-responsive table-bordered table-hover" id="data-table">
-                            <thead class="bg-primary">
+                            <thead>
                             <tr>
                                 <th width="10%" class="text-center">ลำดับ</th>
                                 <th>รายละเอียด</th>
@@ -56,7 +53,7 @@
                             <tbody>
                             <?php
                             $i = 1;
-                            $this->db->order_by('account_id', 'DESC');
+                            $this->db->order_by('account_id', 'ASC');
                             $account = $this->db->get('account')->result();
                             foreach ($account as $list) {
 
@@ -104,9 +101,9 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header" style="background-color:green;">
-                <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-                <h4 class="modal-title" style="text-align:center;color:white;">เพิ่มรายรับ - รายจ่าย</h4>
+          <div class="modal-header" style="background-color:#336699;">
+            <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+            <h4 class="modal-title" style="text-align:center;color:white;">เพิ่มรายรับ - รายจ่าย</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="POST" action="<?php echo base_url() . 'account/add' ?>"
@@ -156,9 +153,9 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header" style="background-color:#FF9600;">
-                <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
-                <h4 class="modal-title" style="text-align:center;color:white;">เเก้ไขข้อมูลรายรับ - รายจ่าย</h4>
+          <div class="modal-header" style="background-color:#336699;">
+            <button type="button" class="close" data-dismiss="modal" style="color:white;">&times;</button>
+            <h4 class="modal-title" style="text-align:center;color:white;">แก้ไขข้อมูลรายรับ - รายจ่าย</h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" method="POST" action="<?php echo base_url() . 'account/edit' ?>"
